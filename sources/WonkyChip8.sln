@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{FF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E6A591E7-4964-4282-9C0B-66D9B2A17A4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WonkyChip8.Interpreter.UnitTests", "Tests\WonkyChip8.Interpreter.UnitTests\WonkyChip8.Interpreter.UnitTests.csproj", "{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{24162363-E12F-4FF5-A3A3-5CE41058D855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24162363-E12F-4FF5-A3A3-5CE41058D855}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24162363-E12F-4FF5-A3A3-5CE41058D855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{24162363-E12F-4FF5-A3A3-5CE41058D855} = {FF1BEAF6-3669-4241-8820-7812AB142DDB}
+		{2E89AC6E-37E0-49FF-A0FA-50D956F65ACA} = {E6A591E7-4964-4282-9C0B-66D9B2A17A4A}
 	EndGlobalSection
 EndGlobal
