@@ -2,6 +2,6 @@
 {
     public interface ICommandFactory
     {
-        ICommand Create(byte? operationCode);
+        ICommand Create(int? address, int? operationCode);
     }
 }

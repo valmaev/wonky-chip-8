@@ -35,9 +35,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CentralProcessingUnit.cs" />
+    <Compile Include="CommandFactory.cs" />
+    <Compile Include="Commands\ClearScreenCommand.cs" />
+    <Compile Include="Commands\NullCommand.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />
+    <Compile Include="IGraphicsProcessingUnit.cs" />
     <Compile Include="IMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomAccessMemory.cs" />

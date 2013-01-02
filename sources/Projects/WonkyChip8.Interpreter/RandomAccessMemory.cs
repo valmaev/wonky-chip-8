@@ -5,23 +5,23 @@ namespace WonkyChip8.Interpreter
 {
     public class RandomAccessMemory : IMemory
     {
-        public static readonly int ProgramStartAddress = 0x200;
-        public static readonly int EndAddress = 0xFFF;
+        private readonly List<int?> _memory;
 
-        private readonly List<byte?> _memory = new List<byte?>(new byte?[EndAddress]);
+        public RandomAccessMemory()
+        {
+            _memory = new List<int?>(new int?[EndAddress]);
+        }
 
-        public byte? this[int cellAddress]
+        public int? this[int cellAddress]
         {
             get { return _memory[cellAddress]; }
             set { _memory.Insert(cellAddress, value); }
         }
 
-        public byte? ProgramStartByte
-        {
-            get { return this[ProgramStartAddress]; }
-        }
+        public int ProgramStartAddress { get { return 0x200; } }
+        public int EndAddress { get { return 0xFFF; } }
 
-        public void LoadProgram(IEnumerable<byte?> programBytes)
+        public void LoadProgram(IEnumerable<int?> programBytes)
         {
             if (programBytes == null)
                 throw new ArgumentNullException("programBytes");

@@ -43,7 +43,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithNullProgramStartByte_ExpectNotTrowingException()
+        public void ExecuteProgram_WithNullProgramStartByte_ExpectNotThrowingException()
         {
             // Arrange
             var centralProcessingUnit = CreateCentralProcessingUnit();
@@ -56,14 +56,16 @@ namespace WonkyChip8.Interpreter.UnitTests
         public void ExecuteProgram_WithNotNullProgramStartByte_ExpectExecuteCommandOneTime()
         {
             // Arrange
-            const byte commandOperationCode = 0x00E0;
+            const int programStartAddress = 0x200;
             var memoryStub = Substitute.For<IMemory>();
-            memoryStub.ProgramStartByte.Returns(commandOperationCode);
+            memoryStub.ProgramStartAddress.Returns(programStartAddress);
+            
+            const byte commandOperationCode = 0x00E0;
+            memoryStub[memoryStub.ProgramStartAddress].Returns(commandOperationCode);
 
             var commandMock = Substitute.For<ICommand>();
-
             var commandFactoryStub = Substitute.For<ICommandFactory>();
-            commandFactoryStub.Create(commandOperationCode).Returns(commandMock);
+            commandFactoryStub.Create(programStartAddress, commandOperationCode).Returns(commandMock);
 
             var centralProcessingUnit = CreateCentralProcessingUnit(memoryStub, commandFactoryStub);
 
@@ -72,6 +74,40 @@ namespace WonkyChip8.Interpreter.UnitTests
 
             // Assert
             commandMock.Received(1).Execute();
+        }
+
+        [Test]
+        public void ExecuteProgram_WithTwoCommandsInMemory_ExpectExecuteEachCommandOneTime()
+        {
+            // Arrange
+            const int programStartAddress = 0x200;
+            var memoryStub = Substitute.For<IMemory>();
+            memoryStub.ProgramStartAddress.Returns(programStartAddress);
+
+            const byte firstCommandOperationCode = 0x00E0;
+            memoryStub[memoryStub.ProgramStartAddress].Returns(firstCommandOperationCode);
+
+            const int secondCommandAddress = programStartAddress + 0x2;
+            const byte secondCommandOperationCode = 0x00EE;
+            memoryStub[secondCommandAddress].Returns(secondCommandOperationCode);
+
+            var firstCommandMock = Substitute.For<ICommand>();
+            firstCommandMock.NextCommandAddress.Returns(secondCommandAddress);
+
+            var secondCommandMock = Substitute.For<ICommand>();
+            
+            var commandFactoryStub = Substitute.For<ICommandFactory>();
+            commandFactoryStub.Create(programStartAddress, firstCommandOperationCode).Returns(firstCommandMock);
+            commandFactoryStub.Create(secondCommandAddress, secondCommandOperationCode).Returns(secondCommandMock);
+
+            var centralProcessingUnit = CreateCentralProcessingUnit(memoryStub, commandFactoryStub);
+
+            // Act
+            centralProcessingUnit.ExecuteProgram();
+
+            // Assert
+            firstCommandMock.Received(1).Execute();
+            secondCommandMock.Received(1).Execute();
         }
     }
 }

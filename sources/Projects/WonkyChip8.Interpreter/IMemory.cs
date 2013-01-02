@@ -4,9 +4,10 @@ namespace WonkyChip8.Interpreter
 {
     public interface IMemory
     {
-        byte? ProgramStartByte { get; }
-        void LoadProgram(IEnumerable<byte?> programBytes);
+        int ProgramStartAddress { get; }
+        int EndAddress { get; }
+        void LoadProgram(IEnumerable<int?> programBytes);
         void UnloadProgram();
-        byte? this[int cellAddress] { get; set; }
+        int? this[int cellAddress] { get; set; }
     }
 }
