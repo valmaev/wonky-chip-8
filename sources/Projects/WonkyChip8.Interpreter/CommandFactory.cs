@@ -21,6 +21,8 @@ namespace WonkyChip8.Interpreter
                 return new NullCommand(address);
             if (operationCode == 0x00E0)
                 return new ClearScreenCommand(address, _graphicsProcessingUnit);
+            if ((operationCode & 0xF000) == 0x1000)
+                return new JumpToAddressCommand(address, operationCode.Value);
             throw new ArgumentOutOfRangeException("operationCode");
         }
     }

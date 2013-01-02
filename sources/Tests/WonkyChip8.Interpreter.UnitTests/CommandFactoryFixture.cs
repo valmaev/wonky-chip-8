@@ -38,7 +38,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             var commandFactory = CreateCommandFactory();
 
             // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, 4369));
+            Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, 0x99999));
         }
 
         [Test]
@@ -52,6 +52,19 @@ namespace WonkyChip8.Interpreter.UnitTests
 
             // Assert
             Assert.IsInstanceOf<ClearScreenCommand>(command);
+        }
+
+        [Test]
+        public void Create_WithOperationCodeEquals1Nnn_ExpectReturnsJumpToAddressCommand()
+        {
+            // Arrange
+            var commandFactory = CreateCommandFactory();
+
+            // Act
+            ICommand command = commandFactory.Create(0, 0x1001);
+
+            // Assert
+            Assert.IsInstanceOf<JumpToAddressCommand>(command);
         }
     }
 }
