@@ -2,7 +2,7 @@
 {
     public class NullCommand : Command
     {
-        public NullCommand(int? address) : base(address) { }
+        public NullCommand(int? address) : base(address, null) { }
         public override int? NextCommandAddress { get { return null; } }
     }
 }

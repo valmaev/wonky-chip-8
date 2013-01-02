@@ -36,10 +36,12 @@
   <ItemGroup>
     <Compile Include="CentralProcessingUnit.cs" />
     <Compile Include="CommandFactory.cs" />
+    <Compile Include="Commands\CallSubroutineCommand.cs" />
     <Compile Include="Commands\ClearScreenCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\JumpToAddressCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
+    <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />

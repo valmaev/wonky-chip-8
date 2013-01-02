@@ -6,7 +6,8 @@ namespace WonkyChip8.Interpreter.Commands
     {
         private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
 
-        public ClearScreenCommand(int? address, IGraphicsProcessingUnit graphicsProcessingUnit) : base(address)
+        public ClearScreenCommand(int? address, IGraphicsProcessingUnit graphicsProcessingUnit)
+            : base(address, operationCode: 0x0E00)
         {
             if (graphicsProcessingUnit == null)
                 throw new ArgumentNullException("graphicsProcessingUnit");

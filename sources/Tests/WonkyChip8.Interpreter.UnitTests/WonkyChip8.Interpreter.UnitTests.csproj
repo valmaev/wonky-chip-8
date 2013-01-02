@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandFactoryFixture.cs" />
+    <Compile Include="Commands\CallSubroutineCommandFixture.cs" />
     <Compile Include="Commands\ClearScreenCommandFixture.cs" />
     <Compile Include="Commands\CommandFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />

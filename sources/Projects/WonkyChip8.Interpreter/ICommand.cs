@@ -4,6 +4,7 @@
     {
         int? Address { get; }
         int? NextCommandAddress { get; }
+        int? OperationCode { get; }
         void Execute();
     }
 }
