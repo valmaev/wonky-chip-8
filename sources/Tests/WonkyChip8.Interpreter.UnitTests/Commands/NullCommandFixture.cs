@@ -7,13 +7,13 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class NullCommandFixture
     {
         [Test]
-        public void Constructor_WithProperAddress_ExpectNotThrowingException()
+        public void Constructor_WithProperAddress_ExpectNotThrowsException()
         {
             Assert.DoesNotThrow(() => new NullCommand(0));
         }
 
         [Test]
-        public void Address_ExpectReturnAddressFromConstructorParameter()
+        public void Address_ExpectReturnsAddressFromConstructorParameter()
         {
             // Arrange
             const int nullCommandAddress = 10;
@@ -24,7 +24,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void NextCommandAddress_ExpectReturnNull()
+        public void NextCommandAddress_ExpectReturnsNull()
         {
             // Arrange
             var nullCommand = new NullCommand(0);

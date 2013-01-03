@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class JumpToAddressCommandFixture
     {
         [Test]
-        public void Constructor_WithInvalidOperationCode_ExpectArgumentOutOfRangeException()
+        public void Constructor_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException()
         {
             // Act & Assert
             var argumentOutOfRangeException =
@@ -17,7 +17,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void NextAddress_ExpectReturnLastThreeHalfBitsOfOperationCode()
+        public void NextAddress_ExpectReturnsLastThreeHalfBitsOfOperationCode()
         {
             // Arrange
             var jumpToAddressCommand = new JumpToAddressCommand(0, 0x1111);

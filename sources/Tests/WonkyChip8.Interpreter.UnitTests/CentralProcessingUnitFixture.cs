@@ -15,7 +15,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void Constructor_WithNullMemory_ExpectArgumentNullException()
+        public void Constructor_WithNullMemory_ExpectThrowsArgumentNullException()
         {
             // Arrange
             var commandFactoryStub = Substitute.For<ICommandFactory>();
@@ -29,7 +29,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void Constructor_WithNullCommandFactory_ExpectArgumentNullException()
+        public void Constructor_WithNullCommandFactory_ExpectThrowsArgumentNullException()
         {
             // Arrange
             var memoryStub = Substitute.For<IMemory>();
@@ -43,7 +43,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithNullProgramStartByte_ExpectNotThrowingException()
+        public void ExecuteProgram_WithNullProgramStartByte_ExpectNotThrowsException()
         {
             // Arrange
             var centralProcessingUnit = CreateCentralProcessingUnit();
@@ -53,7 +53,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithNotNullProgramStartByte_ExpectExecuteCommandOneTime()
+        public void ExecuteProgram_WithNotNullProgramStartByte_ExpectExecutesCommandOneTime()
         {
             // Arrange
             const int programStartAddress = 0x200;
@@ -77,7 +77,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithTwoCommandsInMemory_ExpectExecuteEachCommandOneTime()
+        public void ExecuteProgram_WithTwoCommandsInMemory_ExpectExecutesEachCommandOneTime()
         {
             // Arrange
             const int programStartAddress = 0x200;

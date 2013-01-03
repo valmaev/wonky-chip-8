@@ -41,6 +41,7 @@
     <Compile Include="Commands\CommandFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
+    <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CentralProcessingUnitFixture.cs" />
     <Compile Include="RandomAccessMemoryFixture.cs" />

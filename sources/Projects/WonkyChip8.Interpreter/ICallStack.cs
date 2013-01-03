@@ -3,5 +3,7 @@
     public interface ICallStack
     {
         void Push(int? address);
+        int? Pop();
+        int? Peek();
     }
 }

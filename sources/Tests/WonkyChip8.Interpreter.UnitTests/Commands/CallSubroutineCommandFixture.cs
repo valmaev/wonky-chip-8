@@ -45,7 +45,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void Execute_ExpectCallsCallStackOneTime()
+        public void Execute_ExpectCallsCallStackPushOneTime()
         {
             // Arrange
             var callStackMock = Substitute.For<ICallStack>();

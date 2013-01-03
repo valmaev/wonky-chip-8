@@ -69,13 +69,19 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
+        public void Create_WithOperationCodeEquals00Ee_ExpectReturnsReturnFromSubroutineCommand()
+        {
+            AssertTypeOfCommand<ReturnFromSubroutineCommand>(0x00EE);
+        }
+
+        [Test]
         public void Create_WithOperationCodeEquals1Nnn_ExpectReturnsJumpToAddressCommand()
         {
             AssertTypeOfCommand<JumpToAddressCommand>(0x1001);
         }
 
         [Test]
-        public void Create_WithOperatiobCodeEquals2Nnn_ExpectReturnsCallSubroutineCommand()
+        public void Create_WithOperationCodeEquals2Nnn_ExpectReturnsCallSubroutineCommand()
         {
             AssertTypeOfCommand<CallSubroutineCommand>(0x2001);
         }

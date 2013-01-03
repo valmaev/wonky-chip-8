@@ -41,6 +41,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\JumpToAddressCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
+    <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
     <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
     <Compile Include="ICommand.cs" />

@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter.UnitTests
     public class RandomAccessMemoryFixture
     {
         [Test]
-        public void LoadProgram_WithNullProgramBytes_ExpectArgumentNullException()
+        public void LoadProgram_WithNullProgramBytes_ExpectThrowsArgumentNullException()
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
@@ -22,7 +22,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void LoadProgram_WithProperProgramBytes_ExpectProgramLoadsInMemory()
+        public void LoadProgram_WithProperProgramBytes_ExpectLoadsProgramInMemory()
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
@@ -57,7 +57,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x000, 1, ExpectedResult = 1)]
         [TestCase(0x200, 1, ExpectedResult = 1)]
         [TestCase(0xFFF, 1, ExpectedResult = 1)]
-        public int? ThisIndexer_WithProperCellAddress_ExpectEqualValue(int cellAddress, int value)
+        public int? ThisIndexer_WithProperCellAddress_ExpectEqualsValue(int cellAddress, int value)
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
@@ -71,7 +71,7 @@ namespace WonkyChip8.Interpreter.UnitTests
 
         [TestCase(-0x001, 1)]
         [TestCase(0x1000, 1)]
-        public void ThisIndexer_WithInvalidCellAddress_ExpectedArgumentOutOfRangeException(int cellAddress, byte value)
+        public void ThisIndexer_WithInvalidCellAddress_ExpectThrowsArgumentOutOfRangeException(int cellAddress, byte value)
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();

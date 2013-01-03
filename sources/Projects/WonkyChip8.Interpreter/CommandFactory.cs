@@ -25,6 +25,8 @@ namespace WonkyChip8.Interpreter
                 return new NullCommand(address);
             if (operationCode == 0x00E0)
                 return new ClearScreenCommand(address, _graphicsProcessingUnit);
+            if (operationCode == 0x00EE)
+                return new ReturnFromSubroutineCommand(address, operationCode, _callStack);
             switch (operationCode & 0xF000)
             {
                 case 0x1000:
@@ -32,6 +34,7 @@ namespace WonkyChip8.Interpreter
                 case 0x2000:
                     return new CallSubroutineCommand(address, operationCode.Value, _callStack);
             }
+
             throw new ArgumentOutOfRangeException("operationCode");
         }
     }
