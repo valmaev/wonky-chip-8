@@ -54,5 +54,36 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             // Act & Assert
             Assert.DoesNotThrow(() => CreateCommandStub().Execute());
         }
+
+        [Test]
+        public void Bits_WithNotNullOperationCode_ExpectReturnsProperValues()
+        {
+            // Arrange
+            var commandStub = CreateCommandStub(operationCode: 0x1234);
+
+            // Assert
+            Assert.AreEqual(0x1, commandStub.FirstOperationCodeHalfBit);
+            Assert.AreEqual(0x2, commandStub.SecondOperationCodeHalfBit);
+            Assert.AreEqual(0x3, commandStub.ThirdOperationCodeHalfBit);
+            Assert.AreEqual(0x4, commandStub.FourthOperationCodeHalfBit);
+
+            Assert.AreEqual(0x12, commandStub.FirstOperationCodeBit);
+            Assert.AreEqual(0x34, commandStub.SecondOperationCodeBit);
+        }
+
+        [Test]
+        public void Bits_WithNullOperationCode_ExpectReturnsNullValues()
+        {
+            // Arrange
+            var commandStub = CreateCommandStub(operationCode: null);
+
+            // Assert
+            Assert.IsNull(commandStub.FirstOperationCodeHalfBit);
+            Assert.IsNull(commandStub.SecondOperationCodeHalfBit);
+            Assert.IsNull(commandStub.ThirdOperationCodeHalfBit);
+            Assert.IsNull(commandStub.FourthOperationCodeHalfBit);
+            Assert.IsNull(commandStub.FirstOperationCodeBit);
+            Assert.IsNull(commandStub.SecondOperationCodeBit);
+        }
     }
 }

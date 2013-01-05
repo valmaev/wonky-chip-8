@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class CallSubroutineCommandFixture
     {
-        private static CallSubroutineCommand CreateCallSubroutineCommand(int? address = 0, int? operationCode = 0x2001,
+        private static CallSubroutineCommand CreateCallSubroutineCommand(int? address = 0, int operationCode = 0x2001,
                                                                          ICallStack callStack = null)
         {
             return new CallSubroutineCommand(address, operationCode, callStack ?? Substitute.For<ICallStack>());

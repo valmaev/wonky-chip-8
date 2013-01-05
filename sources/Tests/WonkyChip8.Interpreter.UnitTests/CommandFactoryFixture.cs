@@ -9,10 +9,11 @@ namespace WonkyChip8.Interpreter.UnitTests
     public class CommandFactoryFixture
     {
         private static CommandFactory CreateCommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit = null,
-                                                           ICallStack callStack = null)
+                                                           ICallStack callStack = null, IRegisters registers = null)
         {
             return new CommandFactory(graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
-                                      callStack ?? Substitute.For<ICallStack>());
+                                      callStack ?? Substitute.For<ICallStack>(),
+                                      registers ?? Substitute.For<IRegisters>());
         }
 
         private static void AssertTypeOfCommand<TCommand>(int? operationCode) where TCommand : ICommand
@@ -32,7 +33,8 @@ namespace WonkyChip8.Interpreter.UnitTests
         {
             // Act & Assert
             var argumentNullException =
-                Assert.Throws<ArgumentNullException>(() => new CommandFactory(null, Substitute.For<ICallStack>()));
+                Assert.Throws<ArgumentNullException>(
+                    () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IRegisters>()));
             Assert.AreEqual("graphicsProcessingUnit", argumentNullException.ParamName);
         }
 
@@ -42,18 +44,31 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Act & Assert
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
-                    () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null));
+                    () =>
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null, Substitute.For<IRegisters>()));
             Assert.AreEqual("callStack", argumentNullException.ParamName);
         }
 
         [Test]
-        public void Create_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException()
+        public void Constructor_WithNullRegisters_ExpectThrowsArgumentNullException()
+        {
+            // Act & Assert
+            var argumentNullException =
+                Assert.Throws<ArgumentNullException>(
+                    () =>
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null));
+            Assert.AreEqual("registers", argumentNullException.ParamName);
+        }
+
+        [TestCase(0x99999)]
+        [TestCase(0x5121)]
+        public void Create_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
             // Arrange
             var commandFactory = CreateCommandFactory();
 
             // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, 0x99999));
+            Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, invalidOperationCode));
         }
 
         [Test]
@@ -84,6 +99,24 @@ namespace WonkyChip8.Interpreter.UnitTests
         public void Create_WithOperationCodeEquals2Nnn_ExpectReturnsCallSubroutineCommand()
         {
             AssertTypeOfCommand<CallSubroutineCommand>(0x2001);
+        }
+
+        [Test]
+        public void Create_WithOperationCodeEquals3Xnn_ExpectReturnsSkipNextOperationCommand()
+        {
+            AssertTypeOfCommand<SkipNextOperationCommand>(0x3000);
+        }
+
+        [Test]
+        public void Create_WithOperationCodeEquals4Xnn_ExpectReturnsSkipNextOperationCommand()
+        {
+            AssertTypeOfCommand<SkipNextOperationCommand>(0x4000);
+        }
+
+        [Test]
+        public void Create_WithOperationCodeEquals5Xy0_ExpectReturnsSkipNextOperationCommand()
+        {
+            AssertTypeOfCommand<SkipNextOperationCommand>(0x5010);
         }
     }
 }
