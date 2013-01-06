@@ -56,34 +56,34 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void Bits_WithNotNullOperationCode_ExpectReturnsProperValues()
+        public void Bytes_WithNotNullOperationCode_ExpectReturnsProperValues()
         {
             // Arrange
             var commandStub = CreateCommandStub(operationCode: 0x1234);
 
             // Assert
-            Assert.AreEqual(0x1, commandStub.FirstOperationCodeHalfBit);
-            Assert.AreEqual(0x2, commandStub.SecondOperationCodeHalfBit);
-            Assert.AreEqual(0x3, commandStub.ThirdOperationCodeHalfBit);
-            Assert.AreEqual(0x4, commandStub.FourthOperationCodeHalfBit);
+            Assert.AreEqual(0x1, commandStub.FirstOperationCodeHalfByte);
+            Assert.AreEqual(0x2, commandStub.SecondOperationCodeHalfByte);
+            Assert.AreEqual(0x3, commandStub.ThirdOperationCodeHalfByte);
+            Assert.AreEqual(0x4, commandStub.FourthOperationCodeHalfByte);
 
-            Assert.AreEqual(0x12, commandStub.FirstOperationCodeBit);
-            Assert.AreEqual(0x34, commandStub.SecondOperationCodeBit);
+            Assert.AreEqual(0x12, commandStub.FirstOperationCodeByte);
+            Assert.AreEqual(0x34, commandStub.SecondOperationCodeByte);
         }
 
         [Test]
-        public void Bits_WithNullOperationCode_ExpectReturnsNullValues()
+        public void Bytes_WithNullOperationCode_ExpectReturnsNullValues()
         {
             // Arrange
             var commandStub = CreateCommandStub(operationCode: null);
 
             // Assert
-            Assert.IsNull(commandStub.FirstOperationCodeHalfBit);
-            Assert.IsNull(commandStub.SecondOperationCodeHalfBit);
-            Assert.IsNull(commandStub.ThirdOperationCodeHalfBit);
-            Assert.IsNull(commandStub.FourthOperationCodeHalfBit);
-            Assert.IsNull(commandStub.FirstOperationCodeBit);
-            Assert.IsNull(commandStub.SecondOperationCodeBit);
+            Assert.IsNull(commandStub.FirstOperationCodeHalfByte);
+            Assert.IsNull(commandStub.SecondOperationCodeHalfByte);
+            Assert.IsNull(commandStub.ThirdOperationCodeHalfByte);
+            Assert.IsNull(commandStub.FourthOperationCodeHalfByte);
+            Assert.IsNull(commandStub.FirstOperationCodeByte);
+            Assert.IsNull(commandStub.SecondOperationCodeByte);
         }
     }
 }

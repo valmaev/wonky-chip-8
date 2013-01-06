@@ -22,8 +22,8 @@ namespace WonkyChip8.Interpreter.Commands
         {
             get
             {
-                return (FirstOperationCodeHalfBit == 0x3 || FirstOperationCodeHalfBit == 0x4 ||
-                        (FirstOperationCodeHalfBit == 0x5 && FourthOperationCodeHalfBit == 0x0));
+                return (FirstOperationCodeHalfByte == 0x3 || FirstOperationCodeHalfByte == 0x4 ||
+                        (FirstOperationCodeHalfByte == 0x5 && FourthOperationCodeHalfByte == 0x0));
             }
         }
 
@@ -43,15 +43,15 @@ namespace WonkyChip8.Interpreter.Commands
         {
             get
             {
-                if (SecondOperationCodeHalfBit != null && ThirdOperationCodeHalfBit != null &&
-                    FourthOperationCodeHalfBit != null)
+                if (SecondOperationCodeHalfByte != null && ThirdOperationCodeHalfByte != null &&
+                    FourthOperationCodeHalfByte != null)
                 {
-                    if (FirstOperationCodeHalfBit == 0x3)
-                        return _registers[SecondOperationCodeHalfBit.Value] == SecondOperationCodeBit;
-                    if (FirstOperationCodeHalfBit == 0x4)
-                        return _registers[SecondOperationCodeHalfBit.Value] != SecondOperationCodeBit;
-                    if (FirstOperationCodeHalfBit == 0x5)
-                        return _registers[SecondOperationCodeHalfBit.Value] == _registers[ThirdOperationCodeHalfBit.Value];
+                    if (FirstOperationCodeHalfByte == 0x3)
+                        return _registers[SecondOperationCodeHalfByte.Value] == SecondOperationCodeByte;
+                    if (FirstOperationCodeHalfByte == 0x4)
+                        return _registers[SecondOperationCodeHalfByte.Value] != SecondOperationCodeByte;
+                    if (FirstOperationCodeHalfByte == 0x5)
+                        return _registers[SecondOperationCodeHalfByte.Value] == _registers[ThirdOperationCodeHalfByte.Value];
                     return false;
                 }
                 return null;
