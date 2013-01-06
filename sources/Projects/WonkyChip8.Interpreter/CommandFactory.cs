@@ -44,6 +44,8 @@ namespace WonkyChip8.Interpreter
                     if ((operationCode & 0x000F) == 0x0000)
                         return new SkipNextOperationCommand(address, operationCode.Value, _registers);
                     break;
+                case 0x6000:
+                    return new SaveValueToRegisterCommand(address, operationCode.Value, _registers);
             }
 
             throw new ArgumentOutOfRangeException("operationCode");

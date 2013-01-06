@@ -118,5 +118,11 @@ namespace WonkyChip8.Interpreter.UnitTests
         {
             AssertTypeOfCommand<SkipNextOperationCommand>(0x5010);
         }
+
+        [Test]
+        public void Create_WithOperationCodeEquals6Xnn_ExpectReturnsSkipNextOperationCommand()
+        {
+            AssertTypeOfCommand<SaveValueToRegisterCommand>(0x6110);
+        }
     }
 }

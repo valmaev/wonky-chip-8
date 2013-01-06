@@ -42,6 +42,7 @@
     <Compile Include="Commands\JumpToAddressCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
+    <Compile Include="Commands\SaveValueToRegisterCommand.cs" />
     <Compile Include="Commands\SkipNextOperationCommand.cs" />
     <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
