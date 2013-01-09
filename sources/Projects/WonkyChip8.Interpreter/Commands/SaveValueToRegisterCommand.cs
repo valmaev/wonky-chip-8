@@ -19,8 +19,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            if (SecondOperationCodeHalfByte != null)
-                _registers[SecondOperationCodeHalfByte.Value] = (byte?) SecondOperationCodeByte;
+            _registers[SecondOperationCodeHalfByte] = (byte?) SecondOperationCodeByte;
         }
     }
 }

@@ -31,30 +31,23 @@ namespace WonkyChip8.Interpreter.Commands
         {
             get
             {
-                if (SkipNextOperation == null)
-                    return null;
-                if (SkipNextOperation.Value)
+                if (SkipNextOperation)
                     return base.NextCommandAddress + CommandLength;
                 return base.NextCommandAddress;
             }
         }
 
-        private bool? SkipNextOperation
+        private bool SkipNextOperation
         {
             get
             {
-                if (SecondOperationCodeHalfByte != null && ThirdOperationCodeHalfByte != null &&
-                    FourthOperationCodeHalfByte != null)
-                {
-                    if (FirstOperationCodeHalfByte == 0x3)
-                        return _registers[SecondOperationCodeHalfByte.Value] == SecondOperationCodeByte;
-                    if (FirstOperationCodeHalfByte == 0x4)
-                        return _registers[SecondOperationCodeHalfByte.Value] != SecondOperationCodeByte;
-                    if (FirstOperationCodeHalfByte == 0x5)
-                        return _registers[SecondOperationCodeHalfByte.Value] == _registers[ThirdOperationCodeHalfByte.Value];
-                    return false;
-                }
-                return null;
+                if (FirstOperationCodeHalfByte == 0x3)
+                    return _registers[SecondOperationCodeHalfByte] == SecondOperationCodeByte;
+                if (FirstOperationCodeHalfByte == 0x4)
+                    return _registers[SecondOperationCodeHalfByte] != SecondOperationCodeByte;
+                if (FirstOperationCodeHalfByte == 0x5)
+                    return _registers[SecondOperationCodeHalfByte] == _registers[ThirdOperationCodeHalfByte];
+                return false;
             }
         }
     }

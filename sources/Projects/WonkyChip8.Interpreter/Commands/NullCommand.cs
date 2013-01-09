@@ -1,8 +1,18 @@
 ﻿namespace WonkyChip8.Interpreter.Commands
 {
-    public class NullCommand : Command
+    public class NullCommand : ICommand
     {
-        public NullCommand(int? address) : base(address, null) { }
-        public override int? NextCommandAddress { get { return null; } }
+        private readonly int? _address;
+
+        public NullCommand(int? address = null)
+        {
+            _address = address;
+        }
+
+        public int? Address { get { return _address; } }
+        public int? NextCommandAddress { get { return null; } }
+        public int? OperationCode { get { return null; } }
+
+        public void Execute() { }
     }
 }
