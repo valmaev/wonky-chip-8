@@ -49,8 +49,13 @@ namespace WonkyChip8.Interpreter
                 case 0x7000:
                     return new AddValueToRegisterCommand(address, operationCode.Value, _registers);
                 case 0x8000:
-                    if ((operationCode & 0x000F) == 0x0000)
-                        return new CopyRegisterValueCommand(address, operationCode.Value, _registers);
+                    switch ((operationCode & 0x000F))
+                    {
+                        case 0x0000:
+                            return new CopyRegisterValueCommand(address, operationCode.Value, _registers);
+                        case 0x0001:
+                            return new LogicalOrCommand(address, operationCode.Value, _registers);
+                    }
                     break;
             }
 

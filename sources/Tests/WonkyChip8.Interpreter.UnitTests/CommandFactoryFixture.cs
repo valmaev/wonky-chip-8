@@ -50,6 +50,7 @@ namespace WonkyChip8.Interpreter.UnitTests
 
         [TestCase(0x99999)]
         [TestCase(0x5121)]
+        [TestCase(0x800F)]
         public void Create_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
             // Arrange
@@ -70,6 +71,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x6000, typeof(SaveValueToRegisterCommand))]
         [TestCase(0x7000, typeof(AddValueToRegisterCommand))]
         [TestCase(0x8000, typeof(CopyRegisterValueCommand))]
+        [TestCase(0x8001, typeof(LogicalOrCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int? operationCode,
                                                                                         Type commandType)
         {

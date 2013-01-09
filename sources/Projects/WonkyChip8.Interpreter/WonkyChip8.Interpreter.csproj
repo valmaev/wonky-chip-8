@@ -42,6 +42,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CopyRegisterValueCommand.cs" />
     <Compile Include="Commands\JumpToAddressCommand.cs" />
+    <Compile Include="Commands\LogicalOrCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
     <Compile Include="Commands\SaveValueToRegisterCommand.cs" />
