@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandFactoryFixture.cs" />
+    <Compile Include="Commands\AddValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\CallSubroutineCommandFixture.cs" />
     <Compile Include="Commands\ClearScreenCommandFixture.cs" />
     <Compile Include="Commands\CommandFixture.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="CentralProcessingUnitFixture.cs" />
     <Compile Include="RandomAccessMemoryFixture.cs" />
     <Compile Include="RegistersFixture.cs" />
+    <Compile Include="TestUtilities\NUnitExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="NSubstitute">
@@ -59,7 +61,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projects\WonkyChip8.Interpreter\WonkyChip8.Interpreter.csproj">
