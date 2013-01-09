@@ -9,6 +9,11 @@ namespace WonkyChip8.Interpreter.UnitTests.TestUtilities
                                                                                           string expectedParamName)
             where TArgumentException : ArgumentException
         {
+            if (testCode == null)
+                throw new ArgumentNullException("testCode");
+            if (expectedParamName == null)
+                throw new ArgumentNullException("expectedParamName");
+
             var argumentException = Assert.Throws<TArgumentException>(testCode);
             Assert.AreEqual(expectedParamName, argumentException.ParamName);
         }

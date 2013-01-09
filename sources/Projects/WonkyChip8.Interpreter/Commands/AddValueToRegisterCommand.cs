@@ -9,7 +9,7 @@ namespace WonkyChip8.Interpreter.Commands
         public AddValueToRegisterCommand(int? address, int operationCode, IRegisters registers)
             : base(address, operationCode)
         {
-            if ((operationCode & 0xF000) != 0x7000)
+            if (FirstOperationCodeHalfByte != 0x7)
                 throw new ArgumentOutOfRangeException("operationCode");
             if (registers == null)
                 throw new ArgumentNullException("registers");

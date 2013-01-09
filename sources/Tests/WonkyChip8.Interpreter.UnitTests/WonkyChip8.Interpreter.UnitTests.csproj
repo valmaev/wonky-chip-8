@@ -40,6 +40,7 @@
     <Compile Include="Commands\CallSubroutineCommandFixture.cs" />
     <Compile Include="Commands\ClearScreenCommandFixture.cs" />
     <Compile Include="Commands\CommandFixture.cs" />
+    <Compile Include="Commands\CopyRegisterValueCommandFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />

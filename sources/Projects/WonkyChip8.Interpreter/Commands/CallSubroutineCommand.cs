@@ -9,7 +9,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public CallSubroutineCommand(int? address, int operationCode, ICallStack callStack) : base(address, operationCode)
         {
-            if ((operationCode & 0xF000) != 0x2000)
+            if (FirstOperationCodeHalfByte != 0x2)
                 throw new ArgumentOutOfRangeException("operationCode"); 
             if (callStack == null)
                 throw new ArgumentNullException("callStack");

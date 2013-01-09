@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public JumpToAddressCommand(int? address, int operationCode) : base(address, operationCode)
         {
-            if ((operationCode & 0xF000) != 0x1000)
+            if (FirstOperationCodeHalfByte != 0x1)
                 throw new ArgumentOutOfRangeException("operationCode");
 
             _nextCommandAddress = operationCode & 0x0FFF;

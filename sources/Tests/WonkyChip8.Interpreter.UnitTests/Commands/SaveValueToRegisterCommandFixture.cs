@@ -1,5 +1,4 @@
 ﻿using System;
-//using Moq;
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
