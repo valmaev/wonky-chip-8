@@ -46,6 +46,8 @@ namespace WonkyChip8.Interpreter
                     break;
                 case 0x6000:
                     return new SaveValueToRegisterCommand(address, operationCode.Value, _registers);
+                case 0x7000:
+                    return new AddValueToRegisterCommand(address, operationCode.Value, _registers);
             }
 
             throw new ArgumentOutOfRangeException("operationCode");

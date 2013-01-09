@@ -6,14 +6,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class CommandFixture
     {
-        public class CommandStub : Command
+        private class CommandStub : Command
         {
             public CommandStub(int? address, int operationCode) : base(address, operationCode) { }
-
-            public override void Execute() { }
         }
 
-        public static CommandStub CreateCommandStub(int? address = 0, int operationCode = 0)
+        private static CommandStub CreateCommandStub(int? address = 0, int operationCode = 0)
         {
             return new CommandStub(address, operationCode);
         }

@@ -16,18 +16,6 @@ namespace WonkyChip8.Interpreter.UnitTests
                                       registers ?? Substitute.For<IRegisters>());
         }
 
-        private static void AssertTypeOfCommand<TCommand>(int? operationCode) where TCommand : ICommand
-        {
-            // Arrange
-            var commandFactory = CreateCommandFactory();
-
-            // Act
-            ICommand command = commandFactory.Create(0, operationCode);
-
-            // Assert
-            Assert.IsInstanceOf<TCommand>(command);
-        }
-
         [Test]
         public void Constructor_WithNullGraphicsProcessingUnit_ExpectThrowsArgumentNullException()
         {
@@ -71,58 +59,27 @@ namespace WonkyChip8.Interpreter.UnitTests
             Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, invalidOperationCode));
         }
 
-        [Test]
-        public void Create_WithNullOperationCode_ExpectReturnsNullCommand()
+        [TestCase(null, typeof(NullCommand))]
+        [TestCase(0x00E0, typeof(ClearScreenCommand))]
+        [TestCase(0x00EE, typeof(ReturnFromSubroutineCommand))]
+        [TestCase(0x1000, typeof(JumpToAddressCommand))]
+        [TestCase(0x2000, typeof(CallSubroutineCommand))]
+        [TestCase(0x3000, typeof(SkipNextOperationCommand))]
+        [TestCase(0x4000, typeof(SkipNextOperationCommand))]
+        [TestCase(0x5000, typeof(SkipNextOperationCommand))]
+        [TestCase(0x6000, typeof(SaveValueToRegisterCommand))]
+        [TestCase(0x7000, typeof(AddValueToRegisterCommand))]
+        public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int? operationCode,
+                                                                                        Type commandType)
         {
-            AssertTypeOfCommand<NullCommand>(null);
-        }
+            // Arrange
+            var commandFactory = CreateCommandFactory();
 
-        [Test]
-        public void Create_WithOperationCodeEquals00E0_ExpectReturnsClearScreenCommand()
-        {
-            AssertTypeOfCommand<ClearScreenCommand>(0x00E0);
-        }
+            // Act
+            ICommand command = commandFactory.Create(0, operationCode);
 
-        [Test]
-        public void Create_WithOperationCodeEquals00Ee_ExpectReturnsReturnFromSubroutineCommand()
-        {
-            AssertTypeOfCommand<ReturnFromSubroutineCommand>(0x00EE);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals1Nnn_ExpectReturnsJumpToAddressCommand()
-        {
-            AssertTypeOfCommand<JumpToAddressCommand>(0x1001);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals2Nnn_ExpectReturnsCallSubroutineCommand()
-        {
-            AssertTypeOfCommand<CallSubroutineCommand>(0x2001);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals3Xnn_ExpectReturnsSkipNextOperationCommand()
-        {
-            AssertTypeOfCommand<SkipNextOperationCommand>(0x3000);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals4Xnn_ExpectReturnsSkipNextOperationCommand()
-        {
-            AssertTypeOfCommand<SkipNextOperationCommand>(0x4000);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals5Xy0_ExpectReturnsSkipNextOperationCommand()
-        {
-            AssertTypeOfCommand<SkipNextOperationCommand>(0x5010);
-        }
-
-        [Test]
-        public void Create_WithOperationCodeEquals6Xnn_ExpectReturnsSkipNextOperationCommand()
-        {
-            AssertTypeOfCommand<SaveValueToRegisterCommand>(0x6110);
+            // Assert
+            Assert.IsInstanceOf(commandType, command);
         }
     }
 }

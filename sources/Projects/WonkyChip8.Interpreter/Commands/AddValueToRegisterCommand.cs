@@ -16,5 +16,12 @@ namespace WonkyChip8.Interpreter.Commands
 
             _registers = registers;
         }
+
+        public override void Execute()
+        {
+            byte registerValue = _registers[SecondOperationCodeHalfByte] ?? 0;
+            registerValue += (byte) SecondOperationCodeByte;
+            _registers[SecondOperationCodeHalfByte] = registerValue;
+        }
     }
 }
