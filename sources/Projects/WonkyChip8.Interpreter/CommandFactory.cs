@@ -54,7 +54,9 @@ namespace WonkyChip8.Interpreter
                         case 0x0000:
                             return new CopyRegisterValueCommand(address, operationCode.Value, _registers);
                         case 0x0001:
-                            return new LogicalOrCommand(address, operationCode.Value, _registers);
+                        case 0x0002:
+                        case 0x0003:
+                            return new LogicalArithmeticsForRegistersCommand(address, operationCode.Value, _registers);
                     }
                     break;
             }
