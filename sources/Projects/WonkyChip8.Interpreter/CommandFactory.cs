@@ -41,6 +41,7 @@ namespace WonkyChip8.Interpreter
                 case 0x4000:
                     return new SkipNextOperationCommand(address, operationCode.Value, _registers);
                 case 0x5000:
+                case 0x9000:
                     if ((operationCode & 0x000F) == 0x0000)
                         return new SkipNextOperationCommand(address, operationCode.Value, _registers);
                     break;

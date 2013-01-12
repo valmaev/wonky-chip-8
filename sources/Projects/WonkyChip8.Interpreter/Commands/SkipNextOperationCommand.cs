@@ -15,8 +15,10 @@ namespace WonkyChip8.Interpreter.Commands
         {
             get
             {
-                return (FirstOperationCodeHalfByte == 0x3 || FirstOperationCodeHalfByte == 0x4 ||
-                        (FirstOperationCodeHalfByte == 0x5 && FourthOperationCodeHalfByte == 0x0));
+                return (FirstOperationCodeHalfByte == 0x3 ||
+                        FirstOperationCodeHalfByte == 0x4 ||
+                        FirstOperationCodeHalfByte == 0x5 && FourthOperationCodeHalfByte == 0x0 ||
+                        FirstOperationCodeHalfByte == 0x9 && FourthOperationCodeHalfByte == 0x0);
             }
         }
 
@@ -40,6 +42,8 @@ namespace WonkyChip8.Interpreter.Commands
                     return Registers[SecondOperationCodeHalfByte] != SecondOperationCodeByte;
                 if (FirstOperationCodeHalfByte == 0x5)
                     return Registers[SecondOperationCodeHalfByte] == Registers[ThirdOperationCodeHalfByte];
+                if (FirstOperationCodeHalfByte == 0x9)
+                    return Registers[SecondOperationCodeHalfByte] != Registers[ThirdOperationCodeHalfByte];
                 return false;
             }
         }
