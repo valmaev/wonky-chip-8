@@ -74,6 +74,9 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x8001, typeof(LogicalArithmeticsForRegistersCommand))]
         [TestCase(0x8002, typeof(LogicalArithmeticsForRegistersCommand))]
         [TestCase(0x8003, typeof(LogicalArithmeticsForRegistersCommand))]
+        [TestCase(0x8004, typeof(BinaryOperationsForRegistersCommand))]
+        [TestCase(0x8005, typeof(BinaryOperationsForRegistersCommand))]
+        [TestCase(0x8007, typeof(BinaryOperationsForRegistersCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int? operationCode,
                                                                                         Type commandType)
         {
