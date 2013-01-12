@@ -7,7 +7,8 @@ namespace WonkyChip8.Interpreter.Commands
         private readonly ICallStack _callStack;
         private readonly int? _topOfStackCommandAddress;
 
-        public ReturnFromSubroutineCommand(int? address, int operationCode, ICallStack callStack) : base(address, operationCode)
+        public ReturnFromSubroutineCommand(int? address, int operationCode, ICallStack callStack)
+            : base(address, operationCode)
         {
             if (operationCode != 0x00EE)
                 throw new ArgumentOutOfRangeException("operationCode");

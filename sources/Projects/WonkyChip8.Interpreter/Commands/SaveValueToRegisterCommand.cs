@@ -2,24 +2,18 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveValueToRegisterCommand : Command
+    public class SaveValueToRegisterCommand : RegisterCommand
     {
-        private readonly IRegisters _registers;
-
         public SaveValueToRegisterCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode)
+            : base(address, operationCode, registers)
         {
             if (FirstOperationCodeHalfByte != 0x6)
                 throw new ArgumentOutOfRangeException("operationCode");
-            if (registers == null)
-                throw new ArgumentNullException("registers");
-
-            _registers = registers;
         }
 
         public override void Execute()
         {
-            _registers[SecondOperationCodeHalfByte] = (byte?) SecondOperationCodeByte;
+            Registers[SecondOperationCodeHalfByte] = (byte?) SecondOperationCodeByte;
         }
     }
 }
