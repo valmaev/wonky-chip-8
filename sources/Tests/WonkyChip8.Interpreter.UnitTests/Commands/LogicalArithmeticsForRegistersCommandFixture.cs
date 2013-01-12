@@ -65,11 +65,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[secondRegisterIndex] = Arg.Do<byte>(value => secondRegisterActualValue = value);
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
-            var logicalOrCommand = CreateLogicalArithmeticsForRegistersCommand(operationCode: operationCode,
-                                                                               registers: registersStub);
+            var logicalArithmeticsForRegistersCommand =
+                CreateLogicalArithmeticsForRegistersCommand(operationCode: operationCode,
+                                                            registers: registersStub);
 
             // Act
-            logicalOrCommand.Execute();
+            logicalArithmeticsForRegistersCommand.Execute();
 
             // Assert
             Assert.AreEqual(firstRegisterExpectedValue, firstRegisterActualValue);
@@ -113,18 +114,20 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0x8001)]
         [TestCase(0x8002)]
         [TestCase(0x8003)]
-        public void Execute_WithNullRegistersValue_ExpectedNull(int operationCode)
+        public void Execute_WithNullRegistersValue_ExpectedResultIsNull(int operationCode)
         {
             // Arrange
             var registersStub = Substitute.For<IRegisters>();
             byte? firstRegisterActualValue = null;
-            registersStub[0] = Arg.Do<byte>(value => firstRegisterActualValue = value);
+            registersStub[0] = Arg.Do<byte?>(value => firstRegisterActualValue = value);
             registersStub[0].Returns(firstRegisterActualValue);
 
-            var logicalOrCommand = CreateLogicalArithmeticsForRegistersCommand(operationCode: operationCode);
+            var logicalArithmeticsForRegistersCommand =
+                CreateLogicalArithmeticsForRegistersCommand(operationCode: operationCode,
+                                                            registers: registersStub);
 
             // Act
-            logicalOrCommand.Execute();
+            logicalArithmeticsForRegistersCommand.Execute();
 
             // Assert
             Assert.IsNull(firstRegisterActualValue);

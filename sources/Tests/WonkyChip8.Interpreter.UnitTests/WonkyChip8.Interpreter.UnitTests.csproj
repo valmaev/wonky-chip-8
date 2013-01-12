@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="CommandFactoryFixture.cs" />
     <Compile Include="Commands\AddValueToRegisterCommandFixture.cs" />
+    <Compile Include="Commands\BinaryOperationsForRegistersCommandFixture.cs" />
     <Compile Include="Commands\CallSubroutineCommandFixture.cs" />
     <Compile Include="Commands\ClearScreenCommandFixture.cs" />
     <Compile Include="Commands\CommandFixture.cs" />
