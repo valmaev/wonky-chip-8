@@ -2,9 +2,9 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class LogicalArithmeticsForRegistersCommand : RegisterCommand
+    public class BitwiseOperationsForRegistersCommand : RegisterCommand
     {
-        public LogicalArithmeticsForRegistersCommand(int? address, int operationCode, IRegisters registers)
+        public BitwiseOperationsForRegistersCommand(int? address, int operationCode, IRegisters registers)
             : base(address, operationCode, registers)
         {
             if (FirstOperationCodeHalfByte != 0x8 || (FourthOperationCodeHalfByte != 0x1 &&
