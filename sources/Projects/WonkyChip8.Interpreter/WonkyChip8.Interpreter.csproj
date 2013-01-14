@@ -48,6 +48,7 @@
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
     <Compile Include="Commands\SaveValueToRegisterCommand.cs" />
+    <Compile Include="Commands\ShiftOperationsForRegistersCommand.cs" />
     <Compile Include="Commands\SkipNextOperationCommand.cs" />
     <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />

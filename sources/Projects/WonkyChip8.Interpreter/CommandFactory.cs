@@ -62,6 +62,9 @@ namespace WonkyChip8.Interpreter
                         case 0x0005:
                         case 0x0007:
                             return new BinaryOperationsForRegistersCommand(address, operationCode.Value, _registers);
+                        case 0x0006:
+                        case 0x000E:
+                            return new ShiftOperationsForRegistersCommand(address, operationCode.Value, _registers);
                     }
                     break;
             }

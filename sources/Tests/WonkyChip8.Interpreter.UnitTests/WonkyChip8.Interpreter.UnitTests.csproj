@@ -48,6 +48,7 @@
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
     <Compile Include="Commands\SaveValueToRegisterCommandFixture.cs" />
+    <Compile Include="Commands\ShiftOperationsForRegistersCommandFixture.cs" />
     <Compile Include="Commands\SkipNextOperationCommandFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CentralProcessingUnitFixture.cs" />

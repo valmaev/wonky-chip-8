@@ -71,9 +71,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[secondRegisterIndex] = Arg.Do<byte>(value => secondRegisterActualValue = value);
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
-            byte? fRegisterActualValue = null;
-            registersStub[0xF] = Arg.Do<byte?>(value => fRegisterActualValue = value);
-            registersStub[0xF].Returns(fRegisterActualValue);
+            byte? carryRegisterActualValue = null;
+            registersStub[0xF] = Arg.Do<byte?>(value => carryRegisterActualValue = value);
+            registersStub[0xF].Returns(carryRegisterActualValue);
 
             var binaryOperationsForRegistersCommand =
                 CreateBinaryOperationsForRegistersCommand(operationCode: operationCode,
@@ -84,7 +84,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             // Assert
             Assert.AreEqual(firstRegisterExpectedValue, firstRegisterActualValue);
-            Assert.AreEqual(carryRegisterExpectedValue, fRegisterActualValue);
+            Assert.AreEqual(carryRegisterExpectedValue, carryRegisterActualValue);
         }
 
         [TestCase(0x8005, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)]
