@@ -57,7 +57,7 @@ namespace WonkyChip8.Interpreter
                         case 0x0001:
                         case 0x0002:
                         case 0x0003:
-                            return new LogicalArithmeticsForRegistersCommand(address, operationCode.Value, _registers);
+                            return new BitwiseOperationsForRegistersCommand(address, operationCode.Value, _registers);
                         case 0x0004:
                         case 0x0005:
                         case 0x0007:

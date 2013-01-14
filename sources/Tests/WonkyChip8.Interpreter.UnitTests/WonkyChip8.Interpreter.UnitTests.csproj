@@ -43,7 +43,7 @@
     <Compile Include="Commands\CommandFixture.cs" />
     <Compile Include="Commands\CopyRegisterValueCommandFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />
-    <Compile Include="Commands\LogicalArithmeticsForRegistersCommandFixture.cs" />
+    <Compile Include="Commands\BitwiseOperationsForRegistersCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
