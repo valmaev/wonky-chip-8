@@ -6,8 +6,8 @@ namespace WonkyChip8.Interpreter.Commands
     {
         private const int CarryRegisterIndex = 0xF;
 
-        public BinaryOperationsForRegistersCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode, registers)
+        public BinaryOperationsForRegistersCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+            : base(address, operationCode, generalRegisters)
         {
             if (!IsOperationCodeValid)
                 throw new ArgumentOutOfRangeException("operationCode");
@@ -35,27 +35,27 @@ namespace WonkyChip8.Interpreter.Commands
 
         private void AddFirstRegisterValueToSecondRegisterValue()
         {
-            var result = Registers[SecondOperationCodeHalfByte] + Registers[ThirdOperationCodeHalfByte];
-            Registers[CarryRegisterIndex] = (byte?) ((result > byte.MaxValue) ? 0x1 : 0x0);
+            var result = GeneralRegisters[SecondOperationCodeHalfByte] + GeneralRegisters[ThirdOperationCodeHalfByte];
+            GeneralRegisters[CarryRegisterIndex] = (byte?) ((result > byte.MaxValue) ? 0x1 : 0x0);
             SaveOperationResult((byte?) result);
         }
 
         private void SaveOperationResult(byte? binaryOperationResult)
         {
-            Registers[SecondOperationCodeHalfByte] = binaryOperationResult;
+            GeneralRegisters[SecondOperationCodeHalfByte] = binaryOperationResult;
         }
 
         private void SubtractSecondRegisterValueFromFirstRegisterValue()
         {
-            var result = Registers[SecondOperationCodeHalfByte] - Registers[ThirdOperationCodeHalfByte];
-            Registers[CarryRegisterIndex] = (byte?)((result < byte.MinValue) ? 0x1 : 0x0);
+            var result = GeneralRegisters[SecondOperationCodeHalfByte] - GeneralRegisters[ThirdOperationCodeHalfByte];
+            GeneralRegisters[CarryRegisterIndex] = (byte?)((result < byte.MinValue) ? 0x1 : 0x0);
             SaveOperationResult((byte?)result);
         }
 
         private void SubtractFirstRegisterValueFromSecondRegisterValue()
         {
-            var result = Registers[ThirdOperationCodeHalfByte] - Registers[SecondOperationCodeHalfByte];
-            Registers[CarryRegisterIndex] = (byte?)((result < byte.MinValue) ? 0x1 : 0x0);
+            var result = GeneralRegisters[ThirdOperationCodeHalfByte] - GeneralRegisters[SecondOperationCodeHalfByte];
+            GeneralRegisters[CarryRegisterIndex] = (byte?)((result < byte.MinValue) ? 0x1 : 0x0);
             SaveOperationResult((byte?)result);
         }
     }

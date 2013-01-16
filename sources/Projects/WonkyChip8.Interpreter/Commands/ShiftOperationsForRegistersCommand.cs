@@ -7,8 +7,8 @@ namespace WonkyChip8.Interpreter.Commands
         private const int LeastSignificantBitRegisterIndex = 0xF;
         private const int MostSignificantBitRegisterIndex = 0xF;
 
-        public ShiftOperationsForRegistersCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode, registers)
+        public ShiftOperationsForRegistersCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+            : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0x8 ||
                 (FourthOperationCodeHalfByte != 0x6 && FourthOperationCodeHalfByte != 0xE))
@@ -30,16 +30,16 @@ namespace WonkyChip8.Interpreter.Commands
 
         private void RightShiftSecondRegister()
         {
-            var mostSignificantBit = (byte?) (Registers[ThirdOperationCodeHalfByte] >> 7 & 1);
-            Registers[MostSignificantBitRegisterIndex] = mostSignificantBit;
-            Registers[SecondOperationCodeHalfByte] = (byte?) (Registers[ThirdOperationCodeHalfByte] >> 1);
+            var mostSignificantBit = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 7 & 1);
+            GeneralRegisters[MostSignificantBitRegisterIndex] = mostSignificantBit;
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 1);
         }
 
         private void LeftShiftSecondRegister()
         {
-            var leastSignificantBit = (byte?) (Registers[ThirdOperationCodeHalfByte] & 1);
-            Registers[LeastSignificantBitRegisterIndex] = leastSignificantBit;
-            Registers[SecondOperationCodeHalfByte] = (byte?) (Registers[ThirdOperationCodeHalfByte] << 1);
+            var leastSignificantBit = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] & 1);
+            GeneralRegisters[LeastSignificantBitRegisterIndex] = leastSignificantBit;
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] << 1);
         }
     }
 }

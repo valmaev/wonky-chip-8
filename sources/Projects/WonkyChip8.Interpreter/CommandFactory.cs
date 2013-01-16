@@ -7,20 +7,20 @@ namespace WonkyChip8.Interpreter
     {
         private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
         private readonly ICallStack _callStack;
-        private readonly IRegisters _registers;
+        private readonly IGeneralRegisters _generalRegisters;
 
-        public CommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit, ICallStack callStack, IRegisters registers)
+        public CommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit, ICallStack callStack, IGeneralRegisters generalRegisters)
         {
             if (graphicsProcessingUnit == null)
                 throw new ArgumentNullException("graphicsProcessingUnit");
             if (callStack == null)
                 throw new ArgumentNullException("callStack");
-            if (registers == null)
-                throw new ArgumentNullException("registers");
+            if (generalRegisters == null)
+                throw new ArgumentNullException("generalRegisters");
 
             _graphicsProcessingUnit = graphicsProcessingUnit;
             _callStack = callStack;
-            _registers = registers;
+            _generalRegisters = generalRegisters;
         }
 
         public ICommand Create(int? address, int? operationCode)
@@ -39,32 +39,32 @@ namespace WonkyChip8.Interpreter
                     return new CallSubroutineCommand(address, operationCode.Value, _callStack);
                 case 0x3000:
                 case 0x4000:
-                    return new SkipNextOperationCommand(address, operationCode.Value, _registers);
+                    return new SkipNextOperationCommand(address, operationCode.Value, _generalRegisters);
                 case 0x5000:
                 case 0x9000:
                     if ((operationCode & 0x000F) == 0x0000)
-                        return new SkipNextOperationCommand(address, operationCode.Value, _registers);
+                        return new SkipNextOperationCommand(address, operationCode.Value, _generalRegisters);
                     break;
                 case 0x6000:
-                    return new SaveValueToRegisterCommand(address, operationCode.Value, _registers);
+                    return new SaveValueToRegisterCommand(address, operationCode.Value, _generalRegisters);
                 case 0x7000:
-                    return new AddValueToRegisterCommand(address, operationCode.Value, _registers);
+                    return new AddValueToRegisterCommand(address, operationCode.Value, _generalRegisters);
                 case 0x8000:
                     switch ((operationCode & 0x000F))
                     {
                         case 0x0000:
-                            return new CopyRegisterValueCommand(address, operationCode.Value, _registers);
+                            return new CopyRegisterValueCommand(address, operationCode.Value, _generalRegisters);
                         case 0x0001:
                         case 0x0002:
                         case 0x0003:
-                            return new BitwiseOperationsForRegistersCommand(address, operationCode.Value, _registers);
+                            return new BitwiseOperationsForRegistersCommand(address, operationCode.Value, _generalRegisters);
                         case 0x0004:
                         case 0x0005:
                         case 0x0007:
-                            return new BinaryOperationsForRegistersCommand(address, operationCode.Value, _registers);
+                            return new BinaryOperationsForRegistersCommand(address, operationCode.Value, _generalRegisters);
                         case 0x0006:
                         case 0x000E:
-                            return new ShiftOperationsForRegistersCommand(address, operationCode.Value, _registers);
+                            return new ShiftOperationsForRegistersCommand(address, operationCode.Value, _generalRegisters);
                     }
                     break;
             }

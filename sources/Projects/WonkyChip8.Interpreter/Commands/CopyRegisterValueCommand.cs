@@ -4,8 +4,8 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class CopyRegisterValueCommand : RegisterCommand
     {
-        public CopyRegisterValueCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode, registers)
+        public CopyRegisterValueCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+            : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0x8 || FourthOperationCodeHalfByte != 0x0)
                 throw new ArgumentOutOfRangeException("operationCode");
@@ -13,7 +13,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            Registers[SecondOperationCodeHalfByte] = Registers[ThirdOperationCodeHalfByte];
+            GeneralRegisters[SecondOperationCodeHalfByte] = GeneralRegisters[ThirdOperationCodeHalfByte];
         }
     }
 }

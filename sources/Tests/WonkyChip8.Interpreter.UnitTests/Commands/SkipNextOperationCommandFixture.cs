@@ -10,9 +10,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private static SkipNextOperationCommand CreateSkipNextOperationCommand(int? address = 0,
                                                                                int operationCode = 0x3000,
-                                                                               IRegisters registers = null)
+                                                                               IGeneralRegisters generalRegisters = null)
         {
-            return new SkipNextOperationCommand(address, operationCode, registers ?? Substitute.For<IRegisters>());
+            return new SkipNextOperationCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x99999)]
@@ -40,7 +40,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(() => new SkipNextOperationCommand(0, 0x3000, null));
-            Assert.AreEqual("registers", argumentNullException.ParamName);
+            Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
         }
 
         [TestCase(1, 0xA, 0x310A, 4)]
@@ -53,11 +53,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                                                              int expectedNextCommandAddress)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             registersStub[registerIndex].Returns(registerValue);
 
             var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode: operationCode,
-                                                                          registers: registersStub);
+                                                                          generalRegisters: registersStub);
 
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, skipNextOperationCommand.NextCommandAddress);
@@ -81,12 +81,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                    int expectedNextCommandAddress)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             registersStub[registerXIndex].Returns(registerXValue);
             registersStub[registerYIndex].Returns(registerYValue);
 
             var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode: operationCode,
-                                                                          registers: registersStub);
+                                                                          generalRegisters: registersStub);
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, skipNextOperationCommand.NextCommandAddress);
         }

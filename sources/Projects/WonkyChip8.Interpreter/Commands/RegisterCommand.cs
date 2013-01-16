@@ -4,15 +4,15 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public abstract class RegisterCommand : Command
     {
-        protected RegisterCommand(int? address, int operationCode, IRegisters registers)
+        protected RegisterCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode)
         {
-            if (registers == null)
-                 throw new ArgumentNullException("registers");
+            if (generalRegisters == null)
+                 throw new ArgumentNullException("generalRegisters");
 
-            Registers = registers;
+            GeneralRegisters = generalRegisters;
         }
 
-        protected IRegisters Registers { get; private set; }
+        protected IGeneralRegisters GeneralRegisters { get; private set; }
     }
 }

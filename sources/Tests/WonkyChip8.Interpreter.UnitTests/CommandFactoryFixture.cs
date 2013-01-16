@@ -9,11 +9,11 @@ namespace WonkyChip8.Interpreter.UnitTests
     public class CommandFactoryFixture
     {
         private static CommandFactory CreateCommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit = null,
-                                                           ICallStack callStack = null, IRegisters registers = null)
+                                                           ICallStack callStack = null, IGeneralRegisters generalRegisters = null)
         {
             return new CommandFactory(graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
                                       callStack ?? Substitute.For<ICallStack>(),
-                                      registers ?? Substitute.For<IRegisters>());
+                                      generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Act & Assert
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
-                    () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IRegisters>()));
+                    () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>()));
             Assert.AreEqual("graphicsProcessingUnit", argumentNullException.ParamName);
         }
 
@@ -33,7 +33,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
                     () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null, Substitute.For<IRegisters>()));
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null, Substitute.For<IGeneralRegisters>()));
             Assert.AreEqual("callStack", argumentNullException.ParamName);
         }
 
@@ -45,7 +45,7 @@ namespace WonkyChip8.Interpreter.UnitTests
                 Assert.Throws<ArgumentNullException>(
                     () =>
                     new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null));
-            Assert.AreEqual("registers", argumentNullException.ParamName);
+            Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
         }
 
         [TestCase(0x99999)]

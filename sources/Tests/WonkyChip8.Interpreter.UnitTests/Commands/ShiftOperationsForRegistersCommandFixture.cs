@@ -10,10 +10,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class ShiftOperationsForRegistersCommandFixture
     {
         private static ShiftOperationsForRegistersCommand CreateShiftOperationsForRegistersCommand(
-            int? address = 0, int operationCode = 0x8006, IRegisters registers = null)
+            int? address = 0, int operationCode = 0x8006, IGeneralRegisters generalRegisters = null)
         {
             return new ShiftOperationsForRegistersCommand(address, operationCode,
-                                                          registers ?? Substitute.For<IRegisters>());
+                                                          generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x99999)]
@@ -31,7 +31,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new ShiftOperationsForRegistersCommand(0, 0x8006, null), "registers");
+                () => new ShiftOperationsForRegistersCommand(0, 0x8006, null), "generalRegisters");
         }
 
         [TestCase(0x800E, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)]
@@ -60,7 +60,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                 byte carryRegisterExpectedValue)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             byte firstRegisterActualValue = firstRegisterInitialValue;
             registersStub[firstRegisterIndex] = Arg.Do<byte>(value => firstRegisterActualValue = value);
             registersStub[firstRegisterIndex].Returns(firstRegisterActualValue);
@@ -75,7 +75,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             var shiftOperationsForRegistersCommand =
                 CreateShiftOperationsForRegistersCommand(operationCode: operationCode,
-                                                         registers: registersStub);
+                                                         generalRegisters: registersStub);
 
             // Act
             shiftOperationsForRegistersCommand.Execute();

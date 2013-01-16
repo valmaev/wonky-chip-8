@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter
 {
-    public class Registers : IRegisters
+    public class Registers : IGeneralRegisters, IAddressRegister
     {
         private const int GeneralRegistersCount = 16;
 
@@ -14,6 +14,6 @@ namespace WonkyChip8.Interpreter
             set { _generalRegisters[index] = value; }
         }
 
-        public short? AddressRegister { get; set; }
+        public short? AddressValue { get; set; }
     }
 }

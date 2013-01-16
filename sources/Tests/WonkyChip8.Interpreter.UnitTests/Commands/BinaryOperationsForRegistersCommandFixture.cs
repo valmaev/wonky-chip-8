@@ -10,10 +10,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class BinaryOperationsForRegistersCommandFixture
     {
         private static BinaryOperationsForRegistersCommand CreateBinaryOperationsForRegistersCommand(
-            int? address = 0, int operationCode = 0x8004, IRegisters registers = null)
+            int? address = 0, int operationCode = 0x8004, IGeneralRegisters generalRegisters = null)
         {
             return new BinaryOperationsForRegistersCommand(address, operationCode,
-                                                           registers ?? Substitute.For<IRegisters>());
+                                                           generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x8000)]
@@ -31,7 +31,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new BinaryOperationsForRegistersCommand(0, 0x8004, null), "registers");
+                () => new BinaryOperationsForRegistersCommand(0, 0x8004, null), "generalRegisters");
         }
 
         [TestCase(0x8004, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)]
@@ -62,7 +62,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                           byte carryRegisterExpectedValue)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             byte firstRegisterActualValue = firstRegisterInitialValue;
             registersStub[firstRegisterIndex] = Arg.Do<byte>(value => firstRegisterActualValue = value);
             registersStub[firstRegisterIndex].Returns(firstRegisterActualValue);
@@ -77,7 +77,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             var binaryOperationsForRegistersCommand =
                 CreateBinaryOperationsForRegistersCommand(operationCode: operationCode,
-                                                          registers: registersStub);
+                                                          generalRegisters: registersStub);
 
             // Act
             binaryOperationsForRegistersCommand.Execute();
@@ -131,7 +131,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Execute_WithNullRegistersValues_ExpectedResultIsNull(int operationCode)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
 
             byte? firstRegisterActualValue = null;
             registersStub[0x0] = Arg.Do<byte?>(value => firstRegisterActualValue = value);
@@ -142,7 +142,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[0xF].Returns(carryRegisterActualValue);
 
             var binaryOperationsForRegistersCommand =
-                CreateBinaryOperationsForRegistersCommand(operationCode: operationCode, registers: registersStub);
+                CreateBinaryOperationsForRegistersCommand(operationCode: operationCode, generalRegisters: registersStub);
 
             // Act
             binaryOperationsForRegistersCommand.Execute();

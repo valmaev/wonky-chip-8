@@ -50,13 +50,14 @@
     <Compile Include="Commands\SaveValueToRegisterCommand.cs" />
     <Compile Include="Commands\ShiftOperationsForRegistersCommand.cs" />
     <Compile Include="Commands\SkipNextOperationCommand.cs" />
+    <Compile Include="IAddressRegister.cs" />
     <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IGraphicsProcessingUnit.cs" />
     <Compile Include="IMemory.cs" />
-    <Compile Include="IRegisters.cs" />
+    <Compile Include="IGeneralRegisters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomAccessMemory.cs" />
     <Compile Include="Registers.cs" />

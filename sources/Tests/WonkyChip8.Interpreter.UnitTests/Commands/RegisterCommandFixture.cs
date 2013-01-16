@@ -10,8 +10,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private class RegisterCommandStub : RegisterCommand
         {
-            public RegisterCommandStub(int? address, int operationCode, IRegisters registers)
-                : base(address, operationCode, registers)
+            public RegisterCommandStub(int? address, int operationCode, IGeneralRegisters generalRegisters)
+                : base(address, operationCode, generalRegisters)
             {
             }
         }
@@ -20,7 +20,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new RegisterCommandStub(0, 0, null), "registers");
+                () => new RegisterCommandStub(0, 0, null), "generalRegisters");
         }
     }
 }

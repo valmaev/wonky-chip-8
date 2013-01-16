@@ -11,9 +11,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private static AddValueToRegisterCommand CreateAddValueToRegisterCommand(int? address = 0,
                                                                                  int operationCode = 0x7000,
-                                                                                 IRegisters registers = null)
+                                                                                 IGeneralRegisters generalRegisters = null)
         {
-            return new AddValueToRegisterCommand(address, operationCode, registers ?? Substitute.For<IRegisters>());
+            return new AddValueToRegisterCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new AddValueToRegisterCommand(0, 0x7000, null), "registers");
+                () => new AddValueToRegisterCommand(0, 0x7000, null), "generalRegisters");
         }
 
         [TestCase(0x7000, 0x0, 0x0, 0x0)]
@@ -38,7 +38,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                                                byte expectedResult)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             byte? registerValue = registerInitialValue;
             registersStub[registerIndex] = Arg.Do<byte?>(arg => registerValue = arg);
             registersStub[registerIndex].Returns(registerValue);
@@ -56,7 +56,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Execute_WithRegisterInitialValueEqualsNull_ExpectedAddValueToRegister()
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             byte? registerValue = null;
             registersStub[Arg.Any<int>()] = Arg.Do<byte?>(arg => registerValue = arg);
             registersStub[Arg.Any<int>()].Returns(registerValue);

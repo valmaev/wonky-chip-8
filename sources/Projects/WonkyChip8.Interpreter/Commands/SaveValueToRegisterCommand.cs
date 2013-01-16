@@ -4,8 +4,8 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class SaveValueToRegisterCommand : RegisterCommand
     {
-        public SaveValueToRegisterCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode, registers)
+        public SaveValueToRegisterCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+            : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0x6)
                 throw new ArgumentOutOfRangeException("operationCode");
@@ -13,7 +13,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            Registers[SecondOperationCodeHalfByte] = (byte?) SecondOperationCodeByte;
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) SecondOperationCodeByte;
         }
     }
 }

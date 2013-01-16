@@ -11,9 +11,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private static CopyRegisterValueCommand CreateCopyRegisterValueCommand(int? address = 0,
                                                                                int operationCode = 0x8000,
-                                                                               IRegisters registers = null)
+                                                                               IGeneralRegisters generalRegisters = null)
         {
-            return new CopyRegisterValueCommand(address, operationCode, registers ?? Substitute.For<IRegisters>());
+            return new CopyRegisterValueCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x8001)]
@@ -28,7 +28,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new CopyRegisterValueCommand(0, 0x8000, null), "registers");
+                () => new CopyRegisterValueCommand(0, 0x8000, null), "generalRegisters");
         }
 
         [TestCase(0x8000, 0, 0x0, 0, 0x0, 0)]
@@ -43,7 +43,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                                       byte firstRegisterExpectedValue)
         {
             // Arrange
-            var registersStub = Substitute.For<IRegisters>();
+            var registersStub = Substitute.For<IGeneralRegisters>();
             byte? firstRegisterActualValue = firstRegisterInitialValue;
             registersStub[firstRegisterIndex] = Arg.Do<byte?>(arg =>firstRegisterActualValue = arg);
             registersStub[firstRegisterIndex].Returns(firstRegisterActualValue);
@@ -53,7 +53,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
             var copyRegisterValueCommand = CreateCopyRegisterValueCommand(operationCode: operationCode,
-                                                                          registers: registersStub);
+                                                                          generalRegisters: registersStub);
 
             // Act
             copyRegisterValueCommand.Execute();

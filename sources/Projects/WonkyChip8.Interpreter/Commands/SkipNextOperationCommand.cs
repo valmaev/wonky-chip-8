@@ -4,8 +4,8 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class SkipNextOperationCommand : RegisterCommand
     {
-        public SkipNextOperationCommand(int? address, int operationCode, IRegisters registers)
-            : base(address, operationCode, registers)
+        public SkipNextOperationCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+            : base(address, operationCode, generalRegisters)
         {
             if (!IsOperationCodeValid)
                 throw new ArgumentOutOfRangeException("operationCode");
@@ -37,13 +37,13 @@ namespace WonkyChip8.Interpreter.Commands
             get
             {
                 if (FirstOperationCodeHalfByte == 0x3)
-                    return Registers[SecondOperationCodeHalfByte] == SecondOperationCodeByte;
+                    return GeneralRegisters[SecondOperationCodeHalfByte] == SecondOperationCodeByte;
                 if (FirstOperationCodeHalfByte == 0x4)
-                    return Registers[SecondOperationCodeHalfByte] != SecondOperationCodeByte;
+                    return GeneralRegisters[SecondOperationCodeHalfByte] != SecondOperationCodeByte;
                 if (FirstOperationCodeHalfByte == 0x5)
-                    return Registers[SecondOperationCodeHalfByte] == Registers[ThirdOperationCodeHalfByte];
+                    return GeneralRegisters[SecondOperationCodeHalfByte] == GeneralRegisters[ThirdOperationCodeHalfByte];
                 if (FirstOperationCodeHalfByte == 0x9)
-                    return Registers[SecondOperationCodeHalfByte] != Registers[ThirdOperationCodeHalfByte];
+                    return GeneralRegisters[SecondOperationCodeHalfByte] != GeneralRegisters[ThirdOperationCodeHalfByte];
                 return false;
             }
         }
