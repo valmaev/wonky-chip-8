@@ -8,8 +8,10 @@ namespace WonkyChip8.Interpreter
         private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
         private readonly ICallStack _callStack;
         private readonly IGeneralRegisters _generalRegisters;
+        private readonly IAddressRegister _addressRegister;
 
-        public CommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit, ICallStack callStack, IGeneralRegisters generalRegisters)
+        public CommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit, ICallStack callStack,
+                              IGeneralRegisters generalRegisters, IAddressRegister addressRegister)
         {
             if (graphicsProcessingUnit == null)
                 throw new ArgumentNullException("graphicsProcessingUnit");
@@ -17,10 +19,13 @@ namespace WonkyChip8.Interpreter
                 throw new ArgumentNullException("callStack");
             if (generalRegisters == null)
                 throw new ArgumentNullException("generalRegisters");
+            if (addressRegister == null)
+                throw new ArgumentNullException("addressRegister");
 
             _graphicsProcessingUnit = graphicsProcessingUnit;
             _callStack = callStack;
             _generalRegisters = generalRegisters;
+            _addressRegister = addressRegister;
         }
 
         public ICommand Create(int? address, int? operationCode)
@@ -67,6 +72,8 @@ namespace WonkyChip8.Interpreter
                             return new ShiftOperationsForRegistersCommand(address, operationCode.Value, _generalRegisters);
                     }
                     break;
+                case 0xA000:
+                    return new SaveValueToAddressRegisterCommand(address, operationCode.Value, _addressRegister);
             }
 
             throw new ArgumentOutOfRangeException("operationCode");

@@ -9,11 +9,14 @@ namespace WonkyChip8.Interpreter.UnitTests
     public class CommandFactoryFixture
     {
         private static CommandFactory CreateCommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit = null,
-                                                           ICallStack callStack = null, IGeneralRegisters generalRegisters = null)
+                                                           ICallStack callStack = null,
+                                                           IGeneralRegisters generalRegisters = null,
+                                                           IAddressRegister addressRegister = null)
         {
             return new CommandFactory(graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
                                       callStack ?? Substitute.For<ICallStack>(),
-                                      generalRegisters ?? Substitute.For<IGeneralRegisters>());
+                                      generalRegisters ?? Substitute.For<IGeneralRegisters>(),
+                                      addressRegister ?? Substitute.For<IAddressRegister>());
         }
 
         [Test]
@@ -22,7 +25,9 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Act & Assert
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
-                    () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>()));
+                    () =>
+                    new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>(),
+                                       Substitute.For<IAddressRegister>()));
             Assert.AreEqual("graphicsProcessingUnit", argumentNullException.ParamName);
         }
 
@@ -33,19 +38,33 @@ namespace WonkyChip8.Interpreter.UnitTests
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
                     () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null, Substitute.For<IGeneralRegisters>()));
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null,
+                                       Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>()));
             Assert.AreEqual("callStack", argumentNullException.ParamName);
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectThrowsArgumentNullException()
         {
             // Act & Assert
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(
                     () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null));
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null,
+                                       Substitute.For<IAddressRegister>()));
             Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
+        }
+
+        [Test]
+        public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
+        {
+            // Act & Assert
+            var argumentNullException =
+                Assert.Throws<ArgumentNullException>(
+                    () =>
+                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
+                                       Substitute.For<IGeneralRegisters>(), null));
+            Assert.AreEqual("addressRegister", argumentNullException.ParamName);
         }
 
         [TestCase(0x99999)]
@@ -80,6 +99,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x8007, typeof(BinaryOperationsForRegistersCommand))]
         [TestCase(0x800E, typeof(ShiftOperationsForRegistersCommand))]
         [TestCase(0x9000, typeof(SkipNextOperationCommand))]
+        [TestCase(0xA000, typeof(SaveValueToAddressRegisterCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int? operationCode,
                                                                                         Type commandType)
         {
