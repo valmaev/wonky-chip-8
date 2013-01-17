@@ -49,11 +49,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         private void TestBitwiseOperations(int operationCode,
-                                                      int firstRegisterIndex,
-                                                      byte firstRegisterInitialValue,
-                                                      int secondRegisterIndex,
-                                                      byte secondRegisterInitialValue,
-                                                      byte firstRegisterExpectedValue)
+                                           int firstRegisterIndex,
+                                           byte firstRegisterInitialValue,
+                                           int secondRegisterIndex,
+                                           byte secondRegisterInitialValue,
+                                           byte firstRegisterExpectedValue)
         {
             // Arrange
             var registersStub = Substitute.For<IGeneralRegisters>();
@@ -67,7 +67,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             var logicalArithmeticsForRegistersCommand =
                 CreateBitwiseOperationsForRegistersCommand(operationCode: operationCode,
-                                                            generalRegisters: registersStub);
+                                                           generalRegisters: registersStub);
 
             // Act
             logicalArithmeticsForRegistersCommand.Execute();

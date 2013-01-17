@@ -39,7 +39,8 @@ namespace WonkyChip8.Interpreter
             switch (operationCode & 0xF000)
             {
                 case 0x1000:
-                    return new JumpToAddressCommand(address, operationCode.Value);
+                case 0xB000:
+                    return new JumpToAddressCommand(address, operationCode.Value, _generalRegisters);
                 case 0x2000:
                     return new CallSubroutineCommand(address, operationCode.Value, _callStack);
                 case 0x3000:
