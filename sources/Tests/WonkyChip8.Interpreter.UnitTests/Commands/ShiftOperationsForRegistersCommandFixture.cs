@@ -10,9 +10,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class ShiftOperationsForRegistersCommandFixture
     {
         private static ShiftOperationsForRegistersCommand CreateShiftOperationsForRegistersCommand(
-            int? address = 0, int operationCode = 0x8006, IGeneralRegisters generalRegisters = null)
+            int operationCode = 0x8006, IGeneralRegisters generalRegisters = null)
         {
-            return new ShiftOperationsForRegistersCommand(address, operationCode,
+            return new ShiftOperationsForRegistersCommand(0, operationCode,
                                                           generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
@@ -24,11 +24,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             int invalidOperationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
-                () => CreateShiftOperationsForRegistersCommand(operationCode: invalidOperationCode), "operationCode");
+                () => CreateShiftOperationsForRegistersCommand(invalidOperationCode), "operationCode");
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new ShiftOperationsForRegistersCommand(0, 0x8006, null), "generalRegisters");
@@ -69,13 +69,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[secondRegisterIndex] = Arg.Do<byte>(value => secondRegisterActualValue = value);
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
-            byte? carryRegisterActualValue = null;
-            registersStub[0xF] = Arg.Do<byte?>(value => carryRegisterActualValue = value);
+            byte carryRegisterActualValue = 0;
+            registersStub[0xF] = Arg.Do<byte>(value => carryRegisterActualValue = value);
             registersStub[0xF].Returns(carryRegisterActualValue);
 
-            var shiftOperationsForRegistersCommand =
-                CreateShiftOperationsForRegistersCommand(operationCode: operationCode,
-                                                         generalRegisters: registersStub);
+            ShiftOperationsForRegistersCommand shiftOperationsForRegistersCommand =
+                CreateShiftOperationsForRegistersCommand(operationCode, registersStub);
 
             // Act
             shiftOperationsForRegistersCommand.Execute();

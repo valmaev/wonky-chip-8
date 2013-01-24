@@ -8,16 +8,16 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private class CommandStub : Command
         {
-            public CommandStub(int? address, int operationCode) : base(address, operationCode) { }
+            public CommandStub(int address, int operationCode) : base(address, operationCode) { }
         }
 
-        private static CommandStub CreateCommandStub(int? address = 0, int operationCode = 0)
+        private static CommandStub CreateCommandStub(int address = 0, int operationCode = 0)
         {
             return new CommandStub(address, operationCode);
         }
 
         [Test]
-        public void Constructor_ExpectNotThrowsException()
+        public void Constructor_ExpectedNotThrowsException()
         {
             // Arrange
             CommandStub commandStub = null;
@@ -30,7 +30,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void NextCommandAddress_ExpectReturnsCommandAddressPlusTwoByte()
+        public void NextCommandAddress_ExpectedReturnsCommandAddressPlusTwoByte()
         {
             // Arrange
             const int nextCommandExpectedAddress = 2;
@@ -40,21 +40,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void NextCommandAddress_WithNullAddress_ExpectReturnsNull()
-        {
-            // Act & Assert
-            Assert.IsNull(CreateCommandStub(address: null).NextCommandAddress);
-        }
-
-        [Test]
-        public void Execute_ExpectNotThrowsException()
+        public void Execute_ExpectedNotThrowsException()
         {
             // Act & Assert
             Assert.DoesNotThrow(() => CreateCommandStub().Execute());
         }
 
         [Test]
-        public void Bytes_ExpectReturnsProperValues()
+        public void Bytes_ExpectedReturnsProperValues()
         {
             // Arrange
             var commandStub = CreateCommandStub(operationCode: 0x1234);

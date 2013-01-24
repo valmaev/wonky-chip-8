@@ -1,6 +1,7 @@
 ﻿using System;
 using NSubstitute;
 using NUnit.Framework;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests
 {
@@ -15,35 +16,21 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void Constructor_WithNullMemory_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
-            // Arrange
-            var commandFactoryStub = Substitute.For<ICommandFactory>();
-
-            // Act
-            TestDelegate cpuConstructor = () => new CentralProcessingUnit(null, commandFactoryStub);
-
-            // Assert
-            var argumentNullException = Assert.Throws<ArgumentNullException>(cpuConstructor);
-            Assert.AreEqual("memory", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CentralProcessingUnit(null, Substitute.For<ICommandFactory>()), "memory");
         }
 
         [Test]
-        public void Constructor_WithNullCommandFactory_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullCommandFactory_ExpectedThrowsArgumentNullException()
         {
-            // Arrange
-            var memoryStub = Substitute.For<IMemory>();
-
-            // Act
-            TestDelegate cpuConstructor = () => new CentralProcessingUnit(memoryStub, null);
-
-            // Assert
-            var argumentNullException = Assert.Throws<ArgumentNullException>(cpuConstructor);
-            Assert.AreEqual("commandFactory", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CentralProcessingUnit(Substitute.For<IMemory>(), null), "commandFactory");
         }
 
         [Test]
-        public void ExecuteProgram_WithNullProgramStartByte_ExpectNotThrowsException()
+        public void ExecuteProgram_WithNullProgramStartByte_ExpectedNotThrowsException()
         {
             // Arrange
             var centralProcessingUnit = CreateCentralProcessingUnit();
@@ -53,15 +40,16 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithNotNullProgramStartByte_ExpectExecutesCommandOneTime()
+        public void ExecuteProgram_WithNotNullProgramStartByte_ExpectedExecutesCommandOneTime()
         {
             // Arrange
             const int programStartAddress = 0x200;
             var memoryStub = Substitute.For<IMemory>();
             memoryStub.ProgramStartAddress.Returns(programStartAddress);
             
-            const byte commandOperationCode = 0x00E0;
-            memoryStub[memoryStub.ProgramStartAddress].Returns(commandOperationCode);
+            const int commandOperationCode = 0x00E0;
+            memoryStub[memoryStub.ProgramStartAddress].Returns((byte) 0x00);
+            memoryStub[memoryStub.ProgramStartAddress + 1].Returns((byte) 0xE0);
 
             var commandMock = Substitute.For<ICommand>();
             var commandFactoryStub = Substitute.For<ICommandFactory>();
@@ -77,19 +65,21 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithTwoCommandsInMemory_ExpectExecutesEachCommandOneTime()
+        public void ExecuteProgram_WithTwoCommandsInMemory_ExpectedExecutesEachCommandOneTime()
         {
             // Arrange
             const int programStartAddress = 0x200;
             var memoryStub = Substitute.For<IMemory>();
             memoryStub.ProgramStartAddress.Returns(programStartAddress);
 
-            const byte firstCommandOperationCode = 0x00E0;
-            memoryStub[memoryStub.ProgramStartAddress].Returns(firstCommandOperationCode);
+            const int firstCommandOperationCode = 0x00E0;
+            memoryStub[memoryStub.ProgramStartAddress].Returns((byte) 0x00);
+            memoryStub[memoryStub.ProgramStartAddress + 1].Returns((byte) 0xE0);
 
             const int secondCommandAddress = programStartAddress + 0x2;
-            const byte secondCommandOperationCode = 0x00EE;
-            memoryStub[secondCommandAddress].Returns(secondCommandOperationCode);
+            const int secondCommandOperationCode = 0x00EE;
+            memoryStub[secondCommandAddress].Returns((byte)0x00);
+            memoryStub[secondCommandAddress + 1].Returns((byte)0xEE);
 
             var firstCommandMock = Substitute.For<ICommand>();
             firstCommandMock.NextCommandAddress.Returns(secondCommandAddress);

@@ -2,28 +2,27 @@
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests.Commands
 {
     [TestFixture]
     public class SkipNextOperationCommandFixture
     {
-        private static SkipNextOperationCommand CreateSkipNextOperationCommand(int? address = 0,
-                                                                               int operationCode = 0x3000,
+        private static SkipNextOperationCommand CreateSkipNextOperationCommand(int operationCode = 0x3000,
                                                                                IGeneralRegisters generalRegisters = null)
         {
-            return new SkipNextOperationCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
+            return new SkipNextOperationCommand(0, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x99999)]
         [TestCase(0x5001)]
         [TestCase(0x9001)]
-        public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int operationCode)
+        public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(
+            int invalidOoperationCode)
         {
-            // Act & Assert
-            var argumentOutOfRangeException =
-                Assert.Throws<ArgumentOutOfRangeException>(() => CreateSkipNextOperationCommand(0, operationCode));
-            Assert.AreEqual("operationCode", argumentOutOfRangeException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateSkipNextOperationCommand(invalidOoperationCode), "operationCode");
         }
 
         [TestCase(0x3000)]
@@ -32,15 +31,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0x9000)]
         public void Constructor_WithProperOperationCode_ExpectedNotThrowsException(int operationCode)
         {
-            Assert.DoesNotThrow(() => CreateSkipNextOperationCommand(operationCode: operationCode));
+            Assert.DoesNotThrow(() => CreateSkipNextOperationCommand(operationCode));
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(() => new SkipNextOperationCommand(0, 0x3000, null));
-            Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new SkipNextOperationCommand(0, 0x3000, null), "generalRegisters");
         }
 
         [TestCase(1, 0xA, 0x310A, 4)]
@@ -56,8 +54,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             var registersStub = Substitute.For<IGeneralRegisters>();
             registersStub[registerIndex].Returns(registerValue);
 
-            var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode: operationCode,
-                                                                          generalRegisters: registersStub);
+            var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode, registersStub);
 
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, skipNextOperationCommand.NextCommandAddress);
@@ -85,8 +82,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[registerXIndex].Returns(registerXValue);
             registersStub[registerYIndex].Returns(registerYValue);
 
-            var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode: operationCode,
-                                                                          generalRegisters: registersStub);
+            var skipNextOperationCommand = CreateSkipNextOperationCommand(operationCode, registersStub);
+
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, skipNextOperationCommand.NextCommandAddress);
         }

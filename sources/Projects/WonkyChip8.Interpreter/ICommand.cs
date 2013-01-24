@@ -2,9 +2,9 @@
 {
     public interface ICommand
     {
-        int? Address { get; }
-        int? NextCommandAddress { get; }
-        int? OperationCode { get; }
+        int Address { get; }
+        int NextCommandAddress { get; }
+        int OperationCode { get; }
         void Execute();
     }
 }

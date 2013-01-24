@@ -2,6 +2,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests
 {
@@ -11,75 +12,88 @@ namespace WonkyChip8.Interpreter.UnitTests
         private static CommandFactory CreateCommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit = null,
                                                            ICallStack callStack = null,
                                                            IGeneralRegisters generalRegisters = null,
-                                                           IAddressRegister addressRegister = null)
+                                                           IAddressRegister addressRegister = null,
+                                                           IRandomGenerator randomGenerator = null,
+                                                           IMemory memory = null)
         {
             return new CommandFactory(graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
                                       callStack ?? Substitute.For<ICallStack>(),
                                       generalRegisters ?? Substitute.For<IGeneralRegisters>(),
-                                      addressRegister ?? Substitute.For<IAddressRegister>());
+                                      addressRegister ?? Substitute.For<IAddressRegister>(),
+                                      randomGenerator ?? Substitute.For<IRandomGenerator>(),
+                                      memory ?? Substitute.For<IMemory>());
         }
 
         [Test]
-        public void Constructor_WithNullGraphicsProcessingUnit_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(
-                    () =>
-                    new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>(),
-                                       Substitute.For<IAddressRegister>()));
-            Assert.AreEqual("graphicsProcessingUnit", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>(),
+                                         Substitute.For<IAddressRegister>(), Substitute.For<IRandomGenerator>(),
+                                         Substitute.For<IMemory>()),
+                "graphicsProcessingUnit");
         }
 
         [Test]
-        public void Constructor_WithNullCallStack_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullCallStack_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(
-                    () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null,
-                                       Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>()));
-            Assert.AreEqual("callStack", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null,
+                                         Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(),
+                                         Substitute.For<IRandomGenerator>(), Substitute.For<IMemory>()),
+                "callStack");
         }
 
         [Test]
-        public void Constructor_WithNullGeneralRegisters_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(
-                    () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null,
-                                       Substitute.For<IAddressRegister>()));
-            Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null,
+                                         Substitute.For<IAddressRegister>(), Substitute.For<IRandomGenerator>(),
+                                         Substitute.For<IMemory>()),
+                "generalRegisters");
         }
 
         [Test]
         public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(
-                    () =>
-                    new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
-                                       Substitute.For<IGeneralRegisters>(), null));
-            Assert.AreEqual("addressRegister", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
+                                         Substitute.For<IGeneralRegisters>(), null, Substitute.For<IRandomGenerator>(),
+                                         Substitute.For<IMemory>()),
+                "addressRegister");
+        }
+
+        [Test]
+        public void Constructor_WithNullRandomGenerator_ExpectedThrowsArgumentNullException()
+        {
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
+                                         Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null,
+                                         Substitute.For<IMemory>()),
+                "randomGenerator");
+        }
+
+        [Test]
+        public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
+        {
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
+                                         Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(),
+                                         Substitute.For<IRandomGenerator>(), null),
+                "memory");
         }
 
         [TestCase(0x99999)]
         [TestCase(0x5121)]
         [TestCase(0x800F)]
-        public void Create_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException(int invalidOperationCode)
+        public void Create_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
-            // Arrange
-            var commandFactory = CreateCommandFactory();
-
-            // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => commandFactory.Create(0, invalidOperationCode));
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateCommandFactory().Create(0, invalidOperationCode), "operationCode");
         }
 
-        [TestCase(null, typeof(NullCommand))]
+        [TestCase(0x0000, typeof(NullCommand))]
         [TestCase(0x00E0, typeof(ClearScreenCommand))]
         [TestCase(0x00EE, typeof(ReturnFromSubroutineCommand))]
         [TestCase(0x1000, typeof(JumpToAddressCommand))]
@@ -101,7 +115,9 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x9000, typeof(SkipNextOperationCommand))]
         [TestCase(0xA000, typeof(SaveValueToAddressRegisterCommand))]
         [TestCase(0xB000, typeof(JumpToAddressCommand))]
-        public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int? operationCode,
+        [TestCase(0xC000, typeof(SaveRandomValueToRegisterCommand))]
+        [TestCase(0xD000, typeof(DrawSpriteCommand))]
+        public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {
             // Arrange

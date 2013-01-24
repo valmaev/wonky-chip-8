@@ -8,11 +8,30 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class SaveValueToRegisterCommandFixture
     {
-        public static SaveValueToRegisterCommand CreateSaveValueToRegisterCommand(int? address = 0,
-                                                                                  int operationCode = 0x6000,
-                                                                                  IGeneralRegisters generalRegisters = null)
+        public static SaveValueToRegisterCommand CreateSaveValueToRegisterCommand(
+            int operationCode = 0x6000, IGeneralRegisters generalRegisters = null)
         {
-            return new SaveValueToRegisterCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
+            return new SaveValueToRegisterCommand(0, operationCode,
+                                                  generalRegisters ?? Substitute.For<IGeneralRegisters>());
+        }
+
+        [TestCase(0x610A, 0x0A)]
+        [TestCase(0x6202, 0x02)]
+        public void Execute_WithProperOperationCode_ExpectedSaveValueToRegister(int operationCode,
+                                                                                byte expectedValueToSave)
+        {
+            // Arrange
+            var registersStub = Substitute.For<IGeneralRegisters>();
+            byte registerValue = 0;
+            registersStub[Arg.Any<int>()] = Arg.Do<byte>(arg => registerValue = arg);
+
+            var saveValueToRegisterCommand = CreateSaveValueToRegisterCommand(operationCode, registersStub);
+            
+            // Act
+            saveValueToRegisterCommand.Execute();
+
+            // Assert
+            Assert.AreEqual(expectedValueToSave, registerValue);
         }
 
         [Test]
@@ -26,30 +45,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectecThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectecThrowsArgumentNullException()
         {
             // Act & Assert
             var argumentNullException =
                 Assert.Throws<ArgumentNullException>(() => new SaveValueToRegisterCommand(0, 0x6000, null));
             Assert.AreEqual("generalRegisters", argumentNullException.ParamName);
-        }
-
-        [TestCase(0x610A, 0x0A)]
-        [TestCase(0x6202, 0x02)]
-        public void Execute_WithProperOperationCode_ExpectedSaveValueToRegister(int operationCode, byte expectedValueToSave)
-        {
-            // Arrange
-            var registersStub = Substitute.For<IGeneralRegisters>();
-            byte? registerValue = null;
-            registersStub[Arg.Any<int>()] = Arg.Do<byte?>(arg => registerValue = arg);
-
-            var saveValueToRegisterCommand = CreateSaveValueToRegisterCommand(0, operationCode, registersStub);
-
-            // Act
-            saveValueToRegisterCommand.Execute();
-
-            // Assert
-            Assert.AreEqual(expectedValueToSave, registerValue);
         }
     }
 }

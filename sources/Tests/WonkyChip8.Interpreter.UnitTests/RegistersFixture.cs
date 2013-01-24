@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests
 {
@@ -11,7 +12,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x2, 1)]
         [TestCase(0xA, 1)]
         [TestCase(0xF, 1)]
-        public void ThisIndexer_WithProperRegisterIndex_ExpectEqualsValue(int registerIndex, byte value)
+        public void ThisIndexer_WithProperRegisterIndex_ExpectedEqualsValue(int registerIndex, byte value)
         {
             // Arrange
             var registers = new Registers();
@@ -26,15 +27,10 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(-0x1, 1)]
         [TestCase(0x10, 1)]
         [TestCase(0xFF, 1)]
-        public void ThisIndexer_WithInvalidRegisterIndex_ExpectThrowsArgumentOutOfRangeException(int registerIndex, byte value)
+        public void ThisIndexer_WithInvalidRegisterIndex_ExpectedThrowsArgumentOutOfRangeException(int registerIndex, byte value)
         {
-            // Arrange
-            var registers = new Registers();
-
-            // Act & Assert
-            var argumentOutOfRangeException =
-                Assert.Throws<ArgumentOutOfRangeException>(() => registers[registerIndex] = value);
-            Assert.AreEqual("index", argumentOutOfRangeException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => new Registers()[registerIndex] = value, "index");
         }
     }
 }

@@ -4,7 +4,7 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class CopyRegisterValueCommand : RegisterCommand
     {
-        public CopyRegisterValueCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+        public CopyRegisterValueCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0x8 || FourthOperationCodeHalfByte != 0x0)

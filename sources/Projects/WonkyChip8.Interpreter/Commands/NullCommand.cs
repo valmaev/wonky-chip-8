@@ -2,16 +2,9 @@
 {
     public class NullCommand : ICommand
     {
-        private readonly int? _address;
-
-        public NullCommand(int? address = null)
-        {
-            _address = address;
-        }
-
-        public int? Address { get { return _address; } }
-        public int? NextCommandAddress { get { return null; } }
-        public int? OperationCode { get { return null; } }
+        public int Address { get { return 0; } }
+        public int NextCommandAddress { get { return 0; } }
+        public int OperationCode { get { return 0; } }
 
         public void Execute() { }
     }

@@ -9,18 +9,17 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class JumpToAddressCommandFixture
     {
-        private static JumpToAddressCommand CreateJumpToAddressCommand(int? address = 0, int operationCode = 0x1000,
-                                                                 IGeneralRegisters generalRegisters = null)
+        private static JumpToAddressCommand CreateJumpToAddressCommand(int operationCode = 0x1000,
+                                                                       IGeneralRegisters generalRegisters = null)
         {
-            return new JumpToAddressCommand(address, operationCode,
-                                            generalRegisters ?? Substitute.For<IGeneralRegisters>());
+            return new JumpToAddressCommand(0, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x99999)]
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
-                () => CreateJumpToAddressCommand(operationCode: invalidOperationCode), "operationCode");
+                () => CreateJumpToAddressCommand(invalidOperationCode), "operationCode");
         }
 
         [Test]
@@ -39,7 +38,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         private void TestJumpToAddressCommandWithDefaultStubs(int operationCode, int expectedNextCommandAddress)
         {
             // Arrange
-            var jumpToAddressCommand = CreateJumpToAddressCommand(operationCode: operationCode);
+            var jumpToAddressCommand = CreateJumpToAddressCommand(operationCode);
 
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, jumpToAddressCommand.NextCommandAddress);
@@ -53,12 +52,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             // Arrange
             var generalRegistersStub = Substitute.For<IGeneralRegisters>();
-            byte? zeroRegisterActualValue = zeroRegisterInitialValue;
-            generalRegistersStub[0] = Arg.Do<byte?>(value => zeroRegisterActualValue = value);
+            byte zeroRegisterActualValue = zeroRegisterInitialValue;
+            generalRegistersStub[0] = Arg.Do<byte>(value => zeroRegisterActualValue = value);
             generalRegistersStub[0].Returns(zeroRegisterActualValue);
 
-            var jumpToAddressCommand = CreateJumpToAddressCommand(operationCode: operationCode,
-                                                                  generalRegisters: generalRegistersStub);
+            var jumpToAddressCommand = CreateJumpToAddressCommand(operationCode, generalRegistersStub);
 
             // Assert
             Assert.AreEqual(expectedNextCommandAddress, jumpToAddressCommand.NextCommandAddress);

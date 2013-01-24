@@ -2,6 +2,6 @@
 {
     public interface IAddressRegister
     {
-        short? AddressValue { get; set; } 
+        short AddressValue { get; set; } 
     }
 }

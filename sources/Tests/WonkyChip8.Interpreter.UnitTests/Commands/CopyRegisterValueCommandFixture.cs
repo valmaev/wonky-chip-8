@@ -9,11 +9,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class CopyRegisterValueCommandFixture
     {
-        private static CopyRegisterValueCommand CreateCopyRegisterValueCommand(int? address = 0,
-                                                                               int operationCode = 0x8000,
+        private static CopyRegisterValueCommand CreateCopyRegisterValueCommand(int operationCode = 0x8000,
                                                                                IGeneralRegisters generalRegisters = null)
         {
-            return new CopyRegisterValueCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
+            return new CopyRegisterValueCommand(0, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [TestCase(0x8001)]
@@ -21,11 +20,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int operationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
-                () => CreateCopyRegisterValueCommand(operationCode: operationCode), "operationCode");
+                () => CreateCopyRegisterValueCommand(operationCode), "operationCode");
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CopyRegisterValueCommand(0, 0x8000, null), "generalRegisters");
@@ -44,16 +43,15 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             // Arrange
             var registersStub = Substitute.For<IGeneralRegisters>();
-            byte? firstRegisterActualValue = firstRegisterInitialValue;
-            registersStub[firstRegisterIndex] = Arg.Do<byte?>(arg =>firstRegisterActualValue = arg);
+            byte firstRegisterActualValue = firstRegisterInitialValue;
+            registersStub[firstRegisterIndex] = Arg.Do<byte>(arg =>firstRegisterActualValue = arg);
             registersStub[firstRegisterIndex].Returns(firstRegisterActualValue);
 
-            byte? secondRegisterActualValue = secondRegisterInitialValue;
-            registersStub[secondRegisterIndex] = Arg.Do<byte?>(arg => secondRegisterActualValue = arg);
+            byte secondRegisterActualValue = secondRegisterInitialValue;
+            registersStub[secondRegisterIndex] = Arg.Do<byte>(arg => secondRegisterActualValue = arg);
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
-            var copyRegisterValueCommand = CreateCopyRegisterValueCommand(operationCode: operationCode,
-                                                                          generalRegisters: registersStub);
+            var copyRegisterValueCommand = CreateCopyRegisterValueCommand(operationCode, registersStub);
 
             // Act
             copyRegisterValueCommand.Execute();

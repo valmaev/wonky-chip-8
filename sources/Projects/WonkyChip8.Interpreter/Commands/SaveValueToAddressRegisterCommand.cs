@@ -6,7 +6,7 @@ namespace WonkyChip8.Interpreter.Commands
     {
         private readonly IAddressRegister _addressRegister;
 
-        public SaveValueToAddressRegisterCommand(int? address, int operationCode, IAddressRegister addressRegister)
+        public SaveValueToAddressRegisterCommand(int address, int operationCode, IAddressRegister addressRegister)
             : base(address, operationCode)
         {
             if (FirstOperationCodeHalfByte != 0xA)
@@ -19,7 +19,7 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            _addressRegister.AddressValue = (short?) (OperationCode & 0x0FFF);
+            _addressRegister.AddressValue = (short) (OperationCode & 0x0FFF);
         }
     }
 }

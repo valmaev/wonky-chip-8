@@ -2,50 +2,46 @@
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests.Commands
 {
     [TestFixture]
     public class CallSubroutineCommandFixture
     {
-        private static CallSubroutineCommand CreateCallSubroutineCommand(int? address = 0, int operationCode = 0x2001,
+        private static CallSubroutineCommand CreateCallSubroutineCommand(int operationCode = 0x2001,
                                                                          ICallStack callStack = null)
         {
-            return new CallSubroutineCommand(address, operationCode, callStack ?? Substitute.For<ICallStack>());
+            return new CallSubroutineCommand(0, operationCode, callStack ?? Substitute.For<ICallStack>());
         }
 
         [Test]
-        public void Constructor_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException()
+        public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException()
         {
-            // Act & Assert
-            var argumentOutOfRagneException =
-                Assert.Throws<ArgumentOutOfRangeException>(() => CreateCallSubroutineCommand(operationCode: 0x9999));
-            Assert.AreEqual("operationCode", argumentOutOfRagneException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateCallSubroutineCommand(operationCode: 0x9999), "operationCode");
         }
 
         [Test]
-        public void Constructor_WithNullCallStack_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullCallStack_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(() => new CallSubroutineCommand(0, 0x2001, null));
-            Assert.AreEqual("callStack", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CallSubroutineCommand(0, 0x2001, null), "callStack");
         }
 
         [Test]
-        public void NextCommandAddress_ExpectReturnsLastThreeHalfBitsFromOperationCode()
+        public void NextCommandAddress_ExpectedReturnsLastThreeHalfBitsFromOperationCode()
         {
             // Arrange
             const int operationCode = 0x2111;
             const int expectedNextCommandAddress = 0x111;
 
             // Act & Assert
-            Assert.AreEqual(expectedNextCommandAddress,
-                            CreateCallSubroutineCommand(operationCode: operationCode).NextCommandAddress);
+            Assert.AreEqual(expectedNextCommandAddress, CreateCallSubroutineCommand(operationCode).NextCommandAddress);
         }
 
         [Test]
-        public void Execute_ExpectCallsCallStackPushOneTime()
+        public void Execute_ExpectedCallsCallStackPushOneTime()
         {
             // Arrange
             var callStackMock = Substitute.For<ICallStack>();
@@ -55,7 +51,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             callSubroutineCommand.Execute();
 
             // Assert
-            callStackMock.Received(1).Push(Arg.Any<int?>());
+            callStackMock.Received(1).Push(Arg.Any<int>());
         }
     }
 }

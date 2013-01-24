@@ -2,69 +2,60 @@
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests.Commands
 {
     [TestFixture]
     public class ReturnFromSubroutineCommandFixture
     {
-        private static ReturnFromSubroutineCommand CreateReturnFromSubroutineCommand(int? address = 0,
-                                                                                     int operationCode = 0x00EE,
+        private static ReturnFromSubroutineCommand CreateReturnFromSubroutineCommand(int operationCode = 0x00EE,
                                                                                      ICallStack callStack = null)
         {
-            return new ReturnFromSubroutineCommand(address, operationCode, callStack ?? Substitute.For<ICallStack>());
+            return new ReturnFromSubroutineCommand(0, operationCode, callStack ?? Substitute.For<ICallStack>());
         }
 
         [Test]
-        public void Constructor_WithInvalidOperationCode_ExpectThrowsArgumentOutOfRangeException()
+        public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException()
         {
-            // Act & Assert
-            var argumentOutOfRangeException =
-                Assert.Throws<ArgumentOutOfRangeException>(
-                    () => CreateReturnFromSubroutineCommand(operationCode: 0xEEEE));
-            Assert.AreEqual("operationCode", argumentOutOfRangeException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateReturnFromSubroutineCommand(operationCode: 0xEEEE), "operationCode");
         }
 
         [Test]
-        public void Constructor_WithNullCallStack_ExpectThrowsArgumentNullException()
+        public void Constructor_WithNullCallStack_ExpectedThrowsArgumentNullException()
         {
-            // Act & Assert
-            var argumentNullException =
-                Assert.Throws<ArgumentNullException>(() => new ReturnFromSubroutineCommand(0, 0x00EE, null));
-            Assert.AreEqual("callStack", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new ReturnFromSubroutineCommand(0, 0x00EE, null), "callStack");
         }
 
         [Test]
-        public void NextCommandAddress_ExpectReturnsNextForTopOfCallStackCommandAddress()
-        {
-            // Arrange
-            var callStackStub = Substitute.For<ICallStack>();
-            const int topOfStackCommandAddress = 2;
-            callStackStub.Peek().Returns(topOfStackCommandAddress);
-            var returnFromSubroutineCommand = CreateReturnFromSubroutineCommand(callStack: callStackStub);
-
-            // Act & Assert
-            Assert.AreEqual(topOfStackCommandAddress + 2, returnFromSubroutineCommand.NextCommandAddress);
-        }
-
-        [Test]
-        public void NextCommandAddress_WithNullTopOfStackCommandAddress_ExpectReturnsNull()
-        {
-            Assert.IsNull(CreateReturnFromSubroutineCommand().NextCommandAddress);
-        }
-
-        [Test]
-        public void Execute_ExpectCallsCallStackPopOneTime()
+        public void Execute_ExpectedCallsCallStackPopOneTime()
         {
             // Arrange
             var callStackMock = Substitute.For<ICallStack>();
-            var returnFromSubroutineCommand = CreateReturnFromSubroutineCommand(callStack: callStackMock);
+            ReturnFromSubroutineCommand returnFromSubroutineCommand =
+                CreateReturnFromSubroutineCommand(callStack: callStackMock);
 
             // Act
             returnFromSubroutineCommand.Execute();
 
             // Assert
             callStackMock.Received(1).Pop();
+        }
+
+        [Test]
+        public void NextCommandAddress_ExpectedReturnsNextForTopOfCallStackCommandAddress()
+        {
+            // Arrange
+            var callStackStub = Substitute.For<ICallStack>();
+            const int topOfStackCommandAddress = 2;
+            callStackStub.Peek().Returns(topOfStackCommandAddress);
+            ReturnFromSubroutineCommand returnFromSubroutineCommand =
+                CreateReturnFromSubroutineCommand(callStack: callStackStub);
+
+            // Act & Assert
+            Assert.AreEqual(topOfStackCommandAddress + 2, returnFromSubroutineCommand.NextCommandAddress);
         }
     }
 }

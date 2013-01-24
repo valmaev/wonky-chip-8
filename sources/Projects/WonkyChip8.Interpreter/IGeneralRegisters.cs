@@ -2,6 +2,6 @@
 {
     public interface IGeneralRegisters
     {
-        byte? this[int index] { get; set; }
+        byte this[int index] { get; set; }
     }
 }

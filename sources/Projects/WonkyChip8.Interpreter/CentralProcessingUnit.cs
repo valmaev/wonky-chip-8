@@ -20,18 +20,23 @@ namespace WonkyChip8.Interpreter
 
         public void ExecuteProgram()
         {
-            int? currentProgramByteAddress = _memory.ProgramStartAddress;
-            var currentProgramByte = _memory[_memory.ProgramStartAddress];
-
-            while (currentProgramByte != null)
+            int currentProgramByteAddress = _memory.ProgramStartAddress;
+            int currentOperationCode;
+            do
             {
-                ICommand command = _commandFactory.Create(currentProgramByteAddress, currentProgramByte);
+                currentOperationCode = GetCurrentOperationCodeFromMemory(currentProgramByteAddress);
+                ICommand command = _commandFactory.Create(currentProgramByteAddress, currentOperationCode);
                 command.Execute();
                 currentProgramByteAddress = command.NextCommandAddress;
-                currentProgramByte = currentProgramByteAddress.HasValue
-                                         ? _memory[currentProgramByteAddress.Value]
-                                         : null;
-            }
+            } 
+            while (currentOperationCode != 0);
+        }
+
+        private int GetCurrentOperationCodeFromMemory(int addressInMemory)
+        {
+            byte currentProgramByte = _memory[addressInMemory];
+            byte nextProgramByte = _memory[addressInMemory + 1];
+            return (currentProgramByte << 8) + nextProgramByte;
         }
     }
 }

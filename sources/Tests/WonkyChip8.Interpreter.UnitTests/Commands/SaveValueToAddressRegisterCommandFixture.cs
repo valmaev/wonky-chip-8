@@ -10,9 +10,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class SaveValueToAddressRegisterCommandFixture
     {
         private static SaveValueToAddressRegisterCommand CreateSaveValueToAddressRegisterCommand(
-            int? address = 0, int operationCode = 0xA000, IAddressRegister addressRegister = null)
+            int operationCode = 0xA000, IAddressRegister addressRegister = null)
         {
-            return new SaveValueToAddressRegisterCommand(address, operationCode,
+            return new SaveValueToAddressRegisterCommand(0, operationCode,
                                                          addressRegister ?? Substitute.For<IAddressRegister>());
         }
 
@@ -21,7 +21,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             int invalidOperationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
-                () => CreateSaveValueToAddressRegisterCommand(operationCode: invalidOperationCode), "operationCode");
+                () => CreateSaveValueToAddressRegisterCommand(invalidOperationCode), "operationCode");
         }
 
         [Test]
@@ -39,12 +39,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             // Arrange
             var addressRegister = Substitute.For<IAddressRegister>();
 
-            short? addressRegisterActualValue = null;
-            addressRegister.AddressValue = Arg.Do<short?>(value => addressRegisterActualValue = value);
+            short addressRegisterActualValue = 0;
+            addressRegister.AddressValue = Arg.Do<short>(value => addressRegisterActualValue = value);
             addressRegister.AddressValue.Returns(addressRegisterActualValue);
 
-            var saveValueToAddressCommand = CreateSaveValueToAddressRegisterCommand(operationCode: operationCode,
-                                                                                    addressRegister: addressRegister);
+            SaveValueToAddressRegisterCommand saveValueToAddressCommand =
+                CreateSaveValueToAddressRegisterCommand(operationCode, addressRegister);
             // Act
             saveValueToAddressCommand.Execute();
 

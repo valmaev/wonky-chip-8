@@ -4,7 +4,7 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class SkipNextOperationCommand : RegisterCommand
     {
-        public SkipNextOperationCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+        public SkipNextOperationCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)
         {
             if (!IsOperationCodeValid)
@@ -22,7 +22,7 @@ namespace WonkyChip8.Interpreter.Commands
             }
         }
 
-        public override int? NextCommandAddress
+        public override int NextCommandAddress
         {
             get
             {
@@ -44,7 +44,7 @@ namespace WonkyChip8.Interpreter.Commands
                     return GeneralRegisters[SecondOperationCodeHalfByte] == GeneralRegisters[ThirdOperationCodeHalfByte];
                 if (FirstOperationCodeHalfByte == 0x9)
                     return GeneralRegisters[SecondOperationCodeHalfByte] != GeneralRegisters[ThirdOperationCodeHalfByte];
-                return false;
+                throw new InvalidOperationException(string.Format("Operation code {0:X4} isn't supported", OperationCode));
             }
         }
     }

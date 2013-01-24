@@ -9,11 +9,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class AddValueToRegisterCommandFixture
     {
-        private static AddValueToRegisterCommand CreateAddValueToRegisterCommand(int? address = 0,
-                                                                                 int operationCode = 0x7000,
+        private static AddValueToRegisterCommand CreateAddValueToRegisterCommand(int operationCode = 0x7000,
                                                                                  IGeneralRegisters generalRegisters = null)
         {
-            return new AddValueToRegisterCommand(address, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
+            return new AddValueToRegisterCommand(0, operationCode, generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
         [Test]
@@ -24,7 +23,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new AddValueToRegisterCommand(0, 0x7000, null), "generalRegisters");
@@ -39,11 +38,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             // Arrange
             var registersStub = Substitute.For<IGeneralRegisters>();
-            byte? registerValue = registerInitialValue;
-            registersStub[registerIndex] = Arg.Do<byte?>(arg => registerValue = arg);
+            byte registerValue = registerInitialValue;
+            registersStub[registerIndex] = Arg.Do<byte>(arg => registerValue = arg);
             registersStub[registerIndex].Returns(registerValue);
 
-            var addValueToRegisterCommand = CreateAddValueToRegisterCommand(0, operationCode, registersStub);
+            var addValueToRegisterCommand = CreateAddValueToRegisterCommand(operationCode, registersStub);
 
             // Act
             addValueToRegisterCommand.Execute();
@@ -57,11 +56,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             // Arrange
             var registersStub = Substitute.For<IGeneralRegisters>();
-            byte? registerValue = null;
-            registersStub[Arg.Any<int>()] = Arg.Do<byte?>(arg => registerValue = arg);
+            byte registerValue = 0;
+            registersStub[Arg.Any<int>()] = Arg.Do<byte>(arg => registerValue = arg);
             registersStub[Arg.Any<int>()].Returns(registerValue);
 
-            var addValueToRegisterCommand = CreateAddValueToRegisterCommand(0, 0x7010, registersStub);
+            var addValueToRegisterCommand = CreateAddValueToRegisterCommand(0x7010, registersStub);
 
             // Act
             addValueToRegisterCommand.Execute();

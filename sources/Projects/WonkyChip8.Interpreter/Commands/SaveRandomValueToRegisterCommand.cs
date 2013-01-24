@@ -6,7 +6,7 @@ namespace WonkyChip8.Interpreter.Commands
     {
         private readonly IRandomGenerator _randomGenerator;
 
-        public SaveRandomValueToRegisterCommand(int? address, int operationCode, IGeneralRegisters generalRegisters,
+        public SaveRandomValueToRegisterCommand(int address, int operationCode, IGeneralRegisters generalRegisters,
                                                 IRandomGenerator randomGenerator)
             : base(address, operationCode, generalRegisters)
         {
@@ -20,8 +20,8 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) (_randomGenerator.Generate(0x00, 0xFF) &
-                                                                     SecondOperationCodeByte);
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte) (_randomGenerator.Generate(0x00, 0xFF) &
+                                                                    SecondOperationCodeByte);
         }
     }
 }

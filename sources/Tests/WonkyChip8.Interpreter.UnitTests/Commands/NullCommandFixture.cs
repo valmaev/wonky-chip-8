@@ -9,40 +9,25 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithProperAddress_ExpectedNotThrowsException()
         {
-            Assert.DoesNotThrow(() => new NullCommand(0));
+            Assert.DoesNotThrow(() => new NullCommand());
         }
 
         [Test]
-        public void Address_ExpectedReturnsAddressFromConstructorParameter()
+        public void NextCommandAddress_ExpectedReturnsZero()
         {
-            // Arrange
-            const int nullCommandAddress = 10;
-            var nullCommand = new NullCommand(nullCommandAddress);
-
-            // Act & Assert
-            Assert.AreEqual(nullCommandAddress, nullCommand.Address);
+            Assert.AreEqual(0, new NullCommand().NextCommandAddress);
         }
 
         [Test]
-        public void NextCommandAddress_ExpectedReturnsNull()
+        public void OperationCode_ExpectedReturnsZero()
         {
-            // Arrange
-            var nullCommand = new NullCommand(0);
-
-            // Act & Assert
-            Assert.IsNull(nullCommand.NextCommandAddress);
-        }
-
-        [Test]
-        public void OperationCode_ExpectedReturnsNull()
-        {
-            Assert.IsNull(new NullCommand().OperationCode);
+            Assert.AreEqual(0, new NullCommand().OperationCode);
         }
 
         [Test]
         public void Execute_ExpectedNotThrowsException()
         {
-            Assert.DoesNotThrow(() => new NullCommand(0).Execute());
+            Assert.DoesNotThrow(() => new NullCommand().Execute());
         }
     }
 }

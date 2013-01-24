@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests
 {
@@ -8,25 +9,18 @@ namespace WonkyChip8.Interpreter.UnitTests
     public class RandomAccessMemoryFixture
     {
         [Test]
-        public void LoadProgram_WithNullProgramBytes_ExpectThrowsArgumentNullException()
+        public void LoadProgram_WithNullProgramBytes_ExpectedThrowsArgumentNullException()
         {
-            // Arrange
-            var randomAccessMemory = new RandomAccessMemory();
-
-            // Act
-            TestDelegate loadProgram = () => randomAccessMemory.LoadProgram(null);
-
-            // Assert
-            var argumentNullException = Assert.Throws<ArgumentNullException>(loadProgram);
-            Assert.AreEqual("programBytes", argumentNullException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new RandomAccessMemory().LoadProgram(null), "programBytes");
         }
 
         [Test]
-        public void LoadProgram_WithProperProgramBytes_ExpectLoadsProgramInMemory()
+        public void LoadProgram_WithProperProgramBytes_ExpectedLoadsProgramInMemory()
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
-            var programBytes = new int?[] {0xAA, 0x01, 0xBB, 0x11};
+            var programBytes = new byte[] {0xAA, 0x01, 0xBB, 0x11};
 
             // Act
             randomAccessMemory.LoadProgram(programBytes);
@@ -38,7 +32,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void UnloadProgram_WithLoadedProgram_ExpectCleansMemory()
+        public void UnloadProgram_WithLoadedProgram_ExpectedCleansMemory()
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
@@ -50,14 +44,14 @@ namespace WonkyChip8.Interpreter.UnitTests
 
             // Assert
             for (var i = randomAccessMemory.ProgramStartAddress; i < randomAccessMemory.EndAddress; i++)
-                Assert.AreEqual(null, randomAccessMemory[i]);
-            Assert.AreEqual(null, randomAccessMemory[randomAccessMemory.ProgramStartAddress]);
+                Assert.AreEqual(0, randomAccessMemory[i]);
+            Assert.AreEqual(0, randomAccessMemory[randomAccessMemory.ProgramStartAddress]);
         }
 
         [TestCase(0x000, 1, ExpectedResult = 1)]
         [TestCase(0x200, 1, ExpectedResult = 1)]
         [TestCase(0xFFF, 1, ExpectedResult = 1)]
-        public int? ThisIndexer_WithProperCellAddress_ExpectEqualsValue(int cellAddress, int value)
+        public int ThisIndexer_WithProperCellAddress_ExpectedEqualsValue(int cellAddress, byte value)
         {
             // Arrange
             var randomAccessMemory = new RandomAccessMemory();
@@ -71,18 +65,10 @@ namespace WonkyChip8.Interpreter.UnitTests
 
         [TestCase(-0x001, 1)]
         [TestCase(0x1000, 1)]
-        public void ThisIndexer_WithInvalidCellAddress_ExpectThrowsArgumentOutOfRangeException(int cellAddress, byte value)
+        public void ThisIndexer_WithInvalidCellAddress_ExpectedThrowsArgumentOutOfRangeException(int cellAddress, byte value)
         {
-            // Arrange
-            var randomAccessMemory = new RandomAccessMemory();
-
-            // Act
-            TestDelegate accessToRandomAccessMemoryCellValue = () => randomAccessMemory[cellAddress] = value;
-
-            // Assert
-            var argumentOutOfRangeException =
-                Assert.Throws<ArgumentOutOfRangeException>(accessToRandomAccessMemoryCellValue);
-            Assert.AreEqual("index", argumentOutOfRangeException.ParamName);
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => new RandomAccessMemory()[cellAddress] = value, "index");
         }
     }
 }

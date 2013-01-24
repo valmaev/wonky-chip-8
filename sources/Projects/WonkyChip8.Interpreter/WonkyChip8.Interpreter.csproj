@@ -42,6 +42,7 @@
     <Compile Include="Commands\ClearScreenCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CopyRegisterValueCommand.cs" />
+    <Compile Include="Commands\DrawSpriteCommand.cs" />
     <Compile Include="Commands\JumpToAddressCommand.cs" />
     <Compile Include="Commands\BitwiseOperationsForRegistersCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />

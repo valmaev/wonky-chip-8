@@ -10,9 +10,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class BitwiseOperationsForRegistersCommandFixture
     {
         private static BitwiseOperationsForRegistersCommand CreateBitwiseOperationsForRegistersCommand(
-            int? address = 0, int operationCode = 0x8001, IGeneralRegisters generalRegisters = null)
+            int operationCode = 0x8001, IGeneralRegisters generalRegisters = null)
         {
-            return new BitwiseOperationsForRegistersCommand(address, operationCode,
+            return new BitwiseOperationsForRegistersCommand(0, operationCode,
                                                             generalRegisters ?? Substitute.For<IGeneralRegisters>());
         }
 
@@ -21,11 +21,11 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
-                () => CreateBitwiseOperationsForRegistersCommand(operationCode: invalidOperationCode), "operationCode");
+                () => CreateBitwiseOperationsForRegistersCommand(invalidOperationCode), "operationCode");
         }
 
         [Test]
-        public void Constructor_WithNullRegisters_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new BitwiseOperationsForRegistersCommand(0, 0x8001, null), "generalRegisters");
@@ -66,8 +66,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
 
             var logicalArithmeticsForRegistersCommand =
-                CreateBitwiseOperationsForRegistersCommand(operationCode: operationCode,
-                                                           generalRegisters: registersStub);
+                CreateBitwiseOperationsForRegistersCommand(operationCode, registersStub);
 
             // Act
             logicalArithmeticsForRegistersCommand.Execute();
@@ -109,28 +108,6 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             TestBitwiseOperations(operationCode, firstRegisterIndex, firstRegisterInitialValue,
                                              secondRegisterIndex, secondRegisterInitialValue, firstRegisterExpectedValue);
-        }
-
-        [TestCase(0x8001)]
-        [TestCase(0x8002)]
-        [TestCase(0x8003)]
-        public void Execute_WithNullRegistersValue_ExpectedResultIsNull(int operationCode)
-        {
-            // Arrange
-            var registersStub = Substitute.For<IGeneralRegisters>();
-            byte? firstRegisterActualValue = null;
-            registersStub[0] = Arg.Do<byte?>(value => firstRegisterActualValue = value);
-            registersStub[0].Returns(firstRegisterActualValue);
-
-            var logicalArithmeticsForRegistersCommand =
-                CreateBitwiseOperationsForRegistersCommand(operationCode: operationCode,
-                                                            generalRegisters: registersStub);
-
-            // Act
-            logicalArithmeticsForRegistersCommand.Execute();
-
-            // Assert
-            Assert.IsNull(firstRegisterActualValue);
         }
     }
 }

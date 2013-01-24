@@ -7,7 +7,7 @@ namespace WonkyChip8.Interpreter.Commands
         private const int LeastSignificantBitRegisterIndex = 0xF;
         private const int MostSignificantBitRegisterIndex = 0xF;
 
-        public ShiftOperationsForRegistersCommand(int? address, int operationCode, IGeneralRegisters generalRegisters)
+        public ShiftOperationsForRegistersCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0x8 ||
@@ -25,21 +25,24 @@ namespace WonkyChip8.Interpreter.Commands
                 case 0xE:
                     LeftShiftSecondRegister();
                     break;
+                default:
+                    throw new InvalidOperationException(string.Format("Operation code {0:X4} isn't supported",
+                                                                      OperationCode));
             }
         }
 
         private void RightShiftSecondRegister()
         {
-            var mostSignificantBit = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 7 & 1);
-            GeneralRegisters[MostSignificantBitRegisterIndex] = mostSignificantBit;
-            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 1);
+            int mostSignificantBit = GeneralRegisters[ThirdOperationCodeHalfByte] >> 7 & 1;
+            GeneralRegisters[MostSignificantBitRegisterIndex] = (byte) mostSignificantBit;
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 1);
         }
 
         private void LeftShiftSecondRegister()
         {
-            var leastSignificantBit = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] & 1);
-            GeneralRegisters[LeastSignificantBitRegisterIndex] = leastSignificantBit;
-            GeneralRegisters[SecondOperationCodeHalfByte] = (byte?) (GeneralRegisters[ThirdOperationCodeHalfByte] << 1);
+            int leastSignificantBit = GeneralRegisters[ThirdOperationCodeHalfByte] & 1;
+            GeneralRegisters[LeastSignificantBitRegisterIndex] = (byte) leastSignificantBit;
+            GeneralRegisters[SecondOperationCodeHalfByte] = (byte) (GeneralRegisters[ThirdOperationCodeHalfByte] << 1);
         }
     }
 }
