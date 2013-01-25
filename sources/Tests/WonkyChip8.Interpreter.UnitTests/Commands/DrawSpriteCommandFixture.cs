@@ -23,6 +23,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [TestCase(0xD000, false)]
+        [TestCase(0xD121, true)]
         public void Execute_ExpectedCallsGraphicsProcessingUnitOnce(int operationCode, bool anyPixelFlipped)
         {
             // Arrange
@@ -41,9 +42,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             const short addressRegisterValue = 0;
             addressRegisterStub.AddressValue.Returns(addressRegisterValue);
 
-            DrawSpriteCommand command = CreateDrawSpriteCommand(graphicsProcessingUnit: graphicsProcessingUnitMock,
-                                                                generalRegisters: generalRegistersStub,
-                                                                addressRegister: addressRegisterStub);
+            DrawSpriteCommand command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock,
+                                                                generalRegistersStub, addressRegisterStub);
             // Act
             command.Execute();
 
@@ -76,7 +76,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(), null,
-                                      Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()), "generalRegisters");
+                                      Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()),
+                "generalRegisters");
         }
 
         [Test]
@@ -95,8 +96,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
-                                      Substitute.For<IGeneralRegisters>(),
-                                      Substitute.For<IAddressRegister>(), null), "memory");
+                                      Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null),
+                "memory");
         }
     }
 }

@@ -46,7 +46,7 @@ namespace WonkyChip8.Interpreter.Commands
             {
                 for (var x = 0; x < spriteWidth; x++)
                 {
-                    var pixel = _memory[_addressRegister.AddressValue + spriteWidth * y + x];
+                    byte pixel = _memory[_addressRegister.AddressValue + spriteWidth * y + x];
                     pixels[x, y] = pixel;
                 }
             }
