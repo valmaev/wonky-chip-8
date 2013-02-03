@@ -5,7 +5,6 @@ namespace WonkyChip8.Interpreter.Commands
     public class DrawSpriteCommand : RegisterCommand
     {
         private const int PixelFlippingDetectorRegisterIndex = 0xF;
-        private const int SpriteWidth = 8;
 
         private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
         private readonly IAddressRegister _addressRegister;
@@ -33,22 +32,19 @@ namespace WonkyChip8.Interpreter.Commands
         {
             var firstPixelCoordinate = new Tuple<int, int>(SecondOperationCodeHalfByte, ThirdOperationCodeHalfByte);
             var spriteHeight = FourthOperationCodeHalfByte;
-            var pixels = GetPixelsFromMemory(SpriteWidth, spriteHeight);
-            bool anyPixelFlipped = _graphicsProcessingUnit.DrawSprite(firstPixelCoordinate, spriteHeight, pixels);
+            var pixels = GetPixelsFromMemory(spriteHeight);
+            bool anyPixelFlipped = _graphicsProcessingUnit.DrawSprite(firstPixelCoordinate, pixels);
             GeneralRegisters[PixelFlippingDetectorRegisterIndex] = Convert.ToByte(anyPixelFlipped);
         }
 
-        private byte[,] GetPixelsFromMemory(int spriteWidth, int spriteHeight)
+        private byte[] GetPixelsFromMemory(int spriteHeight)
         {
-            var pixels = new byte[spriteWidth, spriteHeight];
+            var pixels = new byte[spriteHeight];
 
-            for (var y = 0; y < spriteHeight; y++)
+            for (var currentRow = 0; currentRow < spriteHeight; currentRow++)
             {
-                for (var x = 0; x < spriteWidth; x++)
-                {
-                    byte pixel = _memory[_addressRegister.AddressValue + spriteWidth * y + x];
-                    pixels[x, y] = pixel;
-                }
+                byte pixel = _memory[_addressRegister.AddressValue + currentRow];
+                pixels[currentRow] = pixel;
             }
 
             return pixels;

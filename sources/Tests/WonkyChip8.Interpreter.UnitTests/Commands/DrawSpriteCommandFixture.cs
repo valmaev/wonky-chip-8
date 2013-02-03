@@ -22,13 +22,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                          memory ?? Substitute.For<IMemory>());
         }
 
-        [TestCase(0xD000, false)]
-        [TestCase(0xD121, true)]
-        public void Execute_ExpectedCallsGraphicsProcessingUnitOnce(int operationCode, bool anyPixelFlipped)
+        [TestCase(0xD000, 0, false)]
+        [TestCase(0xD121, 1, true)]
+        public void Execute_ExpectedCallsGraphicsProcessingUnitOnce(int operationCode, int spriteHeight,
+                                                                    bool anyPixelFlipped)
         {
             // Arrange
             var graphicsProcessingUnitMock = Substitute.For<IGraphicsProcessingUnit>();
-            graphicsProcessingUnitMock.DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<int>(), Arg.Any<byte[,]>())
+            graphicsProcessingUnitMock.DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>())
                                       .ReturnsForAnyArgs(anyPixelFlipped);
 
             var generalRegistersStub = Substitute.For<IGeneralRegisters>();
@@ -49,7 +50,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             // Assert
             graphicsProcessingUnitMock.Received(1)
-                                      .DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<int>(), Arg.Any<byte[,]>());
+                                      .DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>());
             Assert.AreEqual(Convert.ToByte(anyPixelFlipped), flippingDetectorRegsiterActualValue);
         }
 
