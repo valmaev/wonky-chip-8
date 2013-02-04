@@ -14,14 +14,16 @@ namespace WonkyChip8.Interpreter.UnitTests
                                                            IGeneralRegisters generalRegisters = null,
                                                            IAddressRegister addressRegister = null,
                                                            IRandomGenerator randomGenerator = null,
-                                                           IMemory memory = null)
+                                                           IMemory memory = null,
+                                                           IKeyboard keyboard = null)
         {
             return new CommandFactory(graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
                                       callStack ?? Substitute.For<ICallStack>(),
                                       generalRegisters ?? Substitute.For<IGeneralRegisters>(),
                                       addressRegister ?? Substitute.For<IAddressRegister>(),
                                       randomGenerator ?? Substitute.For<IRandomGenerator>(),
-                                      memory ?? Substitute.For<IMemory>());
+                                      memory ?? Substitute.For<IMemory>(),
+                                      keyboard ?? Substitute.For<IKeyboard>());
         }
 
         [Test]
@@ -30,7 +32,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(null, Substitute.For<ICallStack>(), Substitute.For<IGeneralRegisters>(),
                                          Substitute.For<IAddressRegister>(), Substitute.For<IRandomGenerator>(),
-                                         Substitute.For<IMemory>()),
+                                         Substitute.For<IMemory>(), Substitute.For<IKeyboard>()),
                 "graphicsProcessingUnit");
         }
 
@@ -40,7 +42,8 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), null,
                                          Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(),
-                                         Substitute.For<IRandomGenerator>(), Substitute.For<IMemory>()),
+                                         Substitute.For<IRandomGenerator>(), Substitute.For<IMemory>(),
+                                         Substitute.For<IKeyboard>()),
                 "callStack");
         }
 
@@ -50,7 +53,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(), null,
                                          Substitute.For<IAddressRegister>(), Substitute.For<IRandomGenerator>(),
-                                         Substitute.For<IMemory>()),
+                                         Substitute.For<IMemory>(), Substitute.For<IKeyboard>()),
                 "generalRegisters");
         }
 
@@ -60,7 +63,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
                                          Substitute.For<IGeneralRegisters>(), null, Substitute.For<IRandomGenerator>(),
-                                         Substitute.For<IMemory>()),
+                                         Substitute.For<IMemory>(), Substitute.For<IKeyboard>()),
                 "addressRegister");
         }
 
@@ -70,7 +73,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
                                          Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null,
-                                         Substitute.For<IMemory>()),
+                                         Substitute.For<IMemory>(), Substitute.For<IKeyboard>()),
                 "randomGenerator");
         }
 
@@ -80,13 +83,24 @@ namespace WonkyChip8.Interpreter.UnitTests
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
                                          Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(),
-                                         Substitute.For<IRandomGenerator>(), null),
+                                         Substitute.For<IRandomGenerator>(), null, Substitute.For<IKeyboard>()),
                 "memory");
+        }
+
+        [Test]
+        public void Constructor_WithKeyboard_ExpectedThrowsArgumentNullException()
+        {
+            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CommandFactory(Substitute.For<IGraphicsProcessingUnit>(), Substitute.For<ICallStack>(),
+                                         Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(),
+                                         Substitute.For<IRandomGenerator>(), Substitute.For<IMemory>(), null),
+                "keyboard");
         }
 
         [TestCase(0x99999)]
         [TestCase(0x5121)]
         [TestCase(0x800F)]
+        [TestCase(0xE000)]
         public void Create_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
             NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
@@ -117,6 +131,8 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0xB000, typeof(JumpToAddressCommand))]
         [TestCase(0xC000, typeof(SaveRandomValueToRegisterCommand))]
         [TestCase(0xD000, typeof(DrawSpriteCommand))]
+        [TestCase(0xE09E, typeof(KeyboardDrivenSkipNextOperationCommand))]
+        [TestCase(0xE0A1, typeof(KeyboardDrivenSkipNextOperationCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {

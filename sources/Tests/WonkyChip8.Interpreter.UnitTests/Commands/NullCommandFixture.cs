@@ -13,6 +13,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
+        public void Address_ExpectedReturnsZero()
+        {
+            Assert.AreEqual(0, new NullCommand().Address);
+        }
+
+        [Test]
         public void NextCommandAddress_ExpectedReturnsZero()
         {
             Assert.AreEqual(0, new NullCommand().NextCommandAddress);

@@ -45,6 +45,7 @@
     <Compile Include="Commands\DrawSpriteCommandFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />
     <Compile Include="Commands\BitwiseOperationsForRegistersCommandFixture.cs" />
+    <Compile Include="Commands\KeyboardDrivenSkipNextOperationCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />

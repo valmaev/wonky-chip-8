@@ -11,10 +11,11 @@ namespace WonkyChip8.Interpreter
         private readonly IAddressRegister _addressRegister;
         private readonly IRandomGenerator _randomGenerator;
         private readonly IMemory _memory;
+        private readonly IKeyboard _keyboard;
 
         public CommandFactory(IGraphicsProcessingUnit graphicsProcessingUnit, ICallStack callStack,
                               IGeneralRegisters generalRegisters, IAddressRegister addressRegister,
-                              IRandomGenerator randomGenerator, IMemory memory)
+                              IRandomGenerator randomGenerator, IMemory memory, IKeyboard keyboard)
         {
             if (graphicsProcessingUnit == null)
                 throw new ArgumentNullException("graphicsProcessingUnit");
@@ -28,6 +29,8 @@ namespace WonkyChip8.Interpreter
                 throw new ArgumentNullException("randomGenerator");
             if (memory == null)
                 throw new ArgumentNullException("memory");
+            if (keyboard == null)
+                throw new ArgumentNullException("keyboard");
 
             _graphicsProcessingUnit = graphicsProcessingUnit;
             _callStack = callStack;
@@ -35,6 +38,7 @@ namespace WonkyChip8.Interpreter
             _addressRegister = addressRegister;
             _randomGenerator = randomGenerator;
             _memory = memory;
+            _keyboard = keyboard;
         }
 
         public ICommand Create(int address, int operationCode)
@@ -65,7 +69,7 @@ namespace WonkyChip8.Interpreter
                 case 0x7000:
                     return new AddValueToRegisterCommand(address, operationCode, _generalRegisters);
                 case 0x8000:
-                    switch ((operationCode & 0x000F))
+                    switch (operationCode & 0x000F)
                     {
                         case 0x0000:
                             return new CopyRegisterValueCommand(address, operationCode, _generalRegisters);
@@ -89,6 +93,15 @@ namespace WonkyChip8.Interpreter
                 case 0xD000:
                     return new DrawSpriteCommand(address, operationCode, _graphicsProcessingUnit, _generalRegisters,
                                                  _addressRegister, _memory);
+                case 0xE000:
+                    switch (operationCode & 0x00FF)
+                    {
+                        case 0x009E:
+                        case 0x00A1:
+                            return new KeyboardDrivenSkipNextOperationCommand(address, operationCode, _generalRegisters,
+                                                                              _keyboard);
+                    }
+                    break;
             }
 
             throw new ArgumentOutOfRangeException("operationCode");

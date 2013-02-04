@@ -45,6 +45,7 @@
     <Compile Include="Commands\DrawSpriteCommand.cs" />
     <Compile Include="Commands\JumpToAddressCommand.cs" />
     <Compile Include="Commands\BitwiseOperationsForRegistersCommand.cs" />
+    <Compile Include="Commands\KeyboardDrivenSkipNextOperationCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IGraphicsProcessingUnit.cs" />
+    <Compile Include="IKeyboard.cs" />
     <Compile Include="IMemory.cs" />
     <Compile Include="IGeneralRegisters.cs" />
     <Compile Include="IRandomGenerator.cs" />
