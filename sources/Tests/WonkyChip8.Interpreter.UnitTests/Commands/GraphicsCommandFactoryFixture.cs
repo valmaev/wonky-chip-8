@@ -9,7 +9,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class GraphicsCommandFactoryFixture
     {
-        private static GraphicsCommandFactory CreateGraphicsCommandFactory(IGeneralRegisters generalRegisters = null,
+        internal static GraphicsCommandFactory CreateGraphicsCommandFactory(IGeneralRegisters generalRegisters = null,
                                                                            IAddressRegister addressRegister = null,
                                                                            IMemory memory = null,
                                                                            IGraphicsProcessingUnit

@@ -9,7 +9,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class SubroutineCommandFactoryFixture
     {
-        private static SubroutineCommandFactory CreateSubroutineCommandFactory(ICallStack callStack = null)
+        internal static SubroutineCommandFactory CreateSubroutineCommandFactory(ICallStack callStack = null)
         {
             return new SubroutineCommandFactory(callStack ?? Substitute.For<ICallStack>());
         }

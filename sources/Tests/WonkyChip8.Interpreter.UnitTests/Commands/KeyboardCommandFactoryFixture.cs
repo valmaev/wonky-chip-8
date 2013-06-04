@@ -9,7 +9,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class KeyboardCommandFactoryFixture
     {
-        private static KeyboardCommandFactory CreateKeyboardCommandFactory(IGeneralRegisters generalRegisters = null,
+        internal static KeyboardCommandFactory CreateKeyboardCommandFactory(IGeneralRegisters generalRegisters = null,
                                                                            IKeyboard keyboard = null)
         {
             return new KeyboardCommandFactory(generalRegisters ?? Substitute.For<IGeneralRegisters>(),

@@ -9,10 +9,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     [TestFixture]
     public class RegisterCommandFactoryFixture
     {
-        private static RegisterCommandFactory CreateCommandFactory(IGeneralRegisters generalRegisters = null,
-                                                                   IAddressRegister addressRegister = null,
-                                                                   IMemory memory = null,
-                                                                   IRandomGenerator randomGenerator = null)
+        internal static RegisterCommandFactory CreateRegisterCommandFactory(IGeneralRegisters generalRegisters = null,
+                                                                            IAddressRegister addressRegister = null,
+                                                                            IMemory memory = null,
+                                                                            IRandomGenerator randomGenerator = null)
         {
             return new RegisterCommandFactory(generalRegisters ?? Substitute.For<IGeneralRegisters>(),
                                               addressRegister ?? Substitute.For<IAddressRegister>(),
@@ -57,30 +57,30 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                 "randomGenerator");
         }
 
-        [TestCase(0x1000, typeof(JumpToAddressCommand))]
-        [TestCase(0x3000, typeof(SkipNextOperationCommand))]
-        [TestCase(0x4000, typeof(SkipNextOperationCommand))]
-        [TestCase(0x5000, typeof(SkipNextOperationCommand))]
-        [TestCase(0x6000, typeof(SaveValueToRegisterCommand))]
-        [TestCase(0x7000, typeof(AddValueToRegisterCommand))]
-        [TestCase(0x8000, typeof(CopyRegisterValueCommand))]
-        [TestCase(0x8001, typeof(BitwiseOperationsForRegistersCommand))]
-        [TestCase(0x8002, typeof(BitwiseOperationsForRegistersCommand))]
-        [TestCase(0x8003, typeof(BitwiseOperationsForRegistersCommand))]
-        [TestCase(0x8004, typeof(BinaryOperationsForRegistersCommand))]
-        [TestCase(0x8005, typeof(BinaryOperationsForRegistersCommand))]
-        [TestCase(0x8006, typeof(ShiftOperationsForRegistersCommand))]
-        [TestCase(0x8007, typeof(BinaryOperationsForRegistersCommand))]
-        [TestCase(0x800E, typeof(ShiftOperationsForRegistersCommand))]
-        [TestCase(0x9000, typeof(SkipNextOperationCommand))]
-        [TestCase(0xA000, typeof(SaveValueToAddressRegisterCommand))]
-        [TestCase(0xB000, typeof(JumpToAddressCommand))]
-        [TestCase(0xC000, typeof(SaveRandomValueToRegisterCommand))]
+        [TestCase(0x1000, typeof (JumpToAddressCommand))]
+        [TestCase(0x3000, typeof (SkipNextOperationCommand))]
+        [TestCase(0x4000, typeof (SkipNextOperationCommand))]
+        [TestCase(0x5000, typeof (SkipNextOperationCommand))]
+        [TestCase(0x6000, typeof (SaveValueToRegisterCommand))]
+        [TestCase(0x7000, typeof (AddValueToRegisterCommand))]
+        [TestCase(0x8000, typeof (CopyRegisterValueCommand))]
+        [TestCase(0x8001, typeof (BitwiseOperationsForRegistersCommand))]
+        [TestCase(0x8002, typeof (BitwiseOperationsForRegistersCommand))]
+        [TestCase(0x8003, typeof (BitwiseOperationsForRegistersCommand))]
+        [TestCase(0x8004, typeof (BinaryOperationsForRegistersCommand))]
+        [TestCase(0x8005, typeof (BinaryOperationsForRegistersCommand))]
+        [TestCase(0x8006, typeof (ShiftOperationsForRegistersCommand))]
+        [TestCase(0x8007, typeof (BinaryOperationsForRegistersCommand))]
+        [TestCase(0x800E, typeof (ShiftOperationsForRegistersCommand))]
+        [TestCase(0x9000, typeof (SkipNextOperationCommand))]
+        [TestCase(0xA000, typeof (SaveValueToAddressRegisterCommand))]
+        [TestCase(0xB000, typeof (JumpToAddressCommand))]
+        [TestCase(0xC000, typeof (SaveRandomValueToRegisterCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {
             // Arrange
-            var commandFactory = CreateCommandFactory();
+            var commandFactory = CreateRegisterCommandFactory();
 
             // Act
             ICommand command = commandFactory.Create(0, operationCode);
@@ -95,7 +95,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Create_WithNotSupportedOperationCode_ExpectedReturnsNullCommand(int notSupportedOperationCode)
         {
             // Arrange
-            var commandFactory = CreateCommandFactory();
+            var commandFactory = CreateRegisterCommandFactory();
 
             // Act
             ICommand command = commandFactory.Create(0, notSupportedOperationCode);
