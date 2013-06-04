@@ -49,14 +49,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => CreateSaveRandomValueToRegisterCommand(operationCode: 0x99999), "operationCode");
         }
 
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new SaveRandomValueToRegisterCommand(0, 0xC000, null, Substitute.For<IRandomGenerator>()),
                 "generalRegisters");
         }
@@ -64,7 +64,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullRandomGenerator_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new SaveRandomValueToRegisterCommand(0, 0xC000, Substitute.For<IGeneralRegisters>(), null),
                 "randomGenerator");
         }

@@ -17,7 +17,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RegisterCommandStub(0, 0, null), "generalRegisters");
         }
     }

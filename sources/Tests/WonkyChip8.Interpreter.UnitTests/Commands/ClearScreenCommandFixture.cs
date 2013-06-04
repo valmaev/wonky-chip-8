@@ -12,7 +12,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new ClearScreenCommand(0, null), "graphicsProcessingUnit");
         }
 

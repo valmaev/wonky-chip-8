@@ -17,7 +17,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullCallStack_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new SubroutineCommandFactory(null), "callStack");
         }
 

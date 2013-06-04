@@ -23,7 +23,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RegisterCommandFactory(null, Substitute.For<IAddressRegister>(),
                                                  Substitute.For<IMemory>(), Substitute.For<IRandomGenerator>()),
                 "generalRegisters");
@@ -32,7 +32,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RegisterCommandFactory(Substitute.For<IGeneralRegisters>(), null,
                                                  Substitute.For<IMemory>(), Substitute.For<IRandomGenerator>()),
                 "addressRegister");
@@ -41,7 +41,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RegisterCommandFactory(Substitute.For<IGeneralRegisters>(),
                                                  Substitute.For<IAddressRegister>(), null,
                                                  Substitute.For<IRandomGenerator>()),
@@ -51,7 +51,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullRandomGenerator_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RegisterCommandFactory(Substitute.For<IGeneralRegisters>(),
                                                  Substitute.For<IAddressRegister>(), Substitute.For<IMemory>(), null),
                 "randomGenerator");

@@ -20,14 +20,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0x99999)]
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => CreateBitwiseOperationsForRegistersCommand(invalidOperationCode), "operationCode");
         }
 
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new BitwiseOperationsForRegistersCommand(0, 0x8001, null), "generalRegisters");
         }
 

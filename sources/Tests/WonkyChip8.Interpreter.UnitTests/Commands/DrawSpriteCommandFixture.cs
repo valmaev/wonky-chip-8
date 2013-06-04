@@ -57,14 +57,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => CreateDrawSpriteCommand(operationCode: 0x99999), "operationCode");
         }
 
         [Test]
         public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
                                       Substitute.For<IGeneralRegisters>(), null, Substitute.For<IMemory>()),
@@ -74,7 +74,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(), null,
                                       Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()),
@@ -84,7 +84,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, null, Substitute.For<IGeneralRegisters>(),
                                       Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()),
@@ -94,7 +94,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
                                       Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null),

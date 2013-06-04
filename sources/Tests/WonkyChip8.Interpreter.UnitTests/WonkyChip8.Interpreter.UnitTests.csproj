@@ -64,7 +64,7 @@
     <Compile Include="CentralProcessingUnitFixture.cs" />
     <Compile Include="RandomAccessMemoryFixture.cs" />
     <Compile Include="RegistersFixture.cs" />
-    <Compile Include="TestUtilities\NUnitExtensions.cs" />
+    <Compile Include="TestUtilities\NUnitUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="NSubstitute">

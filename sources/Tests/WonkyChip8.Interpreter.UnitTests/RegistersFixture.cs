@@ -29,7 +29,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0xFF, 1)]
         public void ThisIndexer_WithInvalidRegisterIndex_ExpectedThrowsArgumentOutOfRangeException(int registerIndex, byte value)
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => new Registers()[registerIndex] = value, "index");
         }
     }

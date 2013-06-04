@@ -23,7 +23,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0x00A1)]
         public void Constructor_WithInvalidOperationCode_ExpectedThrowsArgumentOutOfRangeException(int invalidOperationCode)
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => CreateCommand(invalidOperationCode), "operationCode");
         }
 
@@ -37,7 +37,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new KeyboardDrivenSkipNextOperationCommand(0, 0xE09E, null, Substitute.For<IKeyboard>()),
                 "generalRegisters");
         }
@@ -45,7 +45,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullKeyboard_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new KeyboardDrivenSkipNextOperationCommand(0, 0xE09E, Substitute.For<IGeneralRegisters>(), null),
                 "keyboard");
         }

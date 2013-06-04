@@ -18,14 +18,14 @@ namespace WonkyChip8.Interpreter.UnitTests
         [Test]
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CentralProcessingUnit(null, Substitute.For<ICommandFactory>()), "memory");
         }
 
         [Test]
         public void Constructor_WithNullCommandFactory_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new CentralProcessingUnit(Substitute.For<IMemory>(), null), "commandFactory");
         }
 

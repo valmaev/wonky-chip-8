@@ -11,7 +11,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [Test]
         public void LoadProgram_WithNullProgramBytes_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new RandomAccessMemory().LoadProgram(null), "programBytes");
         }
 
@@ -67,7 +67,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0x1000, 1)]
         public void ThisIndexer_WithInvalidCellAddress_ExpectedThrowsArgumentOutOfRangeException(int cellAddress, byte value)
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => new RandomAccessMemory()[cellAddress] = value, "index");
         }
     }

@@ -24,7 +24,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new GraphicsCommandFactory(null, Substitute.For<IAddressRegister>(),
                                                  Substitute.For<IMemory>(), Substitute.For<IGraphicsProcessingUnit>()),
                 "generalRegisters");
@@ -33,7 +33,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(), null,
                                                  Substitute.For<IMemory>(), Substitute.For<IGraphicsProcessingUnit>()),
                 "addressRegister");
@@ -42,7 +42,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(),
                                                  Substitute.For<IAddressRegister>(), null,
                                                  Substitute.For<IGraphicsProcessingUnit>()),
@@ -52,7 +52,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(),
                                                  Substitute.For<IAddressRegister>(), Substitute.For<IMemory>(),
                                                  null),

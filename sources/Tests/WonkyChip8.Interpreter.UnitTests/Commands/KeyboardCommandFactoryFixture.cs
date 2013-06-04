@@ -19,14 +19,14 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new KeyboardCommandFactory(null, Substitute.For<IKeyboard>()), "generalRegisters");
         }
 
         [Test]
         public void Constructor_WithNullKeyboard_ExpectedThrowsArgumentNullException()
         {
-            NUnitExtensions.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () => new KeyboardCommandFactory(Substitute.For<IGeneralRegisters>(), null), "keyboard");
         }
 
