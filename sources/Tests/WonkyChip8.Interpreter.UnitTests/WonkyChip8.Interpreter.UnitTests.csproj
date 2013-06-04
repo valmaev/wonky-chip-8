@@ -45,10 +45,13 @@
     <Compile Include="Commands\CommandFixture.cs" />
     <Compile Include="Commands\CopyRegisterValueCommandFixture.cs" />
     <Compile Include="Commands\DrawSpriteCommandFixture.cs" />
+    <Compile Include="Commands\GraphicsCommandFactoryFixture.cs" />
     <Compile Include="Commands\JumpToAddressCommandFixture.cs" />
     <Compile Include="Commands\BitwiseOperationsForRegistersCommandFixture.cs" />
+    <Compile Include="Commands\KeyboardCommandFactoryFixture.cs" />
     <Compile Include="Commands\KeyboardDrivenSkipNextOperationCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
+    <Compile Include="Commands\RegisterCommandFactoryFixture.cs" />
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
     <Compile Include="Commands\SaveRandomValueToRegisterCommandFixture.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="Commands\SaveValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\ShiftOperationsForRegistersCommandFixture.cs" />
     <Compile Include="Commands\SkipNextOperationCommandFixture.cs" />
+    <Compile Include="Commands\SubroutineCommandFactoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CentralProcessingUnitFixture.cs" />
     <Compile Include="RandomAccessMemoryFixture.cs" />
