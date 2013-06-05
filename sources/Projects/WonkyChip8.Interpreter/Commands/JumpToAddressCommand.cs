@@ -24,7 +24,6 @@ namespace WonkyChip8.Interpreter.Commands
                     default:
                         throw new InvalidOperationException(string.Format("Operation code {0:X4} isn't supported",
                                                                           OperationCode));
-
                 }
             }
         }

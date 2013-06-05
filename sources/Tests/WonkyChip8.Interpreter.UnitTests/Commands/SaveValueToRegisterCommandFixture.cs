@@ -45,7 +45,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [Test]
-        public void Constructor_WithNullGeneralRegisters_ExpectecThrowsArgumentNullException()
+        public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             // Act & Assert
             var argumentNullException =
