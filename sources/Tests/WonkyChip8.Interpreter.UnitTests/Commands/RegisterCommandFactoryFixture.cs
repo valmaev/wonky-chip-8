@@ -76,6 +76,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0xA000, typeof (SaveValueToAddressRegisterCommand))]
         [TestCase(0xB000, typeof (JumpToAddressCommand))]
         [TestCase(0xC000, typeof (SaveRandomValueToRegisterCommand))]
+        [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {

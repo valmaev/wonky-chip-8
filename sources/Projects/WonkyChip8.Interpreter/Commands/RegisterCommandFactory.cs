@@ -68,6 +68,14 @@ namespace WonkyChip8.Interpreter.Commands
                     return new SaveValueToAddressRegisterCommand(address, operationCode, _addressRegister);
                 case 0xC000:
                     return new SaveRandomValueToRegisterCommand(address, operationCode, _generalRegisters, _randomGenerator);
+                case 0XF000:
+                    switch (operationCode & 0x00FF)
+                    {
+                        case 0x001E:
+                            return new AddValueToAddressRegisterCommand(address, operationCode, _generalRegisters,
+                                                                        _addressRegister);
+                    }
+                    break;
             }
 
             return new NullCommand();
