@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="CentralProcessingUnit.cs" />
     <Compile Include="CommandFactory.cs" />
+    <Compile Include="Commands\AddValueToAddressRegisterCommand.cs" />
     <Compile Include="Commands\AddValueToRegisterCommand.cs" />
     <Compile Include="Commands\BinaryOperationsForRegistersCommand.cs" />
     <Compile Include="Commands\CallSubroutineCommand.cs" />

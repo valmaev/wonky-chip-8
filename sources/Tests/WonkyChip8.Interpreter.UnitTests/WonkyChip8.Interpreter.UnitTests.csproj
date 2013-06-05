@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandFactoryFixture.cs" />
+    <Compile Include="Commands\AddValueToAddressRegisterCommandFixture.cs" />
     <Compile Include="Commands\AddValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\BinaryOperationsForRegistersCommandFixture.cs" />
     <Compile Include="Commands\CallSubroutineCommandFixture.cs" />
