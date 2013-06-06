@@ -22,7 +22,8 @@ namespace WonkyChip8.Interpreter.UnitTests
                     GraphicsCommandFactoryFixture.CreateGraphicsCommandFactory(),
                     KeyboardCommandFactoryFixture.CreateKeyboardCommandFactory(),
                     RegisterCommandFactoryFixture.CreateRegisterCommandFactory(),
-                    SubroutineCommandFactoryFixture.CreateSubroutineCommandFactory()
+                    SubroutineCommandFactoryFixture.CreateSubroutineCommandFactory(),
+                    TimerCommandFactoryFixture.CreateTimerCommandFactory()
                 };
             return new CommandFactory(factories);
         }
@@ -131,6 +132,7 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0xD000, typeof (DrawSpriteCommand))]
         [TestCase(0xE09E, typeof (KeyboardDrivenSkipNextOperationCommand))]
         [TestCase(0xE0A1, typeof (KeyboardDrivenSkipNextOperationCommand))]
+        [TestCase(0xF007, typeof (SaveTimerValueToRegisterCommand))]
         [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
