@@ -133,6 +133,8 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0xE09E, typeof (KeyboardDrivenSkipNextOperationCommand))]
         [TestCase(0xE0A1, typeof (KeyboardDrivenSkipNextOperationCommand))]
         [TestCase(0xF007, typeof (SaveTimerValueToRegisterCommand))]
+        [TestCase(0xF015, typeof (SaveRegisterValueToTimerValueCommand))]
+        [TestCase(0xF018, typeof (SaveRegisterValueToTimerValueCommand))]
         [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)

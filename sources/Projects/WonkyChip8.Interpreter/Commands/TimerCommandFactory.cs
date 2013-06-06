@@ -28,6 +28,10 @@ namespace WonkyChip8.Interpreter.Commands
             {
                 case 0xF007:
                     return new SaveTimerValueToRegisterCommand(address, operationCode, _generalRegisters, _delayTimer);
+                case 0xF015:
+                    return new SaveRegisterValueToTimerValueCommand(address, operationCode, _generalRegisters, _delayTimer);
+                case 0xF018:
+                    return new SaveRegisterValueToTimerValueCommand(address, operationCode, _generalRegisters, _soundTimer);
             }
 
             return new NullCommand();

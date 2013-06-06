@@ -55,6 +55,7 @@
     <Compile Include="Commands\RegisterCommandFactoryFixture.cs" />
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
+    <Compile Include="Commands\SaveRegisterValueToTimerValueCommandFixture.cs" />
     <Compile Include="Commands\SaveTimerValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\SaveRandomValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\SaveValueToAddressRegisterCommandFixture.cs" />

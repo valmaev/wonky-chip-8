@@ -42,6 +42,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         }
 
         [TestCase(0xF007, typeof (SaveTimerValueToRegisterCommand))]
+        [TestCase(0xF015, typeof (SaveRegisterValueToTimerValueCommand))]
+        [TestCase(0xF018, typeof (SaveRegisterValueToTimerValueCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {
