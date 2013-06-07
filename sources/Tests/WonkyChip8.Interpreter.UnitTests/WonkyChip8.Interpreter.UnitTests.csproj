@@ -64,6 +64,7 @@
     <Compile Include="Commands\SkipNextOperationCommandFixture.cs" />
     <Compile Include="Commands\SubroutineCommandFactoryFixture.cs" />
     <Compile Include="Commands\TimerCommandFactoryFixture.cs" />
+    <Compile Include="Commands\WaitForKeyPressCommandFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CentralProcessingUnitFixture.cs" />
     <Compile Include="RandomAccessMemoryFixture.cs" />

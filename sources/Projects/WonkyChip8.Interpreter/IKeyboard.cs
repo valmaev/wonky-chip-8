@@ -3,5 +3,6 @@
     public interface IKeyboard
     {
         bool IsKeyPressed(byte keyIndex);
+        byte KeysCount { get; }
     }
 }

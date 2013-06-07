@@ -26,6 +26,8 @@ namespace WonkyChip8.Interpreter.Commands
                 case 0xE0A1:
                     return new KeyboardDrivenSkipNextOperationCommand(address, operationCode, _generalRegisters,
                                                                       _keyboard);
+                case 0xF00A:
+                    return new WaitForKeyPressCommand(address, operationCode, _generalRegisters, _keyboard);
                 default:
                     return new NullCommand();
             }

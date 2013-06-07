@@ -10,7 +10,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class KeyboardCommandFactoryFixture
     {
         internal static KeyboardCommandFactory CreateKeyboardCommandFactory(IGeneralRegisters generalRegisters = null,
-                                                                           IKeyboard keyboard = null)
+                                                                            IKeyboard keyboard = null)
         {
             return new KeyboardCommandFactory(generalRegisters ?? Substitute.For<IGeneralRegisters>(),
                                               keyboard ?? Substitute.For<IKeyboard>());
@@ -30,8 +30,9 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                 () => new KeyboardCommandFactory(Substitute.For<IGeneralRegisters>(), null), "keyboard");
         }
 
-        [TestCase(0xE09E, typeof(KeyboardDrivenSkipNextOperationCommand))]
-        [TestCase(0xE0A1, typeof(KeyboardDrivenSkipNextOperationCommand))]
+        [TestCase(0xE09E, typeof (KeyboardDrivenSkipNextOperationCommand))]
+        [TestCase(0xE0A1, typeof (KeyboardDrivenSkipNextOperationCommand))]
+        [TestCase(0xF00A, typeof (WaitForKeyPressCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {

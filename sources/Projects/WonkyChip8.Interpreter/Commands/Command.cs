@@ -2,7 +2,7 @@
 {
     public abstract class Command : ICommand
     {
-        protected static readonly int CommandLength = 0x2;
+        public static readonly int CommandLength = 0x2;
 
         private readonly int _address;
         private readonly int _operationCode;
