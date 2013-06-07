@@ -52,6 +52,7 @@
     <Compile Include="Commands\KeyboardCommandFactoryFixture.cs" />
     <Compile Include="Commands\KeyboardDrivenSkipNextOperationCommandFixture.cs" />
     <Compile Include="Commands\NullCommandFixture.cs" />
+    <Compile Include="Commands\PointToFontSpriteCommandFixture.cs" />
     <Compile Include="Commands\RegisterCommandFactoryFixture.cs" />
     <Compile Include="Commands\RegisterCommandFixture.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
