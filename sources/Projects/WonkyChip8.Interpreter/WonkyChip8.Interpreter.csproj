@@ -55,6 +55,7 @@
     <Compile Include="Commands\RegisterCommandFactory.cs" />
     <Compile Include="Commands\ReturnFromSubroutineCommand.cs" />
     <Compile Include="Commands\SaveBinaryCodedRegisterValueInMemoryCommand.cs" />
+    <Compile Include="Commands\SaveGeneralRegistersValuesInMemoryCommand.cs" />
     <Compile Include="Commands\SaveRegisterValueToTimerValueCommand.cs" />
     <Compile Include="Commands\SaveTimerValueToRegisterCommand.cs" />
     <Compile Include="Commands\SaveRandomValueToRegisterCommand.cs" />
