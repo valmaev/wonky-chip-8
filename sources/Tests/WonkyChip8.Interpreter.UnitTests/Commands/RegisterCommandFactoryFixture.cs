@@ -78,6 +78,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0xC000, typeof (SaveRandomValueToRegisterCommand))]
         [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
         [TestCase(0xF029, typeof (PointToFontSpriteCommand))]
+        [TestCase(0xF033, typeof (SaveBinaryCodedRegisterValueInMemoryCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {

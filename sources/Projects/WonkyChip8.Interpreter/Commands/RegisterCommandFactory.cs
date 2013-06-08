@@ -78,6 +78,10 @@ namespace WonkyChip8.Interpreter.Commands
                         case 0x0029:
                             return new PointToFontSpriteCommand(address, operationCode, _generalRegisters,
                                                                 _addressRegister);
+                        case 0x0033:
+                            return new SaveBinaryCodedRegisterValueInMemoryCommand(address, operationCode,
+                                                                                   _generalRegisters, _addressRegister,
+                                                                                   _memory);
                     }
                     break;
             }

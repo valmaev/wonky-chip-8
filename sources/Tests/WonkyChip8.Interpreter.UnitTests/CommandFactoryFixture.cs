@@ -137,7 +137,8 @@ namespace WonkyChip8.Interpreter.UnitTests
         [TestCase(0xF015, typeof (SaveRegisterValueToTimerValueCommand))]
         [TestCase(0xF018, typeof (SaveRegisterValueToTimerValueCommand))]
         [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
-        [TestCase(0xF029, typeof(PointToFontSpriteCommand))]
+        [TestCase(0xF029, typeof (PointToFontSpriteCommand))]
+        [TestCase(0xF033, typeof (SaveBinaryCodedRegisterValueInMemoryCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {
