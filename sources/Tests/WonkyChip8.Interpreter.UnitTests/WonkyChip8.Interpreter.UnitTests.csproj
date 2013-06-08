@@ -58,6 +58,7 @@
     <Compile Include="Commands\ReturnFromSubroutineCommandFixture.cs" />
     <Compile Include="Commands\SaveBinaryCodedRegisterValueInMemoryCommandFixture.cs" />
     <Compile Include="Commands\SaveGeneralRegistersValuesInMemoryCommandFixture.cs" />
+    <Compile Include="Commands\SaveMemoryCellValuesInGeneralRegistersCommandFixture.cs" />
     <Compile Include="Commands\SaveRegisterValueToTimerValueCommandFixture.cs" />
     <Compile Include="Commands\SaveTimerValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\SaveRandomValueToRegisterCommandFixture.cs" />

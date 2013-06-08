@@ -86,6 +86,10 @@ namespace WonkyChip8.Interpreter.Commands
                             return new SaveGeneralRegistersValuesInMemoryCommand(address, operationCode,
                                                                                  _generalRegisters, _addressRegister,
                                                                                  _memory);
+                        case 0x0065:
+                            return new SaveMemoryCellValuesInGeneralRegistersCommand(address, operationCode,
+                                                                                     _generalRegisters, _addressRegister,
+                                                                                     _memory);
                     }
                     break;
             }
