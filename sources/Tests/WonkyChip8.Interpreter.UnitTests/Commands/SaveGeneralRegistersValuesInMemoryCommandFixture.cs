@@ -12,7 +12,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     {
         private const int ValidOperationCode = 0xF055;
 
-        private static SaveGeneralRegistersValuesInMemoryCommand CreateCommmand(int operationCode = ValidOperationCode,
+        private static SaveGeneralRegistersValuesInMemoryCommand CreateCommand(int operationCode = ValidOperationCode,
                                                                                 IGeneralRegisters generalRegisters =
                                                                                     null,
                                                                                 IAddressRegister addressRegister = null,
@@ -92,7 +92,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                 memoryStub[memoryCellIndex] = Arg.Do<byte>(value => memoryCellValues.Add(index, value));
             }
 
-            var command = CreateCommmand(operationCode, generalRegistersStub, addressRegisterStub, memoryStub);
+            var command = CreateCommand(operationCode, generalRegistersStub, addressRegisterStub, memoryStub);
 
             // Act
             command.Execute();
