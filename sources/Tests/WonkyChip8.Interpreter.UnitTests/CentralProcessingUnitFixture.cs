@@ -30,26 +30,15 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WithNullProgramStartByte_ExpectedNotThrowsException()
-        {
-            // Arrange
-            var centralProcessingUnit = CreateCentralProcessingUnit();
-
-            // Act & Assert
-            Assert.DoesNotThrow(centralProcessingUnit.ExecuteProgram);
-        }
-
-        [Test]
-        public void ExecuteProgram_WithNotNullProgramStartByte_ExpectedExecutesCommandOneTime()
+        public void ExecuteProgram_ExpectedExecutesCommandOneTime()
         {
             // Arrange
             const int programStartAddress = 0x200;
-            var memoryStub = Substitute.For<IMemory>();
-            memoryStub.ProgramStartAddress.Returns(programStartAddress);
-            
             const int commandOperationCode = 0x00E0;
-            memoryStub[memoryStub.ProgramStartAddress].Returns((byte) 0x00);
-            memoryStub[memoryStub.ProgramStartAddress + 1].Returns((byte) 0xE0);
+            
+            var memoryStub = Substitute.For<IMemory>();
+            memoryStub[programStartAddress].Returns((byte) 0x00);
+            memoryStub[programStartAddress + 1].Returns((byte) 0xE0);
 
             var commandMock = Substitute.For<ICommand>();
             var commandFactoryStub = Substitute.For<ICommandFactory>();
@@ -58,7 +47,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             var centralProcessingUnit = CreateCentralProcessingUnit(memoryStub, commandFactoryStub);
 
             // Act
-            centralProcessingUnit.ExecuteProgram();
+            centralProcessingUnit.ExecuteProgram(programStartAddress);
 
             // Assert
             commandMock.Received(1).Execute();
@@ -70,11 +59,10 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Arrange
             const int programStartAddress = 0x200;
             var memoryStub = Substitute.For<IMemory>();
-            memoryStub.ProgramStartAddress.Returns(programStartAddress);
 
             const int firstCommandOperationCode = 0x00E0;
-            memoryStub[memoryStub.ProgramStartAddress].Returns((byte) 0x00);
-            memoryStub[memoryStub.ProgramStartAddress + 1].Returns((byte) 0xE0);
+            memoryStub[programStartAddress].Returns((byte) 0x00);
+            memoryStub[programStartAddress + 1].Returns((byte) 0xE0);
 
             const int secondCommandAddress = programStartAddress + 0x2;
             const int secondCommandOperationCode = 0x00EE;
@@ -93,7 +81,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             var centralProcessingUnit = CreateCentralProcessingUnit(memoryStub, commandFactoryStub);
 
             // Act
-            centralProcessingUnit.ExecuteProgram();
+            centralProcessingUnit.ExecuteProgram(programStartAddress);
 
             // Assert
             firstCommandMock.Received(1).Execute();

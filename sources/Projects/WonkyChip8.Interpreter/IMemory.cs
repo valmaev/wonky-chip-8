@@ -2,10 +2,8 @@
 {
     public interface IMemory
     {
-        int ProgramStartAddress { get; }
-        int EndAddress { get; }
-        void LoadProgram(byte[] programBytes);
-        void UnloadProgram();
+        void LoadProgram(int programStartAddress, byte[] programBytes);
+        void UnloadProgram(int programStartAddress);
         byte this[int cellAddress] { get; set; }
     }
 }

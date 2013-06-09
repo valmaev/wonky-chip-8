@@ -18,9 +18,9 @@ namespace WonkyChip8.Interpreter
             _commandFactory = commandFactory;
         }
 
-        public void ExecuteProgram()
+        public void ExecuteProgram(int programStartAddress)
         {
-            int currentProgramByteAddress = _memory.ProgramStartAddress;
+            int currentProgramByteAddress = programStartAddress;
             int currentOperationCode;
             do
             {
@@ -32,10 +32,10 @@ namespace WonkyChip8.Interpreter
             while (currentOperationCode != 0);
         }
 
-        private int GetCurrentOperationCodeFromMemory(int addressInMemory)
+        private int GetCurrentOperationCodeFromMemory(int memoryCellAddress)
         {
-            byte currentProgramByte = _memory[addressInMemory];
-            byte nextProgramByte = _memory[addressInMemory + 1];
+            byte currentProgramByte = _memory[memoryCellAddress];
+            byte nextProgramByte = _memory[memoryCellAddress + 1];
             return (currentProgramByte << 8) + nextProgramByte;
         }
     }

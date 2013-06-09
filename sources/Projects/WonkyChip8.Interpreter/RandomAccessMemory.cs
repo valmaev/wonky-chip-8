@@ -7,9 +7,9 @@ namespace WonkyChip8.Interpreter
     {
         private readonly List<byte> _memory;
 
-        public RandomAccessMemory()
+        public RandomAccessMemory(int capacity)
         {
-            _memory = new List<byte>(new byte[EndAddress]);
+            _memory = new List<byte>(new byte[capacity]);
         }
 
         public byte this[int cellAddress]
@@ -18,20 +18,17 @@ namespace WonkyChip8.Interpreter
             set { _memory.Insert(cellAddress, value); }
         }
 
-        public int ProgramStartAddress { get { return 0x200; } }
-        public int EndAddress { get { return 0xFFF; } }
-
-        public void LoadProgram(byte[] programBytes)
+        public void LoadProgram(int programStartAddress, byte[] programBytes)
         {
             if (programBytes == null)
                 throw new ArgumentNullException("programBytes");
 
-            _memory.InsertRange(ProgramStartAddress, programBytes);
+            _memory.InsertRange(programStartAddress, programBytes);
         }
 
-        public void UnloadProgram()
+        public void UnloadProgram(int programStartAddress)
         {
-            for (var address = ProgramStartAddress; address < EndAddress; address++)
+            for (var address = programStartAddress; address < _memory.Capacity; address++)
                 _memory[address] = 0;
         }
     }
