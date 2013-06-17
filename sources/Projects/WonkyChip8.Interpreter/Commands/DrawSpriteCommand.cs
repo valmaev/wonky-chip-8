@@ -30,9 +30,13 @@ namespace WonkyChip8.Interpreter.Commands
 
         public override void Execute()
         {
-            var firstPixelCoordinate = new Tuple<int, int>(SecondOperationCodeHalfByte, ThirdOperationCodeHalfByte);
+            var abscissa = GeneralRegisters[SecondOperationCodeHalfByte];
+            var ordinate = GeneralRegisters[ThirdOperationCodeHalfByte];
+            var firstPixelCoordinate = new Tuple<int, int>(abscissa, ordinate);
+
             var spriteHeight = FourthOperationCodeHalfByte;
             var pixels = GetPixelsFromMemory(spriteHeight);
+
             bool anyPixelFlipped = _graphicsProcessingUnit.DrawSprite(firstPixelCoordinate, pixels);
             GeneralRegisters[PixelFlippingDetectorRegisterIndex] = Convert.ToByte(anyPixelFlipped);
         }

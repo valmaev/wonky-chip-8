@@ -22,36 +22,12 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                          memory ?? Substitute.For<IMemory>());
         }
 
-        [TestCase(0xD000, 0, false)]
-        [TestCase(0xD121, 1, true)]
-        public void Execute_ExpectedCallsGraphicsProcessingUnitOnce(int operationCode, int spriteHeight,
-                                                                    bool anyPixelFlipped)
+        private static IGraphicsProcessingUnit CreateGraphicsProcessingUnitMock(bool anyPixelFlipped = false)
         {
-            // Arrange
             var graphicsProcessingUnitMock = Substitute.For<IGraphicsProcessingUnit>();
             graphicsProcessingUnitMock.DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>())
                                       .ReturnsForAnyArgs(anyPixelFlipped);
-
-            var generalRegistersStub = Substitute.For<IGeneralRegisters>();
-            const int flippingDetectorRegisterIndex = 0xF;
-            byte flippingDetectorRegsiterActualValue = 0;
-            generalRegistersStub[flippingDetectorRegisterIndex] =
-                Arg.Do<byte>(value => flippingDetectorRegsiterActualValue = value);
-            generalRegistersStub[flippingDetectorRegisterIndex].Returns(flippingDetectorRegsiterActualValue);
-
-            var addressRegisterStub = Substitute.For<IAddressRegister>();
-            const short addressRegisterValue = 0;
-            addressRegisterStub.AddressValue.Returns(addressRegisterValue);
-
-            DrawSpriteCommand command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock,
-                                                                generalRegistersStub, addressRegisterStub);
-            // Act
-            command.Execute();
-
-            // Assert
-            graphicsProcessingUnitMock.Received(1)
-                                      .DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>());
-            Assert.AreEqual(Convert.ToByte(anyPixelFlipped), flippingDetectorRegsiterActualValue);
+            return graphicsProcessingUnitMock;
         }
 
         [Test]
@@ -99,6 +75,61 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                 new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
                                       Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null),
                 "memory");
+        }
+
+        [TestCase(0xD000, false)]
+        [TestCase(0xD121, true)]
+        public void Execute_ExpectedWriteResultOfDrawingToFlippingDetectorRegister(int operationCode, bool anyPixelFlipped)
+        {
+            // Arrange
+            var graphicsProcessingUnitMock = CreateGraphicsProcessingUnitMock(anyPixelFlipped);
+
+            var generalRegistersStub = Substitute.For<IGeneralRegisters>();
+            const int flippingDetectorRegisterIndex = 0xF;
+            byte flippingDetectorRegisterActualValue = 0;
+            generalRegistersStub[flippingDetectorRegisterIndex] =
+                Arg.Do<byte>(value => flippingDetectorRegisterActualValue = value);
+            generalRegistersStub[flippingDetectorRegisterIndex].Returns(flippingDetectorRegisterActualValue);
+
+            var addressRegisterStub = Substitute.For<IAddressRegister>();
+            const short addressRegisterValue = 0;
+            addressRegisterStub.AddressValue.Returns(addressRegisterValue);
+
+            DrawSpriteCommand command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock,
+                                                                generalRegistersStub, addressRegisterStub);
+            // Act
+            command.Execute();
+
+            // Assert
+            Assert.AreEqual(Convert.ToByte(anyPixelFlipped), flippingDetectorRegisterActualValue);
+        }
+
+        [TestCase(0xD000, 0x00, 0x00)]
+        [TestCase(0xDFFF, 0xFF, 0xFF)]
+        [TestCase(0xD1A3, 0x1A, 0x32)]
+        public void Execute_ExpectedCallsGraphicsProcessingUnitWithProperCoordinates(int operationCode,
+                                                                                     byte firstRegisterValue,
+                                                                                     byte secondRegisterValue)
+        {
+            // Arrange
+            var firstRegisterIndex = (operationCode & 0x0F00) >> 8;
+            var secondRegisterIndex = (operationCode & 0x00F0) >> 4;
+
+            var generalRegistersStub = Substitute.For<IGeneralRegisters>();
+            generalRegistersStub[firstRegisterIndex].Returns(firstRegisterValue);
+            generalRegistersStub[secondRegisterIndex].Returns(secondRegisterValue);
+
+            var graphicsProcessingUnitMock = CreateGraphicsProcessingUnitMock(anyPixelFlipped: true);
+
+            var command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock, generalRegistersStub);
+
+            // Act
+            command.Execute();
+
+            // Assert
+            graphicsProcessingUnitMock.Received(1)
+                                      .DrawSprite(new Tuple<int, int>(firstRegisterValue, secondRegisterValue),
+                                                  Arg.Any<byte[]>());
         }
     }
 }
