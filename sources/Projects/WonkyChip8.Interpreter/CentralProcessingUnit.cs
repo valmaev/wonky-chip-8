@@ -18,9 +18,13 @@ namespace WonkyChip8.Interpreter
             _commandFactory = commandFactory;
         }
 
-        public void ExecuteProgram(int programStartAddress)
+        public void ExecuteProgram()
         {
-            int currentProgramByteAddress = programStartAddress;
+            if (!_memory.ProgramStartAddress.HasValue)
+                throw new InvalidOperationException(
+                    "An attempt was made to execute program before loading it to memory.");
+
+            int currentProgramByteAddress = _memory.ProgramStartAddress.Value;
             int currentOperationCode;
             do
             {

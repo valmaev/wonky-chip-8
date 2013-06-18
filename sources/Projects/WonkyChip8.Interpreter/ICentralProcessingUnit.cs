@@ -2,6 +2,6 @@
 {
     public interface ICentralProcessingUnit
     {
-        void ExecuteProgram(int programStartAddress);
+        void ExecuteProgram();
     }
 }
