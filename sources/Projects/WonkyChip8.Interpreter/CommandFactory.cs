@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WonkyChip8.Interpreter.Commands;
 
 namespace WonkyChip8.Interpreter
@@ -24,6 +25,8 @@ namespace WonkyChip8.Interpreter
                     if (command != null && command.GetType() != typeof (NullCommand))
                         return command;
                 }
+
+                throw new ArgumentOutOfRangeException("operationCode");
             }
             return new NullCommand();
         }

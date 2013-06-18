@@ -4,12 +4,15 @@ using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
 using WonkyChip8.Interpreter.UnitTests.Commands;
+using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
 namespace WonkyChip8.Interpreter.UnitTests
 {
     [TestFixture]
     public class CommandFactoryFixture
     {
+        private const int NonZeroOperationCode = 0x0001;
+
         private static CommandFactory CreateCommandFactory(IEnumerable<ICommandFactory> commandFactories = null)
         {
             return new CommandFactory(commandFactories ?? Substitute.For<IEnumerable<ICommandFactory>>());
@@ -76,19 +79,34 @@ namespace WonkyChip8.Interpreter.UnitTests
                 };
 
             var commandFactory = CreateCommandFactory(factories);
-            const int nonZeroOperationCode = 0x0001;
 
             // Act
-            var command = commandFactory.Create(0, nonZeroOperationCode);
+            var command = commandFactory.Create(0, NonZeroOperationCode);
 
             // Assert
             Assert.AreEqual(commandStub, command);
         }
 
         [Test]
-        public void Create_WithoutChildCommandFactories_ExpectedReturnsNullCommand()
+        public void Create_WhenAllChildFactoriesReturnsNullOrNullCommand_ExpectedThrowArgumentOutOfRangeException()
         {
-            Assert.IsInstanceOf<NullCommand>(CreateCommandFactory().Create(0, 0x0001));
+            // Arrange
+            var commandFactory = CreateCommandFactory(new List<ICommandFactory>
+                {
+                    CreateCommandFactoryStub(() => null),
+                    CreateCommandFactoryStub(() => new NullCommand())
+                });
+
+            // Act & Assert
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => commandFactory.Create(0, NonZeroOperationCode), "operationCode");
+        }
+
+        [Test]
+        public void Create_WithoutChildCommandFactoriesAndNonZeroOperationCode_ExpectedThrowsArgumentOutOfRangeException()
+        {
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateCommandFactory().Create(0, NonZeroOperationCode), "operationCode");
         }
 
         [Test]
