@@ -13,6 +13,11 @@ namespace WonkyChip8.Interpreter.UnitTests
             return new RandomAccessMemory(capacity);
         }
 
+        private static byte[] CreateProgramBytes()
+        {
+            return new byte[] {0xAA, 0x01, 0xBB, 0x11};
+        }
+
         [Test]
         public void LoadProgram_WithNullProgramBytes_ExpectedThrowsArgumentNullException()
         {
@@ -26,7 +31,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Arrange
             var randomAccessMemory = CreateMemory();
             const int programStartAddress = 0x200;
-            var programBytes = new byte[] {0xAA, 0x01, 0xBB, 0x11};
+            var programBytes = CreateProgramBytes();
 
             // Act
             randomAccessMemory.LoadProgram(programStartAddress, programBytes);
@@ -35,6 +40,26 @@ namespace WonkyChip8.Interpreter.UnitTests
             for (var address = 0; address < programBytes.Count(); address++)
                 Assert.AreEqual(programBytes[address], randomAccessMemory[programStartAddress + address]);
             Assert.AreEqual(programBytes[0], randomAccessMemory[programStartAddress]);
+        }
+
+        [Test]
+        public void LoadProgram_ExpectedSetsProgramStartAddressFromParameter()
+        {
+            // Arrange
+            var memory = CreateMemory();
+            const int expectedProgramStartAddress = 0x200;
+            
+            // Act
+            memory.LoadProgram(expectedProgramStartAddress, CreateProgramBytes());
+
+            // Assert
+            Assert.AreEqual(expectedProgramStartAddress, memory.ProgramStartAddress);
+        }
+
+        [Test]
+        public void ProgramStartAddress_ExpectedDefualtValueIsNull()
+        {
+            Assert.IsNull(CreateMemory().ProgramStartAddress);
         }
 
         [Test]
@@ -54,6 +79,21 @@ namespace WonkyChip8.Interpreter.UnitTests
             for (var i = programStartAddress; i < capacity; i++)
                 Assert.AreEqual(0, randomAccessMemory[i]);
             Assert.AreEqual(0, randomAccessMemory[programStartAddress]);
+        }
+
+        [Test]
+        public void UnloadProgram_ExpectedSetsProgramStartAddressToNull()
+        {
+            // Arrange
+            var memory = CreateMemory();
+            const int programStartAddress = 0x200;
+            memory.LoadProgram(programStartAddress, CreateProgramBytes());
+
+            // Act
+            memory.UnloadProgram(programStartAddress);
+
+            // Assert
+            Assert.IsNull(memory.ProgramStartAddress);
         }
 
         [TestCase(0x000, 1, ExpectedResult = 1)]
