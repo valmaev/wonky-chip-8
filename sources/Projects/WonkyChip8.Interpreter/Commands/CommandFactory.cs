@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using WonkyChip8.Interpreter.Commands;
 
-namespace WonkyChip8.Interpreter
+namespace WonkyChip8.Interpreter.Commands
 {
     public class CommandFactory : ICommandFactory
     {

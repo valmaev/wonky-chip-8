@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.Commands;
-using WonkyChip8.Interpreter.UnitTests.Commands;
 using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
-namespace WonkyChip8.Interpreter.UnitTests
+namespace WonkyChip8.Interpreter.UnitTests.Commands
 {
     [TestFixture]
     public class CommandFactoryFixture

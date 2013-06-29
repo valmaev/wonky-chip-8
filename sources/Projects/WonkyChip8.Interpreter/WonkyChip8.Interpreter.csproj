@@ -35,13 +35,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CentralProcessingUnit.cs" />
-    <Compile Include="CommandFactory.cs" />
     <Compile Include="Commands\AddValueToAddressRegisterCommand.cs" />
     <Compile Include="Commands\AddValueToRegisterCommand.cs" />
     <Compile Include="Commands\BinaryOperationsForRegistersCommand.cs" />
     <Compile Include="Commands\CallSubroutineCommand.cs" />
     <Compile Include="Commands\ClearScreenCommand.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CopyRegisterValueCommand.cs" />
     <Compile Include="Commands\DrawSpriteCommand.cs" />
     <Compile Include="Commands\GraphicsCommandFactory.cs" />
