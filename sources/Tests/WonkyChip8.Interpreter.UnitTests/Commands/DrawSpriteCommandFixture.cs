@@ -10,24 +10,23 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class DrawSpriteCommandFixture
     {
         private static DrawSpriteCommand CreateDrawSpriteCommand(int operationCode = 0xD000,
-                                                                 IGraphicsProcessingUnit graphicsProcessingUnit = null,
+                                                                 IDisplay display = null,
                                                                  IGeneralRegisters generalRegisters = null,
                                                                  IAddressRegister addressRegister = null,
                                                                  IMemory memory = null)
         {
             return new DrawSpriteCommand(0, operationCode,
-                                         graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>(),
+                                         display ?? Substitute.For<IDisplay>(),
                                          generalRegisters ?? Substitute.For<IGeneralRegisters>(),
                                          addressRegister ?? Substitute.For<IAddressRegister>(),
                                          memory ?? Substitute.For<IMemory>());
         }
 
-        private static IGraphicsProcessingUnit CreateGraphicsProcessingUnitMock(bool anyPixelFlipped = false)
+        private static IDisplay CreateDisplayMock(bool anyPixelFlipped = false)
         {
-            var graphicsProcessingUnitMock = Substitute.For<IGraphicsProcessingUnit>();
-            graphicsProcessingUnitMock.DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>())
-                                      .ReturnsForAnyArgs(anyPixelFlipped);
-            return graphicsProcessingUnitMock;
+            var displayMock = Substitute.For<IDisplay>();
+            displayMock.DrawSprite(Arg.Any<Tuple<int, int>>(), Arg.Any<byte[]>()).ReturnsForAnyArgs(anyPixelFlipped);
+            return displayMock;
         }
 
         [Test]
@@ -42,7 +41,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
-                new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
+                new DrawSpriteCommand(0, 0xD000, Substitute.For<IDisplay>(),
                                       Substitute.For<IGeneralRegisters>(), null, Substitute.For<IMemory>()),
                 "addressRegister");
         }
@@ -52,19 +51,19 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
-                new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(), null,
+                new DrawSpriteCommand(0, 0xD000, Substitute.For<IDisplay>(), null,
                                       Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()),
                 "generalRegisters");
         }
 
         [Test]
-        public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullDisplay_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
                 new DrawSpriteCommand(0, 0xD000, null, Substitute.For<IGeneralRegisters>(),
                                       Substitute.For<IAddressRegister>(), Substitute.For<IMemory>()),
-                "graphicsProcessingUnit");
+                "display");
         }
 
         [Test]
@@ -72,7 +71,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
                 () =>
-                new DrawSpriteCommand(0, 0xD000, Substitute.For<IGraphicsProcessingUnit>(),
+                new DrawSpriteCommand(0, 0xD000, Substitute.For<IDisplay>(),
                                       Substitute.For<IGeneralRegisters>(), Substitute.For<IAddressRegister>(), null),
                 "memory");
         }
@@ -82,7 +81,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Execute_ExpectedWriteResultOfDrawingToFlippingDetectorRegister(int operationCode, bool anyPixelFlipped)
         {
             // Arrange
-            var graphicsProcessingUnitMock = CreateGraphicsProcessingUnitMock(anyPixelFlipped);
+            var displayMock = CreateDisplayMock(anyPixelFlipped);
 
             var generalRegistersStub = Substitute.For<IGeneralRegisters>();
             const int flippingDetectorRegisterIndex = 0xF;
@@ -95,7 +94,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             const short addressRegisterValue = 0;
             addressRegisterStub.AddressValue.Returns(addressRegisterValue);
 
-            DrawSpriteCommand command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock,
+            DrawSpriteCommand command = CreateDrawSpriteCommand(operationCode, displayMock,
                                                                 generalRegistersStub, addressRegisterStub);
             // Act
             command.Execute();
@@ -107,9 +106,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0xD000, 0x00, 0x00)]
         [TestCase(0xDFFF, 0xFF, 0xFF)]
         [TestCase(0xD1A3, 0x1A, 0x32)]
-        public void Execute_ExpectedCallsGraphicsProcessingUnitWithProperCoordinates(int operationCode,
-                                                                                     byte firstRegisterValue,
-                                                                                     byte secondRegisterValue)
+        public void Execute_ExpectedCallsDisplayWithProperCoordinates(int operationCode, byte firstRegisterValue,
+                                                                      byte secondRegisterValue)
         {
             // Arrange
             var firstRegisterIndex = (operationCode & 0x0F00) >> 8;
@@ -119,17 +117,16 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             generalRegistersStub[firstRegisterIndex].Returns(firstRegisterValue);
             generalRegistersStub[secondRegisterIndex].Returns(secondRegisterValue);
 
-            var graphicsProcessingUnitMock = CreateGraphicsProcessingUnitMock(anyPixelFlipped: true);
+            var displayMock = CreateDisplayMock(anyPixelFlipped: true);
 
-            var command = CreateDrawSpriteCommand(operationCode, graphicsProcessingUnitMock, generalRegistersStub);
+            var command = CreateDrawSpriteCommand(operationCode, displayMock, generalRegistersStub);
 
             // Act
             command.Execute();
 
             // Assert
-            graphicsProcessingUnitMock.Received(1)
-                                      .DrawSprite(new Tuple<int, int>(firstRegisterValue, secondRegisterValue),
-                                                  Arg.Any<byte[]>());
+            displayMock.Received(1).DrawSprite(new Tuple<int, int>(firstRegisterValue, secondRegisterValue), 
+                                               Arg.Any<byte[]>());
         }
     }
 }

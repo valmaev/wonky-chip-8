@@ -10,24 +10,24 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
     public class ClearScreenCommandFixture
     {
         [Test]
-        public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullDisplay_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new ClearScreenCommand(0, null), "graphicsProcessingUnit");
+                () => new ClearScreenCommand(0, null), "display");
         }
 
         [Test]
-        public void Execute_ExpectedCallsGraphicsProcessingUnitOneTime()
+        public void Execute_ExpectedCallsDisplayOneTime()
         {
             // Arrange
-            var graphicsProcessingUnitMock = Substitute.For<IGraphicsProcessingUnit>();
-            var clearScreenCommand = new ClearScreenCommand(0, graphicsProcessingUnitMock);
+            var displayMock = Substitute.For<IDisplay>();
+            var clearScreenCommand = new ClearScreenCommand(0, displayMock);
 
             // Act
             clearScreenCommand.Execute();
 
             // Assert
-            graphicsProcessingUnitMock.Received(1).ClearScreen();
+            displayMock.Received(1).ClearScreen();
         }
     }
 }

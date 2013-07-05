@@ -4,20 +4,20 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public class ClearScreenCommand : Command
     {
-        private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
+        private readonly IDisplay _display;
 
-        public ClearScreenCommand(int address, IGraphicsProcessingUnit graphicsProcessingUnit)
+        public ClearScreenCommand(int address, IDisplay display)
             : base(address, operationCode: 0x0E00)
         {
-            if (graphicsProcessingUnit == null)
-                throw new ArgumentNullException("graphicsProcessingUnit");
+            if (display == null)
+                throw new ArgumentNullException("display");
 
-            _graphicsProcessingUnit = graphicsProcessingUnit;
+            _display = display;
         }
 
         public override void Execute()
         {
-            _graphicsProcessingUnit.ClearScreen();
+            _display.ClearScreen();
         }
     }
 }

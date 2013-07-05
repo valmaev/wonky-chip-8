@@ -21,7 +21,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         {
             var factories = new List<ICommandFactory>
                 {
-                    GraphicsCommandFactoryFixture.CreateGraphicsCommandFactory(),
+                    DisplayCommandFactoryFixture.CreateDisplayCommandFactory(),
                     KeyboardCommandFactoryFixture.CreateKeyboardCommandFactory(),
                     RegisterCommandFactoryFixture.CreateRegisterCommandFactory(),
                     SubroutineCommandFactoryFixture.CreateSubroutineCommandFactory(),
@@ -111,6 +111,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [Test]
         public void Create_WithZeroOperationCode_ExpectedReturnsNullCommandWithoutCallsToChildFactories()
         {
+            // Arrange
             var commandMock = Substitute.For<ICommand>();
             var commandFactory = CreateCommandFactory(
                 new List<ICommandFactory> {CreateCommandFactoryStub(() => commandMock)});
@@ -156,8 +157,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         [TestCase(0xF01E, typeof (AddValueToAddressRegisterCommand))]
         [TestCase(0xF029, typeof (PointToFontSpriteCommand))]
         [TestCase(0xF033, typeof (SaveBinaryCodedRegisterValueInMemoryCommand))]
-        [TestCase(0xF055, typeof(SaveGeneralRegistersValuesInMemoryCommand))]
-        [TestCase(0xF065, typeof(SaveMemoryCellValuesInGeneralRegistersCommand))]
+        [TestCase(0xF055, typeof (SaveGeneralRegistersValuesInMemoryCommand))]
+        [TestCase(0xF065, typeof (SaveMemoryCellValuesInGeneralRegistersCommand))]
         public void Create_WithProperOperationCode_ExpectedReturnsCommandWithProperType(int operationCode,
                                                                                         Type commandType)
         {

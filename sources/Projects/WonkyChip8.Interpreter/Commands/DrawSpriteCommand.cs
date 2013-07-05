@@ -6,24 +6,24 @@ namespace WonkyChip8.Interpreter.Commands
     {
         private const int PixelFlippingDetectorRegisterIndex = 0xF;
 
-        private readonly IGraphicsProcessingUnit _graphicsProcessingUnit;
+        private readonly IDisplay _display;
         private readonly IAddressRegister _addressRegister;
         private readonly IMemory _memory;
 
-        public DrawSpriteCommand(int address, int operationCode, IGraphicsProcessingUnit graphicsProcessingUnit,
+        public DrawSpriteCommand(int address, int operationCode, IDisplay display,
                                  IGeneralRegisters generalRegisters, IAddressRegister addressRegister, IMemory memory)
             : base(address, operationCode, generalRegisters)
         {
             if (FirstOperationCodeHalfByte != 0xD)
                 throw new ArgumentOutOfRangeException("operationCode");
-            if (graphicsProcessingUnit == null)
-                throw new ArgumentNullException("graphicsProcessingUnit");
+            if (display == null)
+                throw new ArgumentNullException("display");
             if (addressRegister == null)
                 throw new ArgumentNullException("addressRegister");
             if (memory == null)
                 throw new ArgumentNullException("memory");
 
-            _graphicsProcessingUnit = graphicsProcessingUnit;
+            _display = display;
             _addressRegister = addressRegister;
             _memory = memory;
         }
@@ -37,7 +37,7 @@ namespace WonkyChip8.Interpreter.Commands
             var spriteHeight = FourthOperationCodeHalfByte;
             var pixels = GetPixelsFromMemory(spriteHeight);
 
-            bool anyPixelFlipped = _graphicsProcessingUnit.DrawSprite(firstPixelCoordinate, pixels);
+            bool anyPixelFlipped = _display.DrawSprite(firstPixelCoordinate, pixels);
             GeneralRegisters[PixelFlippingDetectorRegisterIndex] = Convert.ToByte(anyPixelFlipped);
         }
 

@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter
 {
-    public interface IGraphicsProcessingUnit
+    public interface IDisplay
     {
         void ClearScreen();
         bool DrawSprite(Tuple<int, int> coordinate, byte[] pixels);

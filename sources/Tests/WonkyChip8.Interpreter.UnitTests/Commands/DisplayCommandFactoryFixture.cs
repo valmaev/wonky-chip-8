@@ -7,26 +7,25 @@ using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 namespace WonkyChip8.Interpreter.UnitTests.Commands
 {
     [TestFixture]
-    public class GraphicsCommandFactoryFixture
+    public class DisplayCommandFactoryFixture
     {
-        internal static GraphicsCommandFactory CreateGraphicsCommandFactory(IGeneralRegisters generalRegisters = null,
+        internal static DisplayCommandFactory CreateDisplayCommandFactory(IGeneralRegisters generalRegisters = null,
                                                                            IAddressRegister addressRegister = null,
                                                                            IMemory memory = null,
-                                                                           IGraphicsProcessingUnit
-                                                                               graphicsProcessingUnit = null)
+                                                                           IDisplay display = null)
         {
-            return new GraphicsCommandFactory(generalRegisters ?? Substitute.For<IGeneralRegisters>(),
-                                              addressRegister ?? Substitute.For<IAddressRegister>(),
-                                              memory ?? Substitute.For<IMemory>(),
-                                              graphicsProcessingUnit ?? Substitute.For<IGraphicsProcessingUnit>());
+            return new DisplayCommandFactory(generalRegisters ?? Substitute.For<IGeneralRegisters>(),
+                                             addressRegister ?? Substitute.For<IAddressRegister>(),
+                                             memory ?? Substitute.For<IMemory>(),
+                                             display ?? Substitute.For<IDisplay>());
         }
 
         [Test]
         public void Constructor_WithNullGeneralRegisters_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new GraphicsCommandFactory(null, Substitute.For<IAddressRegister>(),
-                                                 Substitute.For<IMemory>(), Substitute.For<IGraphicsProcessingUnit>()),
+                () => new DisplayCommandFactory(null, Substitute.For<IAddressRegister>(),
+                                                Substitute.For<IMemory>(), Substitute.For<IDisplay>()),
                 "generalRegisters");
         }
 
@@ -34,8 +33,8 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullAddressRegister_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(), null,
-                                                 Substitute.For<IMemory>(), Substitute.For<IGraphicsProcessingUnit>()),
+                () => new DisplayCommandFactory(Substitute.For<IGeneralRegisters>(), null,
+                                                Substitute.For<IMemory>(), Substitute.For<IDisplay>()),
                 "addressRegister");
         }
 
@@ -43,20 +42,20 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(),
-                                                 Substitute.For<IAddressRegister>(), null,
-                                                 Substitute.For<IGraphicsProcessingUnit>()),
+                () => new DisplayCommandFactory(Substitute.For<IGeneralRegisters>(),
+                                                Substitute.For<IAddressRegister>(), null,
+                                                Substitute.For<IDisplay>()),
                 "memory");
         }
 
         [Test]
-        public void Constructor_WithNullGraphicsProcessingUnit_ExpectedThrowsArgumentNullException()
+        public void Constructor_WithNullDisplay_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new GraphicsCommandFactory(Substitute.For<IGeneralRegisters>(),
-                                                 Substitute.For<IAddressRegister>(), Substitute.For<IMemory>(),
-                                                 null),
-                "graphicsProcessingUnit");
+                () => new DisplayCommandFactory(Substitute.For<IGeneralRegisters>(),
+                                                Substitute.For<IAddressRegister>(), Substitute.For<IMemory>(),
+                                                null),
+                "display");
         }
 
         [TestCase(0x00E0, typeof (ClearScreenCommand))]
@@ -65,7 +64,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                                                                                         Type commandType)
         {
             // Arrange
-            var commandFactory = CreateGraphicsCommandFactory();
+            var commandFactory = CreateDisplayCommandFactory();
 
             // Act
             ICommand command = commandFactory.Create(0, operationCode);
@@ -80,7 +79,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         public void Create_WithNotSupportedOperationCode_ExpectedReturnsNullCommand(int notSupportedOperationCode)
         {
             // Arrange
-            var commandFactory = CreateGraphicsCommandFactory();
+            var commandFactory = CreateDisplayCommandFactory();
 
             // Act
             ICommand command = commandFactory.Create(0, notSupportedOperationCode);
@@ -88,6 +87,5 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             // Assert
             Assert.IsInstanceOf<NullCommand>(command);
         }
-
     }
 }
