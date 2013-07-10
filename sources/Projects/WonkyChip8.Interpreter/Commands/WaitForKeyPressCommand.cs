@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class WaitForKeyPressCommand : RegisterCommand
+    public sealed class WaitForKeyPressCommand : RegisterCommand
     {
         private readonly IKeyboard _keyboard;
         private int _nextCommandAddress;

@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter
 {
-    public class RandomGenerator : IRandomGenerator
+    public sealed class RandomGenerator : IRandomGenerator
     {
         private readonly Random _random = new Random();
 

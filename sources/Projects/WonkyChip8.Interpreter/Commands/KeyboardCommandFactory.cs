@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class KeyboardCommandFactory : ICommandFactory
+    public sealed class KeyboardCommandFactory : ICommandFactory
     {
         private readonly IGeneralRegisters _generalRegisters;
         private readonly IKeyboard _keyboard;

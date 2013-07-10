@@ -2,7 +2,7 @@ using System;
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveMemoryCellValuesInGeneralRegistersCommand : RegisterCommand
+    public sealed class SaveMemoryCellValuesInGeneralRegistersCommand : RegisterCommand
     {
         private readonly IAddressRegister _addressRegister;
         private readonly IMemory _memory;

@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class KeyboardDrivenSkipNextOperationCommand : RegisterCommand
+    public sealed class KeyboardDrivenSkipNextOperationCommand : RegisterCommand
     {
         private readonly IKeyboard _keyboard;
 

@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SkipNextOperationCommand : RegisterCommand
+    public sealed class SkipNextOperationCommand : RegisterCommand
     {
         public SkipNextOperationCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)

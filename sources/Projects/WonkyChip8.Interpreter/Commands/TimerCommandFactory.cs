@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class TimerCommandFactory : ICommandFactory
+    public sealed class TimerCommandFactory : ICommandFactory
     {
         private readonly IGeneralRegisters _generalRegisters;
         private readonly ITimer _delayTimer;

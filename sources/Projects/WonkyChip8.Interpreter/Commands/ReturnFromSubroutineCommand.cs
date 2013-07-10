@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class ReturnFromSubroutineCommand : Command
+    public sealed class ReturnFromSubroutineCommand : Command
     {
         private readonly ICallStack _callStack;
 

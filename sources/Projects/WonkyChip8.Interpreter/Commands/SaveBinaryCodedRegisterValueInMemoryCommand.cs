@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveBinaryCodedRegisterValueInMemoryCommand : RegisterCommand
+    public sealed class SaveBinaryCodedRegisterValueInMemoryCommand : RegisterCommand
     {
         private readonly IAddressRegister _addressRegister;
         private readonly IMemory _memory;

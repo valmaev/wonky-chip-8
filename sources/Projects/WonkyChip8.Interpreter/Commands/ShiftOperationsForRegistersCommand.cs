@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class ShiftOperationsForRegistersCommand : RegisterCommand
+    public sealed class ShiftOperationsForRegistersCommand : RegisterCommand
     {
         private const int LeastSignificantBitRegisterIndex = 0xF;
         private const int MostSignificantBitRegisterIndex = 0xF;

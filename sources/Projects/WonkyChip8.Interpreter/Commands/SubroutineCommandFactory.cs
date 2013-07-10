@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SubroutineCommandFactory : ICommandFactory
+    public sealed class SubroutineCommandFactory : ICommandFactory
     {
         private readonly ICallStack _callStack;
 

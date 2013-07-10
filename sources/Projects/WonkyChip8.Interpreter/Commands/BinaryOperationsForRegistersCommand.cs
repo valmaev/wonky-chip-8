@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class BinaryOperationsForRegistersCommand : RegisterCommand
+    public sealed class BinaryOperationsForRegistersCommand : RegisterCommand
     {
         private const int CarryRegisterIndex = 0xF;
 

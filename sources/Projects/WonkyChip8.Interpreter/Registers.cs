@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter
 {
-    public class Registers : IGeneralRegisters, IAddressRegister
+    public sealed class Registers : IGeneralRegisters, IAddressRegister
     {
         private const byte GeneralRegistersCount = 16;
 

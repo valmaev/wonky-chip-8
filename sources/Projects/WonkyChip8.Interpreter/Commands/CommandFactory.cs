@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class CommandFactory : ICommandFactory
+    public sealed class CommandFactory : ICommandFactory
     {
         private readonly ICollection<ICommandFactory> _commandFactories = new List<ICommandFactory>();
  

@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveGeneralRegistersValuesInMemoryCommand : RegisterCommand
+    public sealed class SaveGeneralRegistersValuesInMemoryCommand : RegisterCommand
     {
         private readonly IAddressRegister _addressRegister;
         private readonly IMemory _memory;

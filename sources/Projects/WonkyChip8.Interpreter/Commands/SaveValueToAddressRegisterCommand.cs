@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveValueToAddressRegisterCommand : Command
+    public sealed class SaveValueToAddressRegisterCommand : Command
     {
         private readonly IAddressRegister _addressRegister;
 

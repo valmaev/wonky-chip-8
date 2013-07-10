@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class ClearScreenCommand : Command
+    public sealed class ClearScreenCommand : Command
     {
         private readonly IDisplay _display;
 

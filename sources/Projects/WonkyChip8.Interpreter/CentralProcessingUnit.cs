@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter
 {
-    public class CentralProcessingUnit : ICentralProcessingUnit
+    public sealed class CentralProcessingUnit : ICentralProcessingUnit
     {
         private readonly IMemory _memory;
         private readonly ICommandFactory _commandFactory;

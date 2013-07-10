@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveValueToRegisterCommand : RegisterCommand
+    public sealed class SaveValueToRegisterCommand : RegisterCommand
     {
         public SaveValueToRegisterCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)

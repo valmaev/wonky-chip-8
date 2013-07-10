@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveRandomValueToRegisterCommand : RegisterCommand
+    public sealed class SaveRandomValueToRegisterCommand : RegisterCommand
     {
         private readonly IRandomGenerator _randomGenerator;
 

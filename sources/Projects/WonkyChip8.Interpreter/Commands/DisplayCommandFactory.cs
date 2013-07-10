@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class DisplayCommandFactory : ICommandFactory
+    public sealed class DisplayCommandFactory : ICommandFactory
     {
         private readonly IGeneralRegisters _generalRegisters;
         private readonly IAddressRegister _addressRegister;

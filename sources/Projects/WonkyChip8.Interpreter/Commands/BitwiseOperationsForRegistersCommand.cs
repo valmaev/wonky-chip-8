@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class BitwiseOperationsForRegistersCommand : RegisterCommand
+    public sealed class BitwiseOperationsForRegistersCommand : RegisterCommand
     {
         public BitwiseOperationsForRegistersCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)

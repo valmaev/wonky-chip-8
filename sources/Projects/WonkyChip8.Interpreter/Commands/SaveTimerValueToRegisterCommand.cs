@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class SaveTimerValueToRegisterCommand : RegisterCommand
+    public sealed class SaveTimerValueToRegisterCommand : RegisterCommand
     {
         private readonly ITimer _timer;
 

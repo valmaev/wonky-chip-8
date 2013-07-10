@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class DrawSpriteCommand : RegisterCommand
+    public sealed class DrawSpriteCommand : RegisterCommand
     {
         private const int PixelFlippingDetectorRegisterIndex = 0xF;
 

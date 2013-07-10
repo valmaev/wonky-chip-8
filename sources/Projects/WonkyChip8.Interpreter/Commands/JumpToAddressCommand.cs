@@ -2,7 +2,7 @@
 
 namespace WonkyChip8.Interpreter.Commands
 {
-    public class JumpToAddressCommand : RegisterCommand
+    public sealed class JumpToAddressCommand : RegisterCommand
     {
         public JumpToAddressCommand(int address, int operationCode, IGeneralRegisters generalRegisters)
             : base(address, operationCode, generalRegisters)

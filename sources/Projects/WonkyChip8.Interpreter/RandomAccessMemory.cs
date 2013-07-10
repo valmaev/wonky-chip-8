@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WonkyChip8.Interpreter
 {
-    public class RandomAccessMemory : IMemory
+    public sealed class RandomAccessMemory : IMemory
     {
         private readonly List<byte> _memory;
 
