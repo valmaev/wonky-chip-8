@@ -5,6 +5,7 @@ namespace WonkyChip8.Interpreter.Commands
     public sealed class ReturnFromSubroutineCommand : Command
     {
         private readonly ICallStack _callStack;
+        private readonly int _initialTopOfStack ;
 
         public ReturnFromSubroutineCommand(int address, int operationCode, ICallStack callStack)
             : base(address, operationCode)
@@ -15,11 +16,12 @@ namespace WonkyChip8.Interpreter.Commands
                 throw new ArgumentNullException("callStack");
 
             _callStack = callStack;
+            _initialTopOfStack = callStack.Peek();
         }
 
         public override int NextCommandAddress
         {
-            get { return _callStack.Peek() + CommandLength; }
+            get { return _initialTopOfStack + CommandLength; }
         }
 
         public override void Execute()
