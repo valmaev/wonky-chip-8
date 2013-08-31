@@ -4,7 +4,7 @@ namespace WonkyChip8.Interpreter.Commands
 {
     public sealed class PointToFontSpriteCommand : RegisterCommand
     {
-        private const int FontMemoryOffset = 0;
+        private const int FontMemoryOffset = 0x050;
         private const int FontSpriteHeight = 5;
 
         private readonly IAddressRegister _addressRegister;
