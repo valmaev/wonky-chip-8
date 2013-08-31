@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter.UnitTests
     [TestFixture]
     public class RandomAccessMemoryFixture
     {
-        private static RandomAccessMemory CreateMemory(int capacity = 0xFFF)
+        private static RandomAccessMemory CreateMemory(int capacity = 0x1000)
         {
             return new RandomAccessMemory(capacity);
         }
@@ -54,6 +54,20 @@ namespace WonkyChip8.Interpreter.UnitTests
 
             // Assert
             Assert.AreEqual(expectedProgramStartAddress, memory.ProgramStartAddress);
+        }
+
+        [Test]
+        public void LoadProgram_ExpectedCapacityNotChanged()
+        {
+            // Arrange
+            var memory = CreateMemory();
+            var expectedCapacity = memory.Capacity;
+
+            // Act
+            memory.LoadProgram(0, new byte[] {0, 1, 1});
+
+            // Assert
+            Assert.AreEqual(expectedCapacity, memory.Capacity);
         }
 
         [Test]
@@ -117,6 +131,21 @@ namespace WonkyChip8.Interpreter.UnitTests
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
                 () => CreateMemory()[cellAddress] = value, "index");
+        }
+
+        [Test]
+        public void ThisIndexer_AfterSettingCellValue_ExpectedCapacityNotChanged()
+        {
+            // Arrange
+            var memory = CreateMemory();
+            var expectedCapacity = memory.Capacity;
+            const byte someValueToSet = 1;
+
+            // Act
+            memory[0] = someValueToSet;
+
+            // Assert
+            Assert.AreEqual(expectedCapacity, memory.Capacity);
         }
     }
 }

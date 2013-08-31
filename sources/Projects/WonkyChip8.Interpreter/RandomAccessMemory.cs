@@ -15,7 +15,12 @@ namespace WonkyChip8.Interpreter
         public byte this[int cellAddress]
         {
             get { return _memory[cellAddress]; }
-            set { _memory.Insert(cellAddress, value); }
+            set { _memory[cellAddress] = value; }
+        }
+
+        public int Capacity
+        {
+            get { return _memory.Capacity; }
         }
 
         public int? ProgramStartAddress { get; private set; }
@@ -25,7 +30,13 @@ namespace WonkyChip8.Interpreter
             if (programBytes == null)
                 throw new ArgumentNullException("programBytes");
 
-            _memory.InsertRange(programStartAddress, programBytes);
+            var currentProgramAddress = programStartAddress;
+            foreach (var programByte in programBytes)
+            {
+                _memory[currentProgramAddress] = programByte;
+                currentProgramAddress++;
+            }
+
             ProgramStartAddress = programStartAddress;
         }
 
