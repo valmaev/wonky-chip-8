@@ -68,7 +68,7 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
 
             var command = CreateCommand(operationCode, generalRegistersStub, addressRegisterStub);
 
-            const int memoryOffset = 0;
+            const int memoryOffset = 0x050;
             const byte fontSpriteHeight = 5;
             // Act
             command.Execute();
