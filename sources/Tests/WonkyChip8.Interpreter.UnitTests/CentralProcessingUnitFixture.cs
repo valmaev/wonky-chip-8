@@ -37,13 +37,6 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void ExecuteProgram_WhenProgramIsNotLoadedToMemory_ExpectedThrowsInvalidOperationException()
-        {
-            var centralProcessingUnit = CreateCentralProcessingUnit();
-            Assert.Throws<InvalidOperationException>(centralProcessingUnit.ExecuteProgram);
-        }
-
-        [Test]
         public void ExecuteProgram_ExpectedExecutesCommandOneTime()
         {
             // Arrange

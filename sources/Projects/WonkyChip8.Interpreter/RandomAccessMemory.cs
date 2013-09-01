@@ -23,29 +23,32 @@ namespace WonkyChip8.Interpreter
             get { return _memory.Capacity; }
         }
 
-        public int? ProgramStartAddress { get; private set; }
+        public int ProgramStartAddress { get; set; }
 
-        public void LoadProgram(int programStartAddress, byte[] programBytes)
+        public void LoadBytes(int cellAddress, IEnumerable<byte> bytes)
         {
-            if (programBytes == null)
-                throw new ArgumentNullException("programBytes");
+            if (cellAddress < 0 || cellAddress >= _memory.Count)
+                throw new ArgumentOutOfRangeException("cellAddress");
+            if (bytes == null)
+                throw new ArgumentNullException("bytes");
 
-            var currentProgramAddress = programStartAddress;
-            foreach (var programByte in programBytes)
+            var currentProgramAddress = cellAddress;
+            foreach (var programByte in bytes)
             {
                 _memory[currentProgramAddress] = programByte;
                 currentProgramAddress++;
             }
-
-            ProgramStartAddress = programStartAddress;
         }
 
-        public void UnloadProgram(int programStartAddress)
+        public void UnloadBytes(int firstCellAddress, int lastCellAddress)
         {
-            for (var address = programStartAddress; address < _memory.Count; address++)
-                _memory[address] = 0;
+            if (firstCellAddress < 0 || firstCellAddress >= _memory.Count)
+                throw new ArgumentOutOfRangeException("firstCellAddress");
+            if (lastCellAddress < 0 || lastCellAddress >= _memory.Count || lastCellAddress < firstCellAddress)
+                throw new ArgumentOutOfRangeException("lastCellAddress");
 
-            ProgramStartAddress = null;
+            for (var address = firstCellAddress; address <= lastCellAddress; address++)
+                _memory[address] = 0;
         }
     }
 }

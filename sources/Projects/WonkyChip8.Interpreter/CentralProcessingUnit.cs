@@ -20,11 +20,7 @@ namespace WonkyChip8.Interpreter
 
         public void ExecuteProgram()
         {
-            if (!_memory.ProgramStartAddress.HasValue)
-                throw new InvalidOperationException(
-                    "An attempt was made to execute program before loading it to memory.");
-
-            int currentProgramByteAddress = _memory.ProgramStartAddress.Value;
+            int currentProgramByteAddress = _memory.ProgramStartAddress;
             int currentOperationCode;
             do
             {

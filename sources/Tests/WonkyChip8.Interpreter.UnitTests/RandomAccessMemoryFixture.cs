@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 
@@ -8,7 +10,9 @@ namespace WonkyChip8.Interpreter.UnitTests
     [TestFixture]
     public class RandomAccessMemoryFixture
     {
-        private static RandomAccessMemory CreateMemory(int capacity = 0x1000)
+        private const int DefaultCapacity = 0x1000;
+
+        private static RandomAccessMemory CreateMemory(int capacity = DefaultCapacity)
         {
             return new RandomAccessMemory(capacity);
         }
@@ -18,15 +22,24 @@ namespace WonkyChip8.Interpreter.UnitTests
             return new byte[] {0xAA, 0x01, 0xBB, 0x11};
         }
 
-        [Test]
-        public void LoadProgram_WithNullProgramBytes_ExpectedThrowsArgumentNullException()
+        [TestCase(-0x1)]
+        [TestCase(DefaultCapacity)]
+        [TestCase(DefaultCapacity + 1)]
+        public void LoadBytes_WithInvalidCellAddress_ExpectedThrowsArgumentOutOfRangeException(int invalidCellAddress)
         {
-            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => CreateMemory().LoadProgram(0, null), "programBytes");
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateMemory().LoadBytes(invalidCellAddress, Arg.Any<IEnumerable<byte>>()), "cellAddress");
         }
 
         [Test]
-        public void LoadProgram_WithProperProgramBytes_ExpectedLoadsProgramInMemory()
+        public void LoadBytes_WithNullProgramBytes_ExpectedThrowsArgumentNullException()
+        {
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => CreateMemory().LoadBytes(0, null), "bytes");
+        }
+
+        [Test]
+        public void LoadBytes_WithProperBytes_ExpectedLoadsProgramInMemory()
         {
             // Arrange
             var randomAccessMemory = CreateMemory();
@@ -34,7 +47,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             var programBytes = CreateProgramBytes();
 
             // Act
-            randomAccessMemory.LoadProgram(programStartAddress, programBytes);
+            randomAccessMemory.LoadBytes(programStartAddress, programBytes);
 
             // Assert
             for (var address = 0; address < programBytes.Count(); address++)
@@ -43,71 +56,56 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
-        public void LoadProgram_ExpectedSetsProgramStartAddressFromParameter()
-        {
-            // Arrange
-            var memory = CreateMemory();
-            const int expectedProgramStartAddress = 0x200;
-            
-            // Act
-            memory.LoadProgram(expectedProgramStartAddress, CreateProgramBytes());
-
-            // Assert
-            Assert.AreEqual(expectedProgramStartAddress, memory.ProgramStartAddress);
-        }
-
-        [Test]
-        public void LoadProgram_ExpectedCapacityNotChanged()
+        public void LoadBytes_ExpectedCapacityNotChanged()
         {
             // Arrange
             var memory = CreateMemory();
             var expectedCapacity = memory.Capacity;
 
             // Act
-            memory.LoadProgram(0, new byte[] {0, 1, 1});
+            memory.LoadBytes(0, new byte[] { 0, 1, 1 });
 
             // Assert
             Assert.AreEqual(expectedCapacity, memory.Capacity);
         }
 
         [Test]
-        public void ProgramStartAddress_ExpectedDefualtValueIsNull()
+        public void ProgramStartAddress_ExpectedDefualtValueIsZero()
         {
-            Assert.IsNull(CreateMemory().ProgramStartAddress);
+            Assert.AreEqual(0, CreateMemory().ProgramStartAddress);
         }
 
-        [Test]
-        public void UnloadProgram_WithLoadedProgram_ExpectedCleansMemory()
+        [TestCase(0x0, 0x0)]
+        [TestCase(0x200, DefaultCapacity - 1)]
+        public void UnloadBytes_WithProperArguments_ExpectedCleansMemory(int firstCellAddress, int lastCellAddress)
         {
             // Arrange
-            const int capacity = 100;
             var randomAccessMemory = CreateMemory();
-            const int programStartAddress = 0x200;
-            for (var i = programStartAddress; i < capacity; i++)
+            for (var i = firstCellAddress; i <= lastCellAddress; i++)
                 randomAccessMemory[i] = 1;
 
             // Act
-            randomAccessMemory.UnloadProgram(programStartAddress);
+            randomAccessMemory.UnloadBytes(firstCellAddress, lastCellAddress);
 
             // Assert
-            for (var i = programStartAddress; i < capacity; i++)
+            for (var i = firstCellAddress; i <= lastCellAddress; i++)
                 Assert.AreEqual(0, randomAccessMemory[i]);
-            Assert.AreEqual(0, randomAccessMemory[programStartAddress]);
+            Assert.AreEqual(0, randomAccessMemory[firstCellAddress]);
         }
 
-        [Test]
-        public void UnloadProgram_ExpectedSetsProgramStartAddressToNull()
+        [TestCase(-0x1, 0x0, "firstCellAddress")]
+        [TestCase(DefaultCapacity, 0x0, "firstCellAddress")]
+        [TestCase(DefaultCapacity + 1, 0x0, "firstCellAddress")]
+        [TestCase(0x0, -0x1, "lastCellAddress")]
+        [TestCase(0x1, 0x0, "lastCellAddress")]
+        [TestCase(0x0, DefaultCapacity, "lastCellAddress")]
+        [TestCase(0x0, DefaultCapacity + 1, "lastCellAddress")]
+        public void UnloadBytes_WithInvalidArguments_ExpectedThrowsArgumentOutOfRangeException(int firstCellAddress,
+                                                                                               int lastCellAddress,
+                                                                                               string exceptionParamName)
         {
-            // Arrange
-            var memory = CreateMemory();
-            const int programStartAddress = 0x200;
-            memory.LoadProgram(programStartAddress, CreateProgramBytes());
-
-            // Act
-            memory.UnloadProgram(programStartAddress);
-
-            // Assert
-            Assert.IsNull(memory.ProgramStartAddress);
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentOutOfRangeException>(
+                () => CreateMemory().UnloadBytes(firstCellAddress, lastCellAddress), exceptionParamName);
         }
 
         [TestCase(0x000, 1, ExpectedResult = 1)]
