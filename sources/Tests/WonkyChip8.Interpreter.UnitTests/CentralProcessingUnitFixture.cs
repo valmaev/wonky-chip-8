@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
 using WonkyChip8.Interpreter.UnitTests.TestUtilities;
@@ -6,13 +7,15 @@ using WonkyChip8.Interpreter.UnitTests.TestUtilities;
 namespace WonkyChip8.Interpreter.UnitTests
 {
     [TestFixture]
-    public class CentralProcessingUnitFixture 
+    public class CentralProcessingUnitFixture
     {
         private static CentralProcessingUnit CreateCentralProcessingUnit(IMemory memory = null,
-                                                                         ICommandFactory commandFactory = null)
+                                                                         ICommandFactory commandFactory = null,
+                                                                         IEnumerable<ITimer> timers = null)
         {
             return new CentralProcessingUnit(memory ?? Substitute.For<IMemory>(),
-                                             commandFactory ?? Substitute.For<ICommandFactory>());
+                                             commandFactory ?? Substitute.For<ICommandFactory>(),
+                                             timers ?? new List<ITimer> {Substitute.For<ITimer>()});
         }
 
         private static IMemory CreateMemoryStub(int programStartAddress)
@@ -26,14 +29,27 @@ namespace WonkyChip8.Interpreter.UnitTests
         public void Constructor_WithNullMemory_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new CentralProcessingUnit(null, Substitute.For<ICommandFactory>()), "memory");
+                () => new CentralProcessingUnit(null, Substitute.For<ICommandFactory>(),
+                                                Substitute.For<IEnumerable<ITimer>>()),
+                "memory");
         }
 
         [Test]
         public void Constructor_WithNullCommandFactory_ExpectedThrowsArgumentNullException()
         {
             NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
-                () => new CentralProcessingUnit(Substitute.For<IMemory>(), null), "commandFactory");
+                () => new CentralProcessingUnit(Substitute.For<IMemory>(), null,
+                                                Substitute.For<IEnumerable<ITimer>>()),
+                "commandFactory");
+        }
+
+        [Test]
+        public void Constructor_WithNullTimers_ExpectedThrowsArgumentNullException()
+        {
+            NUnitUtilities.AssertThrowsArgumentExceptionWithParamName<ArgumentNullException>(
+                () => new CentralProcessingUnit(Substitute.For<IMemory>(),
+                                                Substitute.For<ICommandFactory>(), null),
+                "timers");
         }
 
         [Test]
@@ -42,7 +58,7 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Arrange
             const int programStartAddress = 0x200;
             const int commandOperationCode = 0x00E0;
-            
+
             var memoryStub = CreateMemoryStub(programStartAddress);
             memoryStub[programStartAddress].Returns((byte) 0x00);
             memoryStub[programStartAddress + 1].Returns((byte) 0xE0);
@@ -73,14 +89,14 @@ namespace WonkyChip8.Interpreter.UnitTests
 
             const int secondCommandAddress = programStartAddress + 0x2;
             const int secondCommandOperationCode = 0x00EE;
-            memoryStub[secondCommandAddress].Returns((byte)0x00);
-            memoryStub[secondCommandAddress + 1].Returns((byte)0xEE);
+            memoryStub[secondCommandAddress].Returns((byte) 0x00);
+            memoryStub[secondCommandAddress + 1].Returns((byte) 0xEE);
 
             var firstCommandMock = Substitute.For<ICommand>();
             firstCommandMock.NextCommandAddress.Returns(secondCommandAddress);
 
             var secondCommandMock = Substitute.For<ICommand>();
-            
+
             var commandFactoryStub = Substitute.For<ICommandFactory>();
             commandFactoryStub.Create(programStartAddress, firstCommandOperationCode).Returns(firstCommandMock);
             commandFactoryStub.Create(secondCommandAddress, secondCommandOperationCode).Returns(secondCommandMock);
@@ -93,6 +109,31 @@ namespace WonkyChip8.Interpreter.UnitTests
             // Assert
             firstCommandMock.Received(1).Execute();
             secondCommandMock.Received(1).Execute();
+        }
+
+        [Test]
+        public void ExecuteProgram_WithProgramInMemory_ExpectedDecrementValueOfAllTimers()
+        {
+            // Arrange
+            const int programStartAddress = 0x200;
+            var memoryStub = CreateMemoryStub(programStartAddress);
+
+            var firstCommandMock = Substitute.For<ICommand>();
+            var commandFactoryStub = Substitute.For<ICommandFactory>();
+            commandFactoryStub.Create(programStartAddress, Arg.Any<byte>()).Returns(firstCommandMock);
+
+            byte timerValue = 1;
+            var timerMock = Substitute.For<ITimer>();
+            timerMock.Value = Arg.Do<byte>(value => timerValue = value);
+            timerMock.Value.Returns(timerValue);
+
+            var centralProcessingUnit = CreateCentralProcessingUnit(memoryStub, commandFactoryStub, new[] {timerMock});
+
+            // Act
+            centralProcessingUnit.ExecuteProgram();
+
+            // Assert
+            Assert.AreEqual(0, timerValue, "Timer value wasn't decremented");
         }
     }
 }
