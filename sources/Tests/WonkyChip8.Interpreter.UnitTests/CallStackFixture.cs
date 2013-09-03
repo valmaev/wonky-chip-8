@@ -74,6 +74,17 @@ namespace WonkyChip8.Interpreter.UnitTests
         }
 
         [Test]
+        public void Stack_ExpectedCreatingNewInstanceInGetterOnlyIfBackingFieldIsNull()
+        {
+            var callStack = CreateCallStack();
+            const int valueToPush = 1;
+
+            callStack.Push(valueToPush);
+
+            Assert.AreEqual(valueToPush, callStack.Peek());
+        }
+
+        [Test]
         public void Stack_AfterSettingToNull_ExpectedCreatingNewInstanceInGetter()
         {
             var callStack = new CallStack {Stack = null};

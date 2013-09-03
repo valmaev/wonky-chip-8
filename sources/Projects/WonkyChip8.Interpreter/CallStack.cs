@@ -8,7 +8,7 @@ namespace WonkyChip8.Interpreter
 
         internal Stack<int> Stack
         {
-            get { return (_stack ?? new Stack<int>()); }
+            get { return _stack ?? (_stack = new Stack<int>()); }
             set { _stack = value; }
         }
 
