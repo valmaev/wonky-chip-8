@@ -37,6 +37,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CallStackFixture.cs" />
     <Compile Include="Commands\AddValueToAddressRegisterCommandFixture.cs" />
     <Compile Include="Commands\AddValueToRegisterCommandFixture.cs" />
     <Compile Include="Commands\BinaryOperationsForRegistersCommandFixture.cs" />

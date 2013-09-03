@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallStack.cs" />
     <Compile Include="CentralProcessingUnit.cs" />
     <Compile Include="Commands\AddValueToAddressRegisterCommand.cs" />
     <Compile Include="Commands\AddValueToRegisterCommand.cs" />
