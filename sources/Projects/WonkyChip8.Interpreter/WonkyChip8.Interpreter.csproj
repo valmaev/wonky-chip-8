@@ -68,6 +68,7 @@
     <Compile Include="Commands\SubroutineCommandFactory.cs" />
     <Compile Include="Commands\TimerCommandFactory.cs" />
     <Compile Include="Commands\WaitForKeyPressCommand.cs" />
+    <Compile Include="DelayTimer.cs" />
     <Compile Include="IAddressRegister.cs" />
     <Compile Include="ICallStack.cs" />
     <Compile Include="ICentralProcessingUnit.cs" />
