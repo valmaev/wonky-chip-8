@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WonkyChip8.Interpreter")]
-[assembly: AssemblyCopyright("Copyright © VAlmaev 2012")]
+[assembly: AssemblyCopyright("Copyright © VAlmaev 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
