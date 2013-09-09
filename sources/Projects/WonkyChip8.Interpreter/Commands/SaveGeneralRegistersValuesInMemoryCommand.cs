@@ -29,6 +29,8 @@ namespace WonkyChip8.Interpreter.Commands
 
             for (int registerIndex = 0; registerIndex <= lastRegisterIndex; registerIndex++)
                 _memory[_addressRegister.AddressValue + registerIndex] = GeneralRegisters[registerIndex];
+
+            _addressRegister.AddressValue += (short) (lastRegisterIndex + 1);
         }
     }
 }

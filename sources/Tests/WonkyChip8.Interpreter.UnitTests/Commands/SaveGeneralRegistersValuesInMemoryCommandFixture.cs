@@ -13,10 +13,10 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
         private const int ValidOperationCode = 0xF055;
 
         private static SaveGeneralRegistersValuesInMemoryCommand CreateCommand(int operationCode = ValidOperationCode,
-                                                                                IGeneralRegisters generalRegisters =
-                                                                                    null,
-                                                                                IAddressRegister addressRegister = null,
-                                                                                IMemory memory = null)
+                                                                               IGeneralRegisters generalRegisters =
+                                                                                   null,
+                                                                               IAddressRegister addressRegister = null,
+                                                                               IMemory memory = null)
         {
             return new SaveGeneralRegistersValuesInMemoryCommand(0, operationCode,
                                                                  generalRegisters ?? Substitute.For<IGeneralRegisters>(),
@@ -100,6 +100,30 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             // Assert
             Assert.AreEqual(registerIndex + 1, memoryCellValues.Count);
             Assert.That(memoryCellValues.Values, Is.All.EqualTo(registerValue));
+        }
+
+        [TestCase(0xF055, 0x00)]
+        [TestCase(0xF155, 0x01)]
+        [TestCase(0xFA55, 0xFF)]
+        [TestCase(0xFF55, 0xAA)]
+        public void Execute_ExpectedIncrementAddressValueBySecondOperationHalfBytePlusOne(int operationCode,
+                                                                                          short initialAddressValue)
+        {
+            // Arrange
+            short addressValue = initialAddressValue;
+            var addressRegisterStub = Substitute.For<IAddressRegister>();
+            addressRegisterStub.AddressValue = Arg.Do<short>(value => addressValue = value);
+            addressRegisterStub.AddressValue.Returns(addressValue);
+
+            var command = CreateCommand(operationCode, addressRegister: addressRegisterStub);
+
+            var expectedValue = (short) (initialAddressValue + command.SecondOperationCodeHalfByte + 1);
+
+            // Act
+            command.Execute();
+
+            // Assert
+            Assert.AreEqual(expectedValue, addressValue);
         }
     }
 }
