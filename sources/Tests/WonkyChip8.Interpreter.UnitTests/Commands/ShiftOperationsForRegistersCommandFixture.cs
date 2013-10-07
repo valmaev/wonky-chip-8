@@ -34,28 +34,20 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
                 () => new ShiftOperationsForRegistersCommand(0, 0x8006, null), "generalRegisters");
         }
 
-        [TestCase(0x800E, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)]
-        [TestCase(0x800E, 0x0, 0x1, 0x0, 0x1, 0x2, 0x1)]
-        [TestCase(0x812E, 0x1, 0xA, 0x2, 0xD, 0x1A, 0x1)]
-        [TestCase(0x812E, 0x1, 0xA, 0x2, 0xDE, 0xBC, 0x0)]
-        public void Execute_WithNotNullRegisters_ExpectedPerformRightShift(int operationCode,
-                                                                           int firstRegisterIndex,
-                                                                           byte firstRegisterInitialValue,
-                                                                           int secondRegisterIndex,
-                                                                           byte secondRegisterInitialValue,
-                                                                           byte firstRegisterExpectedValue,
-                                                                           byte carryRegisterExpectedValue)
+        [TestCase(0x800E, 0x0, 0x0, 0x0, 0x0)]
+        [TestCase(0x800E, 0x0, 0x1, 0x2, 0x1)]
+        [TestCase(0x812E, 0x1, 0xD, 0x1A, 0x1)]
+        public void Execute_ExpectedPerformRightShift(int operationCode, int firstRegisterIndex,
+                                                      byte firstRegisterInitialValue, byte firstRegisterExpectedValue,
+                                                      byte carryRegisterExpectedValue)
         {
             TestShiftOperations(operationCode, firstRegisterIndex, firstRegisterInitialValue,
-                                secondRegisterIndex, secondRegisterInitialValue, firstRegisterExpectedValue,
-                                carryRegisterExpectedValue);
+                                firstRegisterExpectedValue, carryRegisterExpectedValue);
         }
 
         private static void TestShiftOperations(int operationCode,
                                                 int firstRegisterIndex,
                                                 byte firstRegisterInitialValue,
-                                                int secondRegisterIndex,
-                                                byte secondRegisterInitialValue,
                                                 byte firstRegisterExpectedValue,
                                                 byte carryRegisterExpectedValue)
         {
@@ -65,40 +57,29 @@ namespace WonkyChip8.Interpreter.UnitTests.Commands
             registersStub[firstRegisterIndex] = Arg.Do<byte>(value => firstRegisterActualValue = value);
             registersStub[firstRegisterIndex].Returns(firstRegisterActualValue);
 
-            byte secondRegisterActualValue = secondRegisterInitialValue;
-            registersStub[secondRegisterIndex] = Arg.Do<byte>(value => secondRegisterActualValue = value);
-            registersStub[secondRegisterIndex].Returns(secondRegisterActualValue);
-
             byte carryRegisterActualValue = 0;
             registersStub[0xF] = Arg.Do<byte>(value => carryRegisterActualValue = value);
             registersStub[0xF].Returns(carryRegisterActualValue);
 
-            ShiftOperationsForRegistersCommand shiftOperationsForRegistersCommand =
-                CreateShiftOperationsForRegistersCommand(operationCode, registersStub);
+            var command = CreateShiftOperationsForRegistersCommand(operationCode, registersStub);
 
             // Act
-            shiftOperationsForRegistersCommand.Execute();
+            command.Execute();
 
             // Assert
             Assert.AreEqual(firstRegisterExpectedValue, firstRegisterActualValue);
             Assert.AreEqual(carryRegisterExpectedValue, carryRegisterActualValue);
         }
 
-        [TestCase(0x8006, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)]
-        [TestCase(0x8006, 0x0, 0x1, 0x0, 0x1, 0x0, 0x0)]
-        [TestCase(0x8126, 0x1, 0xA, 0x2, 0xD, 0x6, 0x0)]
-        [TestCase(0x8126, 0x1, 0xA, 0x2, 0xDE, 0x6F, 0x1)]
-        public void Execute_WithNotNullRegisters_ExpectedPerformLeftShift(int operationCode,
-                                                                          int firstRegisterIndex,
-                                                                          byte firstRegisterInitialValue,
-                                                                          int secondRegisterIndex,
-                                                                          byte secondRegisterInitialValue,
-                                                                          byte firstRegisterExpectedValue,
-                                                                          byte carryRegisterExpectedValue)
+        [TestCase(0x8006, 0x0, 0x0, 0x0, 0x0)]
+        [TestCase(0x8006, 0x0, 0x1, 0x0, 0x0)]
+        [TestCase(0x8126, 0x1, 0xDE, 0x6F, 0x1)]
+        public void Execute_ExpectedPerformLeftShift(int operationCode, int firstRegisterIndex,
+                                                     byte firstRegisterInitialValue, byte firstRegisterExpectedValue,
+                                                     byte carryRegisterExpectedValue)
         {
             TestShiftOperations(operationCode, firstRegisterIndex, firstRegisterInitialValue,
-                                secondRegisterIndex, secondRegisterInitialValue, firstRegisterExpectedValue,
-                                carryRegisterExpectedValue);
+                                firstRegisterExpectedValue, carryRegisterExpectedValue);
         }
     }
 }

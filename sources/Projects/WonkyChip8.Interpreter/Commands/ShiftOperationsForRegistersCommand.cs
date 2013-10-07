@@ -33,16 +33,16 @@ namespace WonkyChip8.Interpreter.Commands
 
         private void RightShiftSecondRegister()
         {
-            int mostSignificantBit = GeneralRegisters[ThirdOperationCodeHalfByte] >> 7 & 1;
+            int mostSignificantBit = GeneralRegisters[SecondOperationCodeHalfByte] >> 7 & 1;
             GeneralRegisters[MostSignificantBitRegisterIndex] = (byte) mostSignificantBit;
-            GeneralRegisters[SecondOperationCodeHalfByte] = (byte) (GeneralRegisters[ThirdOperationCodeHalfByte] >> 1);
+            GeneralRegisters[SecondOperationCodeHalfByte] >>= 1;
         }
 
         private void LeftShiftSecondRegister()
         {
-            int leastSignificantBit = GeneralRegisters[ThirdOperationCodeHalfByte] & 1;
+            int leastSignificantBit = GeneralRegisters[SecondOperationCodeHalfByte] & 1;
             GeneralRegisters[LeastSignificantBitRegisterIndex] = (byte) leastSignificantBit;
-            GeneralRegisters[SecondOperationCodeHalfByte] = (byte) (GeneralRegisters[ThirdOperationCodeHalfByte] << 1);
+            GeneralRegisters[SecondOperationCodeHalfByte] <<= 1;
         }
     }
 }
